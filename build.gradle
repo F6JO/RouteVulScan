@@ -1,0 +1,29 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+compileJava {
+    options.encoding = "UTF-8"
+}
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+    compile('net.portswigger.burp.extender:burp-extender-api:1.7.13')
+    compile('com.intellij:forms_rt:7.0.3')
+    compile group: 'org.yaml', name: 'snakeyaml', version: '1.28'
+    compile fileTree(dir: 'lib', includes: ['*jar'])
+}
+
+test {
+    useJUnitPlatform()
+}
