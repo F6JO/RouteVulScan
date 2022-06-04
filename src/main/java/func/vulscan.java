@@ -47,7 +47,9 @@ public class vulscan {
 
         Map<String, Object> Yaml_Map = YamlUtil.readYaml(burp.Config_l.yaml_path);
         List<Map<String, Object>> Listx = (List<Map<String, Object>>) Yaml_Map.get("Load_List");
-
+        if (paths.length == 0){
+            paths = new String[]{""};
+        }
         for (String path : paths) {
             if (!path.contains(".")) {
                 if (!path.equals("")) {

@@ -54,7 +54,6 @@ public class BurpExtender implements IBurpExtender, IScannerCheck {
 
     public List<IScanIssue> doPassiveScan(IHttpRequestResponse baseRequestResponse) {
         this.ThreadPool = Executors.newFixedThreadPool((Integer) Config_l.spinner1.getValue());
-        call.printOutput(String.valueOf(Config_l.spinner1.getValue()));
         ArrayList<IScanIssue> IssueList = new ArrayList();
         IHttpService Http_Service = baseRequestResponse.getHttpService();
         String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
