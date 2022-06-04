@@ -121,8 +121,6 @@ public class YamlUtil {
         Map<String, Object> data = null;
         try {
             InputStream inputStream = new FileInputStream(file);
-            // InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("customer.yaml");
-
             Yaml yaml = new Yaml();
             data = yaml.load(inputStream);
         } catch (FileNotFoundException e) {

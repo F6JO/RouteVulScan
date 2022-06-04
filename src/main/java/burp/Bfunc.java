@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Bfunc {
 
-    public static void show_yaml(View view_class, List<View.LogEntry> log,String path){
+    public static void show_yaml(View view_class, List<View.LogEntry> log, String path){
 
         synchronized (log) {
             log.clear();

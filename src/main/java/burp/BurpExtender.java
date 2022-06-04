@@ -1,9 +1,10 @@
 package burp;
 
+import UI.Tags;
+import func.vulscan;
 import utils.BurpAnalyzedRequest;
 import utils.DomainNameRepeat;
 import utils.UrlRepeat;
-import vuls.vulscan;
 import yaml.YamlUtil;
 
 import java.io.File;
@@ -13,21 +14,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class BurpExtender implements IBurpExtender, IScannerCheck {
 
     public static String Yaml_Path = System.getProperty("user.dir") + "/" +"Config_yaml.yaml";
-    private IBurpExtenderCallbacks call;
+    public IBurpExtenderCallbacks call;
     private DomainNameRepeat DomainName;
-    private IExtensionHelpers help;
-    private Tags tags;
+    public IExtensionHelpers help;
+    public Tags tags;
     private UrlRepeat urlC;
-    private Collection<String> history_url = new LinkedList<String>();
+    public Collection<String> history_url = new LinkedList<String>();
     public static String EXPAND_NAME = "Route Vulnerable Scanning";
     public View view_class;
     public List<View.LogEntry> log;
     public Config Config_l;
+    public ExecutorService ThreadPool;
 
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         this.call = callbacks;
@@ -49,6 +53,8 @@ public class BurpExtender implements IBurpExtender, IScannerCheck {
     }
 
     public List<IScanIssue> doPassiveScan(IHttpRequestResponse baseRequestResponse) {
+        this.ThreadPool = Executors.newFixedThreadPool((Integer) Config_l.spinner1.getValue());
+        call.printOutput(String.valueOf(Config_l.spinner1.getValue()));
         ArrayList<IScanIssue> IssueList = new ArrayList();
         IHttpService Http_Service = baseRequestResponse.getHttpService();
         String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
@@ -60,7 +66,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck {
             if (this.urlC.check(Root_Method, New_Url)) {
                 return null;
             }
-            new vulscan(this.call, Root_Request, this.tags, history_url,Config_l);
+            new vulscan(this,Root_Request);
             this.urlC.addMethodAndUrl(Root_Method, New_Url);
             try {
                 this.DomainName.add(Root_Url);

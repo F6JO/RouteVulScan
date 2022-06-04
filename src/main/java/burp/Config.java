@@ -17,6 +17,7 @@ public class Config {
     public String yaml_path = BurpExtender.Yaml_Path;
     private View view_class;
     private List<View.LogEntry> log;
+    public JSpinner spinner1;
 
 
     public Config(View view_class, List<View.LogEntry> log) {
@@ -37,25 +38,38 @@ public class Config {
         one.setBounds(0, 0, 1180, 500);
 
 
-        txtfield1 = new JTextField();   //创建文本框
-        txtfield1.setText(yaml_path);    //设置文本框的内容
 
-        txtfield1.setBounds(110, 5, 972, 20);
 
-//         Yaml File Path 文本展示框
+        // Yaml File Path 文本展示框
         JLabel yaml_Path = new JLabel("Yaml File Path:");
         yaml_Path.setBounds(5, -10, 100, 50);
+
+        // 展示路径
+        txtfield1 = new JTextField();   //创建文本框
+        txtfield1.setText(yaml_path);    //设置文本框的内容
+        txtfield1.setBounds(110, 5, 772, 20);
 
 
         // Select Yaml按钮
         JButton select_yaml_button = new JButton("Select Yaml");
-        select_yaml_button.setBounds(1086, 4, 87, 23);
+        select_yaml_button.setBounds(886, 4, 87, 23);
         select_Yaml(select_yaml_button);
 
         // load 按钮
         JButton load_button = new JButton("Load Yaml");
-        load_button.setBounds(1180, 4, 87, 23);
+        load_button.setBounds(980, 4, 87, 23);
         load_button_Yaml(load_button, view_class, log, txtfield1);
+
+        // 线程选择
+        JLabel thread_num = new JLabel("Thread Numbers:");
+        thread_num.setBounds(1074, -10, 100, 50);
+        SpinnerNumberModel model1 = new SpinnerNumberModel(10, 1, 500, 5);
+        this.spinner1 = new JSpinner(model1);
+        ((JSpinner.DefaultEditor) this.spinner1.getEditor()).getTextField().setEditable(false);
+
+        this.spinner1.setBounds(1168, 4, 100, 23);
+
+
 
 
         // add按钮
@@ -87,6 +101,9 @@ public class Config {
         one.add(edit_button);
         one.add(remove_button);
         one.add(view);
+        one.add(thread_num);
+        one.add(spinner1);
+
 
     }
 
