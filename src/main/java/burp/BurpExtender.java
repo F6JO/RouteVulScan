@@ -46,7 +46,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck {
             YamlUtil.init_Yaml(Yaml_Path);
         }
         Bfunc.show_yaml(view_class,log,Yaml_Path);
-        call.printOutput("Loading RouteVulScan succeeded");
+        call.printOutput("Loading RouteVulScan success");
         call.setExtensionName(EXPAND_NAME);
         call.registerScannerCheck(this);
 
