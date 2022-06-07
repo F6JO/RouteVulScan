@@ -5,8 +5,11 @@ import burp.*;
 import utils.BurpAnalyzedRequest;
 import yaml.YamlUtil;
 
+import java.sql.Time;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class vulscan {
 
@@ -58,6 +61,12 @@ public class vulscan {
 
                 for (Map<String, Object> zidian : Listx) {
                     burp.ThreadPool.execute(new threads(zidian,this,newHttpRequestResponse));
+                }
+
+                while (true){
+                    if (((ThreadPoolExecutor)burp.ThreadPool).getActiveCount() == 0){
+                        break;
+                    }
                 }
 
 

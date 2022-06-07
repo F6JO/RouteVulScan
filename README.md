@@ -13,9 +13,15 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 
 插件可以通过被动扫描的方式，递归对每一层路径进行路径探测，并通过设定好的正则表达式匹配关键字，展示在VulDisplay界面。可以自定义相关路径、匹配信息与漏洞名称等。
 
-<img src="./img/VulDisplay.jpg">
-
 <img src="./img/config.jpg">
+
+访问 http://10.44.3.234/FD2aD90Mcg/login.html 探测的路径如下，可以看到RouteVulScan会对根路径，及第二层路径 /FD2aD90Mcg 探测，同理，如果有三层四层路径，都会进行探测。
+
+探测过的url会打印在Output，如果是重复的url则不会请求，并打印在Errors。如果访问的url符合Config的规则，则会储存在VulDisplay面板进行展示。
+
+<img src="./img/out.jpg">
+
+<img src="./img/VulDisplay.jpg">
 
 
 
