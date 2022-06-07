@@ -5,6 +5,8 @@ import burp.*;
 import utils.BurpAnalyzedRequest;
 import yaml.YamlUtil;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Time;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +66,12 @@ public class vulscan {
                 }
 
                 while (true){
+                    // 防止线程混乱，睡眠0.3秒
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     if (((ThreadPoolExecutor)burp.ThreadPool).getActiveCount() == 0){
                         break;
                     }

@@ -40,13 +40,20 @@ public class threads implements Task {
         String re = (String) zidian.get("re");
         String info = (String) zidian.get("info");
         String state = (String) zidian.get("state");
+
+
         URL url = null;
         try {
             url = new URL(vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().getProtocol(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().getHost(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().getPort(), String.valueOf(vul.Path_record) + urll);
+//            vul.burp.call.printOutput(url.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        if (!vul.burp.history_url.contains(url.toString())) {
+        boolean is_InList;
+        synchronized (vul.burp.history_url) {
+            is_InList = !vul.burp.history_url.contains(url.toString());
+        }
+        if (is_InList) {
             synchronized (vul.burp.history_url) {
                 vul.burp.history_url.add(url.toString());
                 vul.burp.call.printOutput(url.toString());
