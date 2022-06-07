@@ -19,11 +19,11 @@ public class View extends AbstractTableModel {
     //
 
     public View() {
-
         // 创建最上面的一层
         top = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 //        // 创建容器，容器可以加入多个页面
-        JTabbedPane tabs = new JTabbedPane();
+//        JTabbedPane tabs = new JTabbedPane();
+
         // 创建主拆分窗格
         splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
@@ -33,14 +33,14 @@ public class View extends AbstractTableModel {
 
 
         // 将日志条目表和展示窗添加到主拆分窗格
-        splitPane.add(scrollPane, "top");
+//        splitPane.add(scrollPane, "top");
+//        tabs.add(scrollPane, "top");
 
         // 将两个页面插入容器
-        tabs.addTab("Show", splitPane);
+//        tabs.addTab("Show", splitPane);
 
         // 将容器置于顶层
-        top.setTopComponent(tabs);
-
+        top.setTopComponent(scrollPane);
 
     }
 
