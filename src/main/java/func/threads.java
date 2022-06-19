@@ -2,7 +2,6 @@ package func;
 
 
 import burp.IHttpRequestResponse;
-import burp.IResponseInfo;
 import com.sun.jmx.snmp.tasks.Task;
 
 import java.net.MalformedURLException;
