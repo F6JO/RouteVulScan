@@ -209,7 +209,7 @@ public class Config {
                         String info = Info_text.getText();
                         String state = State_text.getText();
                         Map<String, Object> add_map = new HashMap<String, Object>();
-                        add_map.put("id", view_class.Choice.id);
+                        add_map.put("id", Integer.parseInt(view_class.Choice.id));
                         add_map.put("name", name);
                         add_map.put("url", url);
                         add_map.put("re", re);

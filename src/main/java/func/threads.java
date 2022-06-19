@@ -2,6 +2,7 @@ package func;
 
 
 import burp.IHttpRequestResponse;
+import burp.IResponseInfo;
 import com.sun.jmx.snmp.tasks.Task;
 
 import java.net.MalformedURLException;
@@ -29,7 +30,7 @@ public class threads implements Task {
 
     @Override
     public void run() {
-        go(this.zidian,this.vul,this.newHttpRequestResponse);
+        go(this.zidian, this.vul, this.newHttpRequestResponse);
 
     }
 
@@ -40,7 +41,7 @@ public class threads implements Task {
         String re = (String) zidian.get("re");
         String info = (String) zidian.get("info");
         String state = (String) zidian.get("state");
-
+//        newHttpRequestResponse.
 
         URL url = null;
         try {
@@ -65,8 +66,9 @@ public class threads implements Task {
                 byte[] resp = newHttpRequestResponse.getResponse();
                 Pattern re_rule = Pattern.compile(re, Pattern.CASE_INSENSITIVE);
                 Matcher pipe = re_rule.matcher(vul.burp.help.bytesToString(resp));
+                String lang = String.valueOf(vul.burp.help.bytesToString(resp).length());
                 if (pipe.find()) {
-                    vulscan.ir_add(vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(), String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ", info, newHttpRequestResponse);
+                    vulscan.ir_add(vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(), String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ", info,lang, newHttpRequestResponse);
                 }
             }
         } else {
@@ -75,8 +77,6 @@ public class threads implements Task {
 
 
     }
-
-
 
 
 }

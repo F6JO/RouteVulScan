@@ -108,7 +108,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
     }
 
     public int getColumnCount() {
-        return 8;
+        return 9;
     }
 
     public String getColumnName(int columnIndex) {
@@ -126,8 +126,10 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
             case 5:
                 return "Info";
             case 6:
-                return "startTime";
+                return "Size";
             case 7:
+                return "startTime";
+            case 8:
                 return "endTime";
         }
         return null;
@@ -153,8 +155,10 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
             case 5:
                 return datas.Info;
             case 6:
-                return datas.startTime;
+                return datas.Size;
             case 7:
+                return datas.startTime;
+            case 8:
                 return datas.endTime;
         }
         return null;
@@ -172,7 +176,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
         return this.currentlyDisplayedItem.getHttpService();
     }
 
-    public int add(String VulName, String Method, String url, String status, String Info, IHttpRequestResponse requestResponse) {
+    public int add(String VulName, String Method, String url, String status, String Info,String Size, IHttpRequestResponse requestResponse) {
         synchronized (this.Udatas) {
             Date d = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -186,6 +190,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
                             url,
                             status,
                             Info,
+                            Size,
                             requestResponse,
                             startTime,
                             ""));
@@ -222,19 +227,22 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
         final String Info;
 
+        final String Size;
+
         final IHttpRequestResponse requestResponse;
 
         final String startTime;
 
         final String endTime;
 
-        public TablesData(int id, String VulName, String Method, String url, String status, String Info, IHttpRequestResponse requestResponse, String startTime, String endTime) {
+        public TablesData(int id, String VulName, String Method, String url, String status, String Info,String Size, IHttpRequestResponse requestResponse, String startTime, String endTime) {
             this.id = id;
             this.VulName = VulName;
             this.Method = Method;
             this.url = url;
             this.status = status;
             this.Info = Info;
+            this.Size = Size;
             this.requestResponse = requestResponse;
             this.startTime = startTime;
             this.endTime = endTime;
