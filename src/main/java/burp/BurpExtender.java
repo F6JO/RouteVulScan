@@ -21,9 +21,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class BurpExtender implements IBurpExtender, IScannerCheck,IContextMenuFactory {
+public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuFactory {
 
-    public static String Yaml_Path = System.getProperty("user.dir") + "/" +"Config_yaml.yaml";
+    public static String Yaml_Path = System.getProperty("user.dir") + "/" + "Config_yaml.yaml";
     public IBurpExtenderCallbacks call;
     private DomainNameRepeat DomainName;
     public IExtensionHelpers help;
@@ -43,15 +43,16 @@ public class BurpExtender implements IBurpExtender, IScannerCheck,IContextMenuFa
         this.DomainName = new DomainNameRepeat();
         this.urlC = new UrlRepeat();
         this.log = this.view_class.log;
-        this.Config_l = new Config(view_class,log);
-        this.tags = new Tags(callbacks,Config_l);
-        if (!new File(Yaml_Path).exists()){
+        this.Config_l = new Config(view_class, log);
+        this.tags = new Tags(callbacks, Config_l);
+        if (!new File(Yaml_Path).exists()) {
             YamlUtil.init_Yaml(Yaml_Path);
         }
-        Bfunc.show_yaml(view_class,log,Yaml_Path);
-        call.printOutput("Indo@Loading RouteVulScan success");
-        call.printOutput("From@Code by F6JO");
-        call.printOutput("Github@https://github.com/F6JO/RouteVulScan");
+        Bfunc.show_yaml(view_class, log, Yaml_Path);
+        call.printOutput("@Info: Loading RouteVulScan success");
+        call.printOutput("@Version: RouteVulScan 1.1");
+        call.printOutput("@From: Code by F6JO");
+        call.printOutput("@Github: https://github.com/F6JO/RouteVulScan");
         call.setExtensionName(EXPAND_NAME);
         call.registerScannerCheck(this);
         call.registerContextMenuFactory(this);
@@ -71,7 +72,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck,IContextMenuFa
             if (this.urlC.check(Root_Method, New_Url)) {
                 return null;
             }
-            new vulscan(this,Root_Request);
+            new vulscan(this, Root_Request);
             this.urlC.addMethodAndUrl(Root_Method, New_Url);
             try {
                 this.DomainName.add(Root_Url);
@@ -96,7 +97,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck,IContextMenuFa
     public List<JMenuItem> createMenuItems(IContextMenuInvocation invocation) {
         List<JMenuItem> menu = new ArrayList<JMenuItem>();
         JMenuItem one_menu = new JMenuItem("Send To RouteVulScan");
-        one_menu.addActionListener(new Right_click_monitor(invocation,this));
+        one_menu.addActionListener(new Right_click_monitor(invocation, this));
         menu.add(one_menu);
 
         return menu;
@@ -104,18 +105,20 @@ public class BurpExtender implements IBurpExtender, IScannerCheck,IContextMenuFa
 }
 
 
-class Right_click_monitor implements ActionListener{
+class Right_click_monitor implements ActionListener {
     private IContextMenuInvocation invocation;
     private BurpExtender burp;
-    public Right_click_monitor(IContextMenuInvocation invocation,BurpExtender burp){
+
+    public Right_click_monitor(IContextMenuInvocation invocation, BurpExtender burp) {
         this.invocation = invocation;
         this.burp = burp;
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         burp.ThreadPool = Executors.newFixedThreadPool((Integer) burp.Config_l.spinner1.getValue());
         IHttpRequestResponse[] RequestResponses = invocation.getSelectedMessages();
-        for (IHttpRequestResponse i : RequestResponses){
+        for (IHttpRequestResponse i : RequestResponses) {
             try {
 //                IHttpService HttpService = i.getHttpService();
 //                IRequestInfo RequestInfo = burp.help.analyzeRequest(HttpService,i.getRequest());
@@ -138,12 +141,14 @@ class Right_click_monitor implements ActionListener{
 class start_send extends Thread {
     private BurpExtender burp;
     private BurpAnalyzedRequest Root_Request;
-    public start_send(BurpExtender burp,BurpAnalyzedRequest Root_Request){
+
+    public start_send(BurpExtender burp, BurpAnalyzedRequest Root_Request) {
         this.burp = burp;
         this.Root_Request = Root_Request;
     }
-    public void run(){
-        new vulscan(this.burp,this.Root_Request);
+
+    public void run() {
+        new vulscan(this.burp, this.Root_Request);
     }
 
 }

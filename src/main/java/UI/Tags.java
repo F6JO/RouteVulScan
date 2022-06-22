@@ -6,17 +6,18 @@ import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 
 public class Tags extends AbstractTableModel implements ITab, IMessageEditorController {
-    private IBurpExtenderCallbacks callbacks;
+    public IBurpExtenderCallbacks callbacks;
 
     private JSplitPane top;
 
-    private List<TablesData> Udatas = new ArrayList<>();
+    public List<TablesData> Udatas = new ArrayList<>();
 
     private IMessageEditor HRequestTextEditor;
 
@@ -24,7 +25,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
     private IHttpRequestResponse currentlyDisplayedItem;
 
-    private URLTable Utable;
+    public URLTable Utable;
 
     private JScrollPane UscrollPane;
 
@@ -35,7 +36,10 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
     private JTabbedPane Rtable;
 
     private JSplitPane splitPane;
-    public List<String> Get_URL_list(){
+
+    private JPopupMenu m_popupMenu;
+
+    public List<String> Get_URL_list() {
         List<String> Urls = new ArrayList<>();
         for (TablesData data : this.Udatas) {
             Urls.add(data.url);
@@ -43,8 +47,11 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
         return Urls;
     }
 
+
+
     public Tags(IBurpExtenderCallbacks callbacks, Config Config_l) {
         this.callbacks = callbacks;
+
 //        this.tagName = name;
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -55,9 +62,42 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
                 // 创建主拆分窗格
                 splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
+
+
+
+
+
+
+
                 // 日志条目表
-                Tags.this.Utable = new URLTable(Tags.this);
+                URLTable URLTab = new URLTable(Tags.this);
+//                URLTab.addMouseListener(new Right_click_menu(Tags.this));
+
+                m_popupMenu = new JPopupMenu();
+                JMenuItem delMenItem = new JMenuItem();
+                delMenItem.setText("Delete item");
+                delMenItem.addActionListener(new Remove_action(Tags.this));
+                JMenuItem delAllMenItem = new JMenuItem();
+                delAllMenItem.setText("Clear all history");
+                delAllMenItem.addActionListener(new Remove_All(Tags.this));
+
+                m_popupMenu.add(delMenItem);
+                m_popupMenu.add(delAllMenItem);
+                URLTab.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        jTable1MouseClicked(evt);
+                    }
+                });
+
+                Tags.this.Utable = URLTab;
                 Tags.this.UscrollPane = new JScrollPane(Tags.this.Utable);
+
+
+
+
+
+
+
 
                 //创建请求和响应的展示窗
                 Tags.this.HjSplitPane = new JSplitPane();
@@ -80,8 +120,8 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
                 Tags.this.splitPane.add(Tags.this.HjSplitPane, "right");
 
                 // 将两个页面插入容器
-                tabs.addTab("VulDisplay",Tags.this.splitPane);
-                tabs.addTab("config",Config_l.$$$getRootComponent$$$());
+                tabs.addTab("VulDisplay", Tags.this.splitPane);
+                tabs.addTab("config", Config_l.$$$getRootComponent$$$());
 
                 // 将容器置于顶层
                 top.setTopComponent(tabs);
@@ -176,7 +216,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
         return this.currentlyDisplayedItem.getHttpService();
     }
 
-    public int add(String VulName, String Method, String url, String status, String Info,String Size, IHttpRequestResponse requestResponse) {
+    public int add(String VulName, String Method, String url, String status, String Info, String Size, IHttpRequestResponse requestResponse) {
         synchronized (this.Udatas) {
             Date d = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -200,6 +240,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
     }
 
 
+
     public class URLTable extends JTable {
         public URLTable(TableModel tableModel) {
             super(tableModel);
@@ -213,6 +254,12 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
             super.changeSelection(row, col, toggle, extend);
         }
     }
+
+
+
+
+
+
 
     public static class TablesData {
         final int id;
@@ -235,7 +282,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
         final String endTime;
 
-        public TablesData(int id, String VulName, String Method, String url, String status, String Info,String Size, IHttpRequestResponse requestResponse, String startTime, String endTime) {
+        public TablesData(int id, String VulName, String Method, String url, String status, String Info, String Size, IHttpRequestResponse requestResponse, String startTime, String endTime) {
             this.id = id;
             this.VulName = VulName;
             this.Method = Method;
@@ -248,6 +295,76 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
             this.endTime = endTime;
         }
     }
+
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
+
+        mouseRightButtonClick(evt);
+    }
+
+
+    private void mouseRightButtonClick(java.awt.event.MouseEvent evt) {
+        //判断是否为鼠标的BUTTON3按钮，BUTTON3为鼠标右键
+        if (evt.getButton() == java.awt.event.MouseEvent.BUTTON3) {
+            //经过点击位置找到点击为表格中的行
+            int focusedRowIndex = this.Utable.rowAtPoint(evt.getPoint());
+            if (focusedRowIndex == -1) {
+                return;
+            }
+            //将表格所选项设为当前右键点击的行
+//            this.Utable.setRowSelectionInterval(focusedRowIndex, focusedRowIndex);
+            //弹出菜单
+            m_popupMenu.show(this.Utable, evt.getX(), evt.getY());
+        }
+
+    }
+
+
+
+
+
 }
 
+
+class Remove_All implements ActionListener {
+    private Tags tag;
+
+    public Remove_All(Tags tag) {
+        this.tag = tag;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        tag.Udatas.clear();
+
+    }
+}
+
+
+
+class Remove_action implements ActionListener {
+    private Tags tag;
+    public Remove_action(Tags tag){
+        this.tag = tag;
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        int[] RemId = tag.Utable.getSelectedRows();
+        for (int i : reversal(RemId)){
+            tag.Udatas.remove(i);
+            tag.fireTableRowsDeleted(i,i);
+        }
+    }
+
+    public Integer[] reversal(int[] int_array){
+        Integer newScores[] = new Integer [int_array.length];
+        for(int i=0;i<int_array.length;i++){
+            newScores[i]= new Integer(int_array[i]);
+        }
+
+        Arrays.sort(newScores,Collections.reverseOrder());
+        return newScores;
+
+    }
+}
 
