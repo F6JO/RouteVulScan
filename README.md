@@ -40,6 +40,7 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 * UI界面增加数据包大小【✓】 
 * VulDisplay界面添加删除功能【✓】
 * 插件功能开关
+* 带原始请求头访问
 
 ## 最后
 
