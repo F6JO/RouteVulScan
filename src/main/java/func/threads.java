@@ -71,7 +71,7 @@ public class threads implements Task {
                 }
             }
         } else {
-            vul.burp.call.printError(url.toString());
+            vul.burp.call.printError("Skip: " + url.toString());
         }
 
 

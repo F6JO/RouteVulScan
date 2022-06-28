@@ -19,9 +19,9 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
     public List<TablesData> Udatas = new ArrayList<>();
 
-    private IMessageEditor HRequestTextEditor;
+    public IMessageEditor HRequestTextEditor;
 
-    private IMessageEditor HResponseTextEditor;
+    public IMessageEditor HResponseTextEditor;
 
     private IHttpRequestResponse currentlyDisplayedItem;
 
@@ -48,7 +48,6 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
     }
 
 
-
     public Tags(IBurpExtenderCallbacks callbacks, Config Config_l) {
         this.callbacks = callbacks;
 
@@ -61,12 +60,6 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
                 JTabbedPane tabs = new JTabbedPane();
                 // 创建主拆分窗格
                 splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-
-
-
-
-
-
 
 
                 // 日志条目表
@@ -91,12 +84,6 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
                 Tags.this.Utable = URLTab;
                 Tags.this.UscrollPane = new JScrollPane(Tags.this.Utable);
-
-
-
-
-
-
 
 
                 //创建请求和响应的展示窗
@@ -240,7 +227,6 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
     }
 
 
-
     public class URLTable extends JTable {
         public URLTable(TableModel tableModel) {
             super(tableModel);
@@ -254,11 +240,6 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
             super.changeSelection(row, col, toggle, extend);
         }
     }
-
-
-
-
-
 
 
     public static class TablesData {
@@ -320,9 +301,6 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
     }
 
 
-
-
-
 }
 
 
@@ -336,33 +314,37 @@ class Remove_All implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         tag.Udatas.clear();
-
+        tag.HRequestTextEditor.setMessage(new byte[]{},true);
+        tag.HResponseTextEditor.setMessage(new byte[]{},false);
     }
 }
 
 
-
 class Remove_action implements ActionListener {
     private Tags tag;
-    public Remove_action(Tags tag){
+
+    public Remove_action(Tags tag) {
         this.tag = tag;
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         int[] RemId = tag.Utable.getSelectedRows();
-        for (int i : reversal(RemId)){
+        for (int i : reversal(RemId)) {
             tag.Udatas.remove(i);
-            tag.fireTableRowsDeleted(i,i);
+            tag.fireTableRowsDeleted(i, i);
+            tag.HRequestTextEditor.setMessage(new byte[]{},true);
+            tag.HResponseTextEditor.setMessage(new byte[]{},false);
         }
     }
 
-    public Integer[] reversal(int[] int_array){
-        Integer newScores[] = new Integer [int_array.length];
-        for(int i=0;i<int_array.length;i++){
-            newScores[i]= new Integer(int_array[i]);
+    public Integer[] reversal(int[] int_array) {
+        Integer newScores[] = new Integer[int_array.length];
+        for (int i = 0; i < int_array.length; i++) {
+            newScores[i] = new Integer(int_array[i]);
         }
 
-        Arrays.sort(newScores,Collections.reverseOrder());
+        Arrays.sort(newScores, Collections.reverseOrder());
         return newScores;
 
     }

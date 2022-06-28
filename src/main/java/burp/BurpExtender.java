@@ -13,10 +13,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -100,9 +97,12 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
         one_menu.addActionListener(new Right_click_monitor(invocation, this));
         menu.add(one_menu);
 
+
         return menu;
     }
 }
+
+
 
 
 class Right_click_monitor implements ActionListener {
@@ -120,15 +120,23 @@ class Right_click_monitor implements ActionListener {
         IHttpRequestResponse[] RequestResponses = invocation.getSelectedMessages();
         for (IHttpRequestResponse i : RequestResponses) {
             try {
-//                IHttpService HttpService = i.getHttpService();
-//                IRequestInfo RequestInfo = burp.help.analyzeRequest(HttpService,i.getRequest());
-
                 IHttpService Http_Service = i.getHttpService();
-                String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
-                URL url = new URL(Root_Url + burp.help.analyzeRequest(i).getUrl().getPath());
-                BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, i);
-                start_send send = new start_send(burp, Root_Request);
-                send.start();
+                IRequestInfo RequestInfo = burp.help.analyzeRequest(Http_Service,i.getRequest());
+                String host_url = RequestInfo.getUrl().getProtocol() + "://" + RequestInfo.getUrl().getHost();
+                IHttpRequestResponse[] aaaa = burp.call.getSiteMap(host_url);
+                for (IHttpRequestResponse xxx : aaaa){
+                    String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
+                    URL url = new URL(Root_Url + burp.help.analyzeRequest(xxx).getUrl().getPath());
+                    BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, xxx);
+                    start_send send = new start_send(burp, Root_Request);
+                    send.start();
+                }
+
+//                String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
+//                URL url = new URL(Root_Url + burp.help.analyzeRequest(i).getUrl().getPath());
+//                BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, i);
+//                start_send send = new start_send(burp, Root_Request);
+//                send.start();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
