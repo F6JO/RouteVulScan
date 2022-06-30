@@ -43,11 +43,11 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 
 * VulDisplay界面右键可删除选中的行，或全部删除
 
-* <img src="./img/remove.jpg">
+  <img src="./img/remove.jpg">
 
 * 右键请求可选择将当前请求发送到插件进行主动扫描，插件会将站点地图中，与当前请求一样host的历史路径全部进行扫描
 
-* <img src="./img/Active_scan.jpg">
+  <img src="./img/Active_scan.jpg">
 
   
 
