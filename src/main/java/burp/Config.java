@@ -18,11 +18,13 @@ public class Config {
     private View view_class;
     private List<View.LogEntry> log;
     public JSpinner spinner1;
+    private BurpExtender burp;
 
 
-    public Config(View view_class, List<View.LogEntry> log) {
+    public Config(View view_class, List<View.LogEntry> log,BurpExtender burp) {
         this.view_class = view_class;
         this.log = log;
+        this.burp = burp;
     }
 
     /**
@@ -42,54 +44,88 @@ public class Config {
 
         // Yaml File Path 文本展示框
         JLabel yaml_Path = new JLabel("Yaml File Path:");
-        yaml_Path.setBounds(5, -10, 100, 50);
+//        yaml_Path.setBounds(5, -10, 100, 50);
+        yaml_Path.setBounds(5, 20, 100, 50);
 
         // 展示路径
         txtfield1 = new JTextField();   //创建文本框
         txtfield1.setText(yaml_path);    //设置文本框的内容
-        txtfield1.setBounds(110, 5, 772, 20);
+        txtfield1.setBounds(110, 35, 772, 20);
 
 
         // Select Yaml按钮
         JButton select_yaml_button = new JButton("Select Yaml");
-        select_yaml_button.setBounds(886, 4, 87, 23);
+        select_yaml_button.setBounds(886, 34, 87, 23);
         select_Yaml(select_yaml_button);
 
         // load 按钮
         JButton load_button = new JButton("Load Yaml");
-        load_button.setBounds(980, 4, 87, 23);
+        load_button.setBounds(980, 34, 87, 23);
         load_button_Yaml(load_button, view_class, log, txtfield1);
 
         // 线程选择
         JLabel thread_num = new JLabel("Thread Numbers:");
-        thread_num.setBounds(1074, -10, 100, 50);
+        thread_num.setBounds(1074, 20, 100, 50);
         SpinnerNumberModel model1 = new SpinnerNumberModel(10, 1, 500, 5);
         this.spinner1 = new JSpinner(model1);
         ((JSpinner.DefaultEditor) this.spinner1.getEditor()).getTextField().setEditable(false);
 
-        this.spinner1.setBounds(1168, 4, 100, 23);
+        this.spinner1.setBounds(1168, 34, 100, 23);
 
 
 
 
         // add按钮
         JButton add_button = new JButton("Add");
-        add_button.setBounds(5, 45, 70, 23);
+        add_button.setBounds(5, 75, 70, 23);
         Add_Button_Yaml(add_button, yaml_path, view_class, log);
 
         // Edit按钮
         JButton edit_button = new JButton("Edit");
-        edit_button.setBounds(5, 70, 70, 23);
+        edit_button.setBounds(5, 100, 70, 23);
         Edit_Button_Yaml(edit_button,yaml_path,view_class,log);
 
         // Del按钮
         JButton remove_button = new JButton("Del");
-        remove_button.setBounds(5, 95, 70, 23);
+        remove_button.setBounds(5, 125, 70, 23);
         Del_Button_Yaml(remove_button,yaml_path,view_class,log);
 
-
+        // 展示界面
         JSplitPane view = this.view_class.Get_View();
-        view.setBounds(80, 30, 1185, 780);
+        view.setBounds(80, 60, 1185, 740);  // 80
+
+
+
+        // Switch 文本展示框
+        JLabel Expansion_switch = new JLabel("Extend Switch:");
+        Expansion_switch.setBounds(5, -10, 100, 50);
+
+        // 开启按钮
+        JButton on_off_button = new JButton("Stop");
+        on_off_button.setBounds(110, 5, 70, 23);
+        Color Primary = on_off_button.getBackground();
+        on_off_button.setBackground(Color.green);
+        on_off_Button_action(on_off_button,Primary);
+
+        // Switch 文本展示框
+        JLabel Carry_head = new JLabel("Carry Head:");
+        Carry_head.setBounds(224, -10, 100, 50);
+
+        // 携带head按钮
+        JButton carry_head_button = new JButton("Head_On");
+        carry_head_button.setBounds(329, 5, 90, 23);
+        carry_head_Button_action(carry_head_button,Primary);
+
+        // Filter_Host 文本展示框
+        JLabel Filter_Host = new JLabel("Filter_Host:");
+        Filter_Host.setBounds(473, -10, 100, 50);
+
+        // Host 输入框
+        JTextField Host_txtfield = new JTextField();   //创建文本框
+        Host_txtfield.setText("*");    //设置文本框的内容
+        Host_txtfield.setBounds(548, 5, 572, 20);
+        burp.Host_txtfield = Host_txtfield;
+
 
 
 //        添加到主面板
@@ -103,9 +139,61 @@ public class Config {
         one.add(view);
         one.add(thread_num);
         one.add(spinner1);
+        one.add(Expansion_switch);
+        one.add(on_off_button);
+        one.add(Carry_head);
+        one.add(carry_head_button);
+        one.add(Filter_Host);
+        one.add(Host_txtfield);
 
 
     }
+
+    private void carry_head_Button_action(JButton Button_one,Color Primary) {
+
+        Button_one.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (burp.Carry_head){
+                    burp.Carry_head = false;
+                    Button_one.setText("Head_On");
+                    Button_one.setBackground(Primary);
+                }else {
+                    burp.Carry_head = true;
+                    Button_one.setText("Head_Off");
+                    Button_one.setBackground(Color.green);
+                }
+
+            }
+        });
+    }
+
+
+
+
+
+    private void on_off_Button_action(JButton Button_one,Color Primary) {
+
+        Button_one.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (burp.on_off){
+                    burp.on_off = false;
+                    Button_one.setText("Start");
+                    Button_one.setBackground(Primary);
+                }else {
+                    burp.on_off = true;
+                    Button_one.setText("Stop");
+                    Button_one.setBackground(Color.green);
+                }
+
+            }
+        });
+    }
+
+
+
+
 
     private void select_Yaml(JButton Button_one) {
 
@@ -145,7 +233,7 @@ public class Config {
                                 300,
                                 // 窗口总大小-500像素
                                 300,
-                                260
+                                300
                         )
                 );
 
@@ -160,12 +248,24 @@ public class Config {
                 xin.add(Name_field);
                 xin.add(Name_text);
 
+                // Method
+                JLabel Method_field = new JLabel("Method :");
+//                JTextField Method_text = new JTextField();
+                JComboBox Method_text=new JComboBox();    //创建JComboBox
+                Method_text.addItem("GET");    //向下拉列表中添加一项
+                Method_text.addItem("POST");    //向下拉列表中添加一项
+                Method_text.setSelectedItem(view_class.Choice.method);
+                Method_field.setBounds(10, 45, 40, 20);
+                Method_text.setBounds(65, 45, 200, 20);
+                xin.add(Method_field);
+                xin.add(Method_text);
+
                 // Url
                 JLabel Url_field = new JLabel("Url :");
                 JTextField Url_text = new JTextField();
                 Url_text.setText(view_class.Choice.url);
-                Url_field.setBounds(10, 45, 40, 20);
-                Url_text.setBounds(65, 45, 200, 20);
+                Url_field.setBounds(10, 85, 40, 20);
+                Url_text.setBounds(65, 85, 200, 20);
                 xin.add(Url_field);
                 xin.add(Url_text);
 
@@ -173,8 +273,8 @@ public class Config {
                 JLabel Re_field = new JLabel("Re :");
                 JTextField Re_text = new JTextField();
                 Re_text.setText(view_class.Choice.re);
-                Re_field.setBounds(10, 85, 40, 20);
-                Re_text.setBounds(65, 85, 200, 20);
+                Re_field.setBounds(10, 125, 40, 20);
+                Re_text.setBounds(65, 125, 200, 20);
                 xin.add(Re_field);
                 xin.add(Re_text);
 
@@ -182,8 +282,8 @@ public class Config {
                 JLabel Info_field = new JLabel("Info :");
                 JTextField Info_text = new JTextField();
                 Info_text.setText(view_class.Choice.info);
-                Info_field.setBounds(10, 125, 40, 20);
-                Info_text.setBounds(65, 125, 200, 20);
+                Info_field.setBounds(10, 165, 40, 20);
+                Info_text.setBounds(65, 165, 200, 20);
                 xin.add(Info_field);
                 xin.add(Info_text);
 
@@ -191,26 +291,28 @@ public class Config {
                 JLabel State_field = new JLabel("state :");
                 JTextField State_text = new JTextField();
                 State_text.setText(view_class.Choice.state);
-                State_field.setBounds(10, 165, 40, 20);
-                State_text.setBounds(65, 165, 200, 20);
+                State_field.setBounds(10, 205, 40, 20);
+                State_text.setBounds(65, 205, 200, 20);
                 xin.add(State_field);
                 xin.add(State_text);
 
                 // Ok
                 JButton Ok_button = new JButton("OK");
-                Ok_button.setBounds(200, 205, 60, 20);
+                Ok_button.setBounds(200, 245, 60, 20);
                 xin.add(Ok_button);
                 Ok_button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         String name = Name_text.getText();
                         String url = Url_text.getText();
+                        String method = (String) Method_text.getSelectedItem();
                         String re = Re_text.getText();
                         String info = Info_text.getText();
                         String state = State_text.getText();
                         Map<String, Object> add_map = new HashMap<String, Object>();
                         add_map.put("id", Integer.parseInt(view_class.Choice.id));
                         add_map.put("name", name);
+                        add_map.put("method", method);
                         add_map.put("url", url);
                         add_map.put("re", re);
                         add_map.put("info", info);
@@ -224,7 +326,7 @@ public class Config {
 
                 // no
                 JButton No_button = new JButton("NO");
-                No_button.setBounds(130, 205, 60, 20);
+                No_button.setBounds(130, 245, 60, 20);
                 xin.add(No_button);
                 No_button.addActionListener(new ActionListener() {
                     @Override
@@ -321,7 +423,7 @@ public class Config {
                                 300,
                                 // 窗口总大小-500像素
                                 300,
-                                260
+                                300
                         )
                 );
 
@@ -335,42 +437,53 @@ public class Config {
                 xin.add(Name_field);
                 xin.add(Name_text);
 
+                // Method
+                JLabel Method_field = new JLabel("Method :");
+//                JTextField Method_text = new JTextField();
+                JComboBox Method_text=new JComboBox();    //创建JComboBox
+                Method_text.addItem("GET");    //向下拉列表中添加一项
+                Method_text.addItem("POST");    //向下拉列表中添加一项
+                Method_field.setBounds(10, 45, 40, 20);
+                Method_text.setBounds(65, 45, 200, 20);
+                xin.add(Method_field);
+                xin.add(Method_text);
+
                 // Url
                 JLabel Url_field = new JLabel("Url :");
                 JTextField Url_text = new JTextField();
-                Url_field.setBounds(10, 45, 40, 20);
-                Url_text.setBounds(65, 45, 200, 20);
+                Url_field.setBounds(10, 85, 40, 20);
+                Url_text.setBounds(65, 85, 200, 20);
                 xin.add(Url_field);
                 xin.add(Url_text);
 
                 // Re
                 JLabel Re_field = new JLabel("Re :");
                 JTextField Re_text = new JTextField();
-                Re_field.setBounds(10, 85, 40, 20);
-                Re_text.setBounds(65, 85, 200, 20);
+                Re_field.setBounds(10, 125, 40, 20);
+                Re_text.setBounds(65, 125, 200, 20);
                 xin.add(Re_field);
                 xin.add(Re_text);
 
                 // Info
                 JLabel Info_field = new JLabel("Info :");
                 JTextField Info_text = new JTextField();
-                Info_field.setBounds(10, 125, 40, 20);
-                Info_text.setBounds(65, 125, 200, 20);
+                Info_field.setBounds(10, 165, 40, 20);
+                Info_text.setBounds(65, 165, 200, 20);
                 xin.add(Info_field);
                 xin.add(Info_text);
 
                 // State
                 JLabel State_field = new JLabel("State :");
                 JTextField State_text = new JTextField();
-                State_field.setBounds(10, 165, 40, 20);
-                State_text.setBounds(65, 165, 200, 20);
+                State_field.setBounds(10, 205, 40, 20);
+                State_text.setBounds(65, 205, 200, 20);
                 xin.add(State_field);
                 xin.add(State_text);
 
 
                 // Ok
                 JButton Ok_button = new JButton("OK");
-                Ok_button.setBounds(200, 205, 60, 20);
+                Ok_button.setBounds(200, 245, 60, 20);
                 xin.add(Ok_button);
                 Ok_button.addActionListener(new ActionListener() {
                     @Override
@@ -386,12 +499,14 @@ public class Config {
                         id += 1;
                         String name = Name_text.getText();
                         String url = Url_text.getText();
+                        String method = (String) Method_text.getSelectedItem();
                         String re = Re_text.getText();
                         String info = Info_text.getText();
                         String state = State_text.getText();
                         Map<String, Object> add_map = new HashMap<String, Object>();
                         add_map.put("id", id);
                         add_map.put("name", name);
+                        add_map.put("method", method);
                         add_map.put("url", url);
                         add_map.put("re", re);
                         add_map.put("info", info);
@@ -405,7 +520,7 @@ public class Config {
 
                 // no
                 JButton No_button = new JButton("NO");
-                No_button.setBounds(130, 205, 60, 20);
+                No_button.setBounds(130, 245, 60, 20);
                 xin.add(No_button);
                 No_button.addActionListener(new ActionListener() {
                     @Override

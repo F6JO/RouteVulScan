@@ -64,7 +64,7 @@ public class View extends AbstractTableModel {
     // 设置总共有几列
     @Override
     public int getColumnCount() {
-        return 5;
+        return 6;
     }
 
     // 设置每个列的名称
@@ -74,12 +74,14 @@ public class View extends AbstractTableModel {
             case 0:
                 return "Name";
             case 1:
-                return "URL";
+                return "Method";
             case 2:
-                return "RE";
+                return "URL";
             case 3:
-                return "INFO";
+                return "RE";
             case 4:
+                return "INFO";
+            case 5:
                 return "STATE";
             default:
                 return "";
@@ -99,12 +101,14 @@ public class View extends AbstractTableModel {
             case 0:
                 return logEntry.name;
             case 1:
-                return logEntry.url;
+                return logEntry.method;
             case 2:
-                return logEntry.re;
+                return logEntry.url;
             case 3:
-                return logEntry.info;
+                return logEntry.re;
             case 4:
+                return logEntry.info;
+            case 5:
                 return logEntry.state;
 
             default:
@@ -140,15 +144,17 @@ public class View extends AbstractTableModel {
 
     public static class LogEntry {
         final String id;
+        final String method;
         final String name;
         final String url;
         final String re;
         final String info;
         final String state;
 
-        LogEntry(String id, String name, String url, String re, String info, String state) {
+        LogEntry(String id, String name,String method ,String url, String re, String info, String state) {
             this.id = id;
             this.name = name;
+            this.method = method;
             this.url = url;
             this.re = re;
             this.info = info;

@@ -25,7 +25,8 @@ public class Bfunc {
                 String re = (String) zidian.get("re");
                 String info = (String) zidian.get("info");
                 String state = (String) zidian.get("state");
-                log.add(new View.LogEntry(id,name,url,re,info,state));
+                String method = (String) zidian.get("method");
+                log.add(new View.LogEntry(id,name,method,url,re,info,state));
                 view_class.fireTableRowsInserted(row, row);
             }
 

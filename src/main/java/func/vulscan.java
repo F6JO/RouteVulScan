@@ -28,8 +28,16 @@ public class vulscan {
         this.Path_record = "";
         this.Root_Request = Root_Request;
         // 获取httpService对象
-        httpService = this.Root_Request.requestResponse().getHttpService();
         byte[] request = this.Root_Request.requestResponse().getRequest();
+        httpService = this.Root_Request.requestResponse().getHttpService();
+        IRequestInfo analyze_Request = help.analyzeRequest(httpService, request);
+        List<String> heads = analyze_Request.getHeaders();
+//        request = help.buildHttpMessage(heads,request);
+//        String zifuchuan = help.bytesToString(request);
+
+
+
+
         // 判断请求方法为POST
         if (this.help.analyzeRequest(request).getMethod() == "POST")
             //将POST切换为GET请求
@@ -42,7 +50,8 @@ public class vulscan {
                 // 删除所有参数
                 request = this.help.removeParameter(request, parameter);
         // 创建新的请求类
-        IHttpRequestResponse newHttpRequestResponse = this.call.makeHttpRequest(httpService, request);
+//        IHttpRequestResponse newHttpRequestResponse = this.call.makeHttpRequest(httpService, request);
+        IHttpRequestResponse newHttpRequestResponse = Root_Request.requestResponse();
         // 使用/分割路径
         String[] paths = this.help.analyzeRequest(newHttpRequestResponse).getUrl().getPath().split("/");
 
@@ -58,7 +67,7 @@ public class vulscan {
                 }
 
                 for (Map<String, Object> zidian : Listx) {
-                    burp.ThreadPool.execute(new threads(zidian,this,newHttpRequestResponse));
+                    burp.ThreadPool.execute(new threads(zidian,this,newHttpRequestResponse,heads));
                 }
 
                 while (true){
