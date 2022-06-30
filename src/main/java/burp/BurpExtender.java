@@ -52,7 +52,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
         }
         Bfunc.show_yaml(view_class, log, Yaml_Path);
         call.printOutput("@Info: Loading RouteVulScan success");
-        call.printOutput("@Version: RouteVulScan 1.1");
+        call.printOutput("@Version: RouteVulScan 1.2");
         call.printOutput("@From: Code by F6JO");
         call.printOutput("@Github: https://github.com/F6JO/RouteVulScan");
         call.setExtensionName(EXPAND_NAME);

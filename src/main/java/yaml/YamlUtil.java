@@ -122,6 +122,58 @@ public class YamlUtil {
         x11.put("state","200");
         list1.add(x11);
 
+
+        Map<String,Object> x12 = new HashMap<String,Object>();
+        x12.put("id",12);
+        x12.put("name","Swagger-resources");
+        x12.put("method","GET");
+        x12.put("re","swagger");
+        x12.put("url","/swagger-resources");
+        x12.put("info","swagger-resources Find!!!");
+        x12.put("state","200");
+        list1.add(x12);
+
+        Map<String,Object> x13 = new HashMap<String,Object>();
+        x13.put("id",13);
+        x13.put("name","Soap");
+        x13.put("method","GET");
+        x13.put("re","ASP.NET|tempuri.org");
+        x13.put("url","/services");
+        x13.put("info","Soap Find!!!");
+        x13.put("state","200");
+        list1.add(x13);
+
+        Map<String,Object> x14 = new HashMap<String,Object>();
+        x14.put("id",14);
+        x14.put("name","Web API Help");
+        x14.put("method","GET");
+        x14.put("re","Web API");
+        x14.put("url","/Help");
+        x14.put("info","Web API Help Find!!!");
+        x14.put("state","200");
+        list1.add(x14);
+
+        Map<String,Object> x15 = new HashMap<String,Object>();
+        x15.put("id",15);
+        x15.put("name","Web API Help");
+        x15.put("method","GET");
+        x15.put("re","Web API");
+        x15.put("url","/help");
+        x15.put("info","Web API Help Find!!!");
+        x15.put("state","200");
+        list1.add(x15);
+
+
+        Map<String,Object> x16 = new HashMap<String,Object>();
+        x16.put("id",16);
+        x16.put("name","Weblogic CVE-2019-2618");
+        x16.put("method","POST");
+        x16.put("re","password");
+        x16.put("url","/bea_wls_deployment_internal/DeploymentService");
+        x16.put("info","Weblogic CVE-2019-2618 Find!!!");
+        x16.put("state","401");
+        list1.add(x16);
+
         x.put("Load_List",list1);
         YamlUtil.writeYaml(x,path);
 

@@ -11,7 +11,7 @@ Burpsuite - Route Vulnerable scanning  递归式被动检测脆弱路径的burp�
 
 RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆弱路径的burp插件。
 
-插件可以通过被动扫描的方式，递归对每一层路径进行路径探测，并通过设定好的正则表达式匹配关键字，展示在VulDisplay界面。可以自定义相关路径、匹配信息与漏洞名称等。
+插件可以通过被动扫描的方式，递归对每一层路径进行路径探测，并通过设定好的正则表达式匹配相应包的关键字，展示在VulDisplay界面。可以自定义相关路径、匹配信息、与漏洞名称等。
 
 <img src="./img/config.jpg">
 
@@ -28,20 +28,43 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 ## 使用
 
 * 装载插件：``` Extender - Extensions - Add - Select File - Next ```
+
 * 初次装载插件会在burpsuite当前目录下生成Config_yaml.yaml配置文件，内置11条初始规则，也可在config标签页自行加载其他yaml规则文件。
+
 * 使用Burpsuite IScannerCheck接口，在流量初次流经burp时进行扫描，重复流量不会进行扫描。
+
 * 使用线程池增加扫描速度，默认线程10，可自行调节。
+
+* Extend Switch按钮，插件主开关，默认开启
+
+* Carry Head 按钮，开启后被动扫描会携带原始的请求头
+
+* Filter_Host 输入框，可以只扫描指定host的url，*代表全部，如 *.baidu.com
+
+* VulDisplay界面右键可删除选中的行，或全部删除
+
+* <img src="./img/remove.jpg">
+
+* 右键请求可选择将当前请求发送到插件进行主动扫描，插件会将站点地图中，与当前请求一样host的历史路径全部进行扫描
+
+* <img src="./img/Active_scan.jpg">
+
+  
+
+  
+
+
 
 ## 更新计划
 
 * 右键选择请求发送到插件扫描【✓】
-* 域名过滤
+* 域名过滤【✓】
 * 批量添加规则
 * UI界面增加数据包大小【✓】 
 * VulDisplay界面添加删除功能【✓】
-* 插件功能开关
-* 带原始请求头访问
-* 可自定义post/get请求
+* 插件功能开关【✓】
+* 带原始请求头访问【✓】
+* 可自定义post/get请求【✓】
 
 ## 最后
 
