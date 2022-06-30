@@ -32,7 +32,6 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     public List<View.LogEntry> log;
     public Config Config_l;
     public ExecutorService ThreadPool;
-    public boolean on_off = true;
 
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         this.call = callbacks;
@@ -41,7 +40,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
         this.DomainName = new DomainNameRepeat();
         this.urlC = new UrlRepeat();
         this.log = this.view_class.log;
-        this.Config_l = new Config(view_class, log,this);
+        this.Config_l = new Config(view_class, log);
         this.tags = new Tags(callbacks, Config_l);
         if (!new File(Yaml_Path).exists()) {
             YamlUtil.init_Yaml(Yaml_Path);
@@ -58,32 +57,28 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     }
 
     public List<IScanIssue> doPassiveScan(IHttpRequestResponse baseRequestResponse) {
+        this.ThreadPool = Executors.newFixedThreadPool((Integer) Config_l.spinner1.getValue());
         ArrayList<IScanIssue> IssueList = new ArrayList();
-        if (on_off) {
-            this.ThreadPool = Executors.newFixedThreadPool((Integer) Config_l.spinner1.getValue());
-            IHttpService Http_Service = baseRequestResponse.getHttpService();
-            String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
-            try {
-                URL url = new URL(Root_Url + this.help.analyzeRequest(baseRequestResponse).getUrl().getPath());
-                BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(this.call, baseRequestResponse);
-                String Root_Method = this.help.analyzeRequest(baseRequestResponse.getRequest()).getMethod();
-                String New_Url = this.urlC.RemoveUrlParameterValue(url.toString());
-                if (this.urlC.check(Root_Method, New_Url)) {
-                    return null;
-                }
-                new vulscan(this, Root_Request);
-                this.urlC.addMethodAndUrl(Root_Method, New_Url);
-                try {
-                    this.DomainName.add(Root_Url);
-                    return IssueList;
-                } catch (Throwable th) {
-                    return IssueList;
-                }
-            } catch (MalformedURLException e3) {
-                throw new RuntimeException(e3);
+        IHttpService Http_Service = baseRequestResponse.getHttpService();
+        String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
+        try {
+            URL url = new URL(Root_Url + this.help.analyzeRequest(baseRequestResponse).getUrl().getPath());
+            BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(this.call, baseRequestResponse);
+            String Root_Method = this.help.analyzeRequest(baseRequestResponse.getRequest()).getMethod();
+            String New_Url = this.urlC.RemoveUrlParameterValue(url.toString());
+            if (this.urlC.check(Root_Method, New_Url)) {
+                return null;
             }
-        }else {
-            return IssueList;
+            new vulscan(this, Root_Request);
+            this.urlC.addMethodAndUrl(Root_Method, New_Url);
+            try {
+                this.DomainName.add(Root_Url);
+                return IssueList;
+            } catch (Throwable th) {
+                return IssueList;
+            }
+        } catch (MalformedURLException e3) {
+            throw new RuntimeException(e3);
         }
     }
 

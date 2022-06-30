@@ -108,7 +108,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
                 // 将两个页面插入容器
                 tabs.addTab("VulDisplay", Tags.this.splitPane);
-                tabs.addTab("Config", Config_l.$$$getRootComponent$$$());
+                tabs.addTab("config", Config_l.$$$getRootComponent$$$());
 
                 // 将容器置于顶层
                 top.setTopComponent(tabs);

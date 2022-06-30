@@ -18,13 +18,11 @@ public class Config {
     private View view_class;
     private List<View.LogEntry> log;
     public JSpinner spinner1;
-    private BurpExtender burp;
 
 
-    public Config(View view_class, List<View.LogEntry> log,BurpExtender burp) {
+    public Config(View view_class, List<View.LogEntry> log) {
         this.view_class = view_class;
         this.log = log;
-        this.burp = burp;
     }
 
     /**
@@ -44,64 +42,54 @@ public class Config {
 
         // Yaml File Path 文本展示框
         JLabel yaml_Path = new JLabel("Yaml File Path:");
-//        yaml_Path.setBounds(5, -10, 100, 50);
-        yaml_Path.setBounds(5, 10, 100, 50);
+        yaml_Path.setBounds(5, -10, 100, 50);
 
         // 展示路径
         txtfield1 = new JTextField();   //创建文本框
         txtfield1.setText(yaml_path);    //设置文本框的内容
-        txtfield1.setBounds(110, 25, 772, 20);
+        txtfield1.setBounds(110, 5, 772, 20);
 
 
         // Select Yaml按钮
         JButton select_yaml_button = new JButton("Select Yaml");
-        select_yaml_button.setBounds(886, 24, 87, 23);
+        select_yaml_button.setBounds(886, 4, 87, 23);
         select_Yaml(select_yaml_button);
 
         // load 按钮
         JButton load_button = new JButton("Load Yaml");
-        load_button.setBounds(980, 24, 87, 23);
+        load_button.setBounds(980, 4, 87, 23);
         load_button_Yaml(load_button, view_class, log, txtfield1);
 
         // 线程选择
         JLabel thread_num = new JLabel("Thread Numbers:");
-        thread_num.setBounds(1074, 10, 100, 50);
+        thread_num.setBounds(1074, -10, 100, 50);
         SpinnerNumberModel model1 = new SpinnerNumberModel(10, 1, 500, 5);
         this.spinner1 = new JSpinner(model1);
         ((JSpinner.DefaultEditor) this.spinner1.getEditor()).getTextField().setEditable(false);
 
-        this.spinner1.setBounds(1168, 24, 100, 23);
+        this.spinner1.setBounds(1168, 4, 100, 23);
 
 
 
 
         // add按钮
         JButton add_button = new JButton("Add");
-        add_button.setBounds(5, 65, 70, 23);
+        add_button.setBounds(5, 45, 70, 23);
         Add_Button_Yaml(add_button, yaml_path, view_class, log);
 
         // Edit按钮
         JButton edit_button = new JButton("Edit");
-        edit_button.setBounds(5, 90, 70, 23);
+        edit_button.setBounds(5, 70, 70, 23);
         Edit_Button_Yaml(edit_button,yaml_path,view_class,log);
 
         // Del按钮
         JButton remove_button = new JButton("Del");
-        remove_button.setBounds(5, 115, 70, 23);
+        remove_button.setBounds(5, 95, 70, 23);
         Del_Button_Yaml(remove_button,yaml_path,view_class,log);
 
-        // 展示界面
+
         JSplitPane view = this.view_class.Get_View();
-        view.setBounds(80, 50, 1185, 750);  // 80
-
-
-        // 开启按钮
-        JButton on_off_button = new JButton("Stop");
-        on_off_button.setBounds(10, 5, 70, 23);
-        Color Primary = on_off_button.getBackground();
-        on_off_button.setBackground(Color.RED);
-        on_off_Button_action(on_off_button,Primary);
-
+        view.setBounds(80, 30, 1185, 780);
 
 
 //        添加到主面板
@@ -115,34 +103,9 @@ public class Config {
         one.add(view);
         one.add(thread_num);
         one.add(spinner1);
-        one.add(on_off_button);
 
 
     }
-
-
-    private void on_off_Button_action(JButton Button_one,Color Primary) {
-
-        Button_one.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (burp.on_off){
-                    burp.on_off = false;
-                    Button_one.setText("Start");
-                    Button_one.setBackground(Primary);
-                }else {
-                    burp.on_off = true;
-                    Button_one.setText("Stop");
-                    Button_one.setBackground(Color.RED);
-                }
-
-            }
-        });
-    }
-
-
-
-
 
     private void select_Yaml(JButton Button_one) {
 
