@@ -50,13 +50,14 @@ public class Config {
         // 展示路径
         txtfield1 = new JTextField();   //创建文本框
         txtfield1.setText(yaml_path);    //设置文本框的内容
+        txtfield1.setEditable(false);
         txtfield1.setBounds(110, 35, 772, 20);
 
 
-        // Select Yaml按钮
-        JButton select_yaml_button = new JButton("Select Yaml");
-        select_yaml_button.setBounds(886, 34, 87, 23);
-        select_Yaml(select_yaml_button);
+        // Online Update按钮
+        JButton Online_Update_button = new JButton("Update");
+        Online_Update_button.setBounds(886, 34, 87, 23);
+        Online_Update_Yaml(Online_Update_button);
 
         // load 按钮
         JButton load_button = new JButton("Load Yaml");
@@ -131,7 +132,7 @@ public class Config {
 //        添加到主面板
         one.add(yaml_Path);
         one.add(txtfield1);
-        one.add(select_yaml_button);
+        one.add(Online_Update_button);
         one.add(load_button);
         one.add(add_button);
         one.add(edit_button);
@@ -193,32 +194,26 @@ public class Config {
 
 
 
-
-
-    private void select_Yaml(JButton Button_one) {
+    private void Online_Update_Yaml(JButton Button_one) {
 
         Button_one.addActionListener(new ActionListener() {
-            class MyChooser extends JFileChooser {
-                protected JDialog createDialog(Component parent)
-                        throws HeadlessException {
-                    JDialog dlg = super.createDialog(parent);
-                    dlg.setLocation(500, 300);
-                    return dlg;
-                }
-            }
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFileChooser chooser = new MyChooser();             //设置选择器
-                chooser.setMultiSelectionEnabled(true);             //设为多选
-                int returnVal = chooser.showOpenDialog(Button_one);        //是否打开文件选择框
-                if (returnVal == JFileChooser.APPROVE_OPTION) {          //如果符合文件类型
-                    yaml_path = chooser.getSelectedFile().getAbsolutePath();
-                    txtfield1.setText(yaml_path);      //获取绝对路径
+
+                if (YamlUtil.init_Yaml(burp)){
+                    Bfunc.show_yaml(view_class, log, txtfield1.getText());
+                    JOptionPane.showMessageDialog(one,"Update successful","Tips ",1);
+                }else {
+                    JOptionPane.showMessageDialog(one,"Error getting update","Error ",0);
                 }
+
             }
         });
     }
+
+
+
 
 
     private void Edit_Button_Yaml(JButton Button_one, String yaml_path1, View view_class, List<View.LogEntry> log2) {

@@ -1,181 +1,49 @@
 package yaml;
 
+import burp.BurpExtender;
+import burp.IHttpRequestResponse;
+import burp.IHttpService;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
+import java.net.URL;
 import java.util.*;
 
 public class YamlUtil {
 
-    public static void init_Yaml(String path){
-        Map<String,Object> x = new HashMap<String,Object>();
-        Collection<Object> list1 = new ArrayList<Object>();
-        Map<String,Object> x1 = new HashMap<String,Object>();
-        x1.put("id",1);
-        x1.put("name","Nacos");
-        x1.put("method","GET");
-        x1.put("re","nacos");
-        x1.put("url","/nacos/index.html");
-        x1.put("info","Nacos Find!!!");
-        x1.put("state","200");
-        list1.add(x1);
-
-        Map<String,Object> x2 = new HashMap<String,Object>();
-        x2.put("id",2);
-        x2.put("name","Spring Env RCE");
-        x2.put("method","GET");
-        x2.put("re","springframework|spring.cloud.bootstrap.location|Spring Actuator Env RCE");
-        x2.put("url","/env");
-        x2.put("info","Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone Find!!!");
-        x2.put("state","200");
-        list1.add(x2);
-
-
-        Map<String,Object> x3 = new HashMap<String,Object>();
-        x3.put("id",3);
-        x3.put("name","Spring Env RCE");
-        x3.put("method","GET");
-        x3.put("re","springframework|spring.cloud.bootstrap.location|Spring Actuator Env RCE");
-        x3.put("url","/actuator/env");
-        x3.put("info","Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone Find!!!");
-        x3.put("state","200");
-        list1.add(x3);
+    public static Boolean init_Yaml(BurpExtender burp){
+        URL Get_url;
+        try {
+            int start_thread_num = Thread.activeCount();
+            Get_url = new URL("https://raw.githubusercontent.com/F6JO/RouteVulScan/main/Config_yaml.yaml");
+            byte[] request = burp.help.buildHttpRequest(Get_url);
+            IHttpService httpService = burp.help.buildHttpService("raw.githubusercontent.com", 443, true);
+            Send_config thread = new Send_config(burp, httpService, request);
+            thread.start();
+            int second = 0;
+            while (true) {
+                if (Thread.activeCount() > start_thread_num) {
+                    Thread.sleep(1000);
+                    second += 1;
+                    if (second == 20) {
+                        thread.stop();
+                        return false;
+                    }
+                }else {
+                    break;
+                }
+            }
 
 
-        Map<String,Object> x4 = new HashMap<String,Object>();
-        x4.put("id",4);
-        x4.put("name","Druid Monitor");
-        x4.put("method","GET");
-        x4.put("re","druid");
-        x4.put("url","/druid/index.html");
-        x4.put("info","Druid Monitor Find!!!");
-        x4.put("state","200");
-        list1.add(x4);
-
-        Map<String,Object> x5 = new HashMap<String,Object>();
-        x5.put("id",5);
-        x5.put("name","api-docs");
-        x5.put("method","GET");
-        x5.put("re","api-docs");
-        x5.put("url","/v2/api-docs");
-        x5.put("info","api-docs Find!!!");
-        x5.put("state","200");
-        list1.add(x5);
-
-        Map<String,Object> x6 = new HashMap<String,Object>();
-        x6.put("id",6);
-        x6.put("name","Swagger-UI");
-        x6.put("method","GET");
-        x6.put("re","swagger");
-        x6.put("url","/swagger-ui.html");
-        x6.put("info","Swagger-UI Find!!!");
-        x6.put("state","200");
-        list1.add(x6);
-
-        Map<String,Object> x7 = new HashMap<String,Object>();
-        x7.put("id",7);
-        x7.put("name","Spring Jolokia|Rce");
-        x7.put("method","GET");
-        x7.put("re","springframework|reloadByURL|createJNDIRealm");
-        x7.put("url","/jolokia/list");
-        x7.put("info","Spring Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!");
-        x7.put("state","200");
-        list1.add(x7);
-
-        Map<String,Object> x8 = new HashMap<String,Object>();
-        x8.put("id",8);
-        x8.put("name","Spring Jolokia|Rce");
-        x8.put("method","GET");
-        x8.put("re","springframework|reloadByURL|createJNDIRealm");
-        x8.put("url","/actuator/jolokia/list");
-        x8.put("info","Spring Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!");
-        x8.put("state","200");
-        list1.add(x8);
-
-        Map<String,Object> x9 = new HashMap<String,Object>();
-        x9.put("id",9);
-        x9.put("name","Doc File");
-        x9.put("method","GET");
-        x9.put("re","api");
-        x9.put("url","/doc.html");
-        x9.put("info","Doc File Find!!!");
-        x9.put("state","200");
-        list1.add(x9);
-
-        Map<String,Object> x10 = new HashMap<String,Object>();
-        x10.put("id",10);
-        x10.put("name","swagger.json");
-        x10.put("method","GET");
-        x10.put("re","swagger");
-        x10.put("url","/v1/swagger.json");
-        x10.put("info","swagger.json Find!!!");
-        x10.put("state","200");
-        list1.add(x10);
-
-        Map<String,Object> x11 = new HashMap<String,Object>();
-        x11.put("id",11);
-        x11.put("name","swagger.json");
-        x11.put("method","GET");
-        x11.put("re","swagger");
-        x11.put("url","/v2/swagger.json");
-        x11.put("info","swagger.json Find!!!");
-        x11.put("state","200");
-        list1.add(x11);
+        } catch (Exception e) {
+            return false;
+        }
 
 
-        Map<String,Object> x12 = new HashMap<String,Object>();
-        x12.put("id",12);
-        x12.put("name","Swagger-resources");
-        x12.put("method","GET");
-        x12.put("re","swagger");
-        x12.put("url","/swagger-resources");
-        x12.put("info","swagger-resources Find!!!");
-        x12.put("state","200");
-        list1.add(x12);
-
-        Map<String,Object> x13 = new HashMap<String,Object>();
-        x13.put("id",13);
-        x13.put("name","Soap");
-        x13.put("method","GET");
-        x13.put("re","ASP.NET|tempuri.org");
-        x13.put("url","/services");
-        x13.put("info","Soap Find!!!");
-        x13.put("state","200");
-        list1.add(x13);
-
-        Map<String,Object> x14 = new HashMap<String,Object>();
-        x14.put("id",14);
-        x14.put("name","Web API Help");
-        x14.put("method","GET");
-        x14.put("re","Web API");
-        x14.put("url","/Help");
-        x14.put("info","Web API Help Find!!!");
-        x14.put("state","200");
-        list1.add(x14);
-
-        Map<String,Object> x15 = new HashMap<String,Object>();
-        x15.put("id",15);
-        x15.put("name","Web API Help");
-        x15.put("method","GET");
-        x15.put("re","Web API");
-        x15.put("url","/help");
-        x15.put("info","Web API Help Find!!!");
-        x15.put("state","200");
-        list1.add(x15);
+        return true;
 
 
-        Map<String,Object> x16 = new HashMap<String,Object>();
-        x16.put("id",16);
-        x16.put("name","Weblogic CVE-2019-2618");
-        x16.put("method","POST");
-        x16.put("re","password");
-        x16.put("url","/bea_wls_deployment_internal/DeploymentService");
-        x16.put("info","Weblogic CVE-2019-2618 Find!!!");
-        x16.put("state","401");
-        list1.add(x16);
 
-        x.put("Load_List",list1);
-        YamlUtil.writeYaml(x,path);
 
     }
 
@@ -252,5 +120,32 @@ public class YamlUtil {
     }
 
 
+
+}
+
+
+class Send_config extends Thread {
+    private BurpExtender burp;
+    private IHttpService httpService;
+    byte[] request;
+    public Send_config(BurpExtender burp,IHttpService httpService,byte[] request){
+        this.burp = burp;
+        this.httpService = httpService;
+        this.request = request;
+    }
+
+    public void run(){
+        try {
+            IHttpRequestResponse response = burp.call.makeHttpRequest(httpService, request);
+            String[] zifuchuan = burp.help.bytesToString(response.getResponse()).split("\r\n\r\n");
+            FileWriter file = null;
+            file = new FileWriter(BurpExtender.Yaml_Path);
+            file.write(zifuchuan[1]);
+            file.close();
+        } catch (IOException e) {
+            stop();
+        }
+
+    }
 
 }

@@ -48,7 +48,10 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
         this.Config_l = new Config(view_class, log,this);
         this.tags = new Tags(callbacks, Config_l);
         if (!new File(Yaml_Path).exists()) {
-            YamlUtil.init_Yaml(Yaml_Path);
+            Map<String,Object> x = new HashMap<String,Object>();
+            Collection<Object> list1 = new ArrayList<Object>();
+            x.put("Load_List",list1);
+            YamlUtil.writeYaml(x,Yaml_Path);
         }
         Bfunc.show_yaml(view_class, log, Yaml_Path);
         call.printOutput("@Info: Loading RouteVulScan success");
