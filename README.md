@@ -29,7 +29,9 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 
 * 装载插件：``` Extender - Extensions - Add - Select File - Next ```
 
-* 初次装载插件会在burpsuite当前目录下生成Config_yaml.yaml配置文件，点击
+* 初次装载插件会在burpsuite当前目录下生成Config_yaml.yaml配置文件，点击Update按钮更新最新规则。需要注意的是，如果你有自己添加的规则，最好先备份，因为在线更新会直接覆盖规则文件。
+
+  <img src="./img/update.jpg">
 
 * 使用Burpsuite IScannerCheck接口，在流量初次流经burp时进行扫描，重复流量不会进行扫描。
 
@@ -45,7 +47,7 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 
   <img src="./img/remove.jpg">
 
-* 右键请求可选择将当前请求发送到插件进行主动扫描，插件会将站点地图中，与当前请求一样host的历史路径全部进行扫描
+* 右键请求可选择将当前请求发送到插件进行主动扫描，插件会将站点地图中，与当前请求使用一样host的历史路径全部进行扫描
 
   <img src="./img/Active_scan.jpg">
 
@@ -59,17 +61,14 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 
 * 右键选择请求发送到插件扫描【✓】
 * 域名过滤【✓】
-* 批量添加规则
 * UI界面增加数据包大小【✓】 
 * VulDisplay界面添加删除功能【✓】
 * 插件功能开关【✓】
 * 带原始请求头访问【✓】
 * 可自定义post/get请求【✓】
-* 配置文件在线更新
+* 配置文件在线更新【✓】
 
-## 提示
 
-​	更新1.2版本后，需要把之前的配置文件删除，插件会新生成一个配置文件
 
 ## 最后
 

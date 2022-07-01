@@ -1,41 +1,26 @@
 package yaml;
 
 import burp.BurpExtender;
-import burp.IHttpRequestResponse;
-import burp.IHttpService;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 public class YamlUtil {
 
-    public static Boolean init_Yaml(BurpExtender burp){
-        URL Get_url;
+    public static Boolean init_Yaml(){
         try {
-            int start_thread_num = Thread.activeCount();
-            Get_url = new URL("https://raw.githubusercontent.com/F6JO/RouteVulScan/main/Config_yaml.yaml");
-            byte[] request = burp.help.buildHttpRequest(Get_url);
-            IHttpService httpService = burp.help.buildHttpService("raw.githubusercontent.com", 443, true);
-            Send_config thread = new Send_config(burp, httpService, request);
-            thread.start();
-            int second = 0;
-            while (true) {
-                if (Thread.activeCount() > start_thread_num) {
-                    Thread.sleep(1000);
-                    second += 1;
-                    if (second == 20) {
-                        thread.stop();
-                        return false;
-                    }
-                }else {
-                    break;
-                }
-            }
-
-
-        } catch (Exception e) {
+            String url = "https://raw.githubusercontent.com/F6JO/RouteVulScan/main/Config_yaml.yaml";
+            OkHttpClient httpClient = new OkHttpClient();
+            Request httpRequest = new Request.Builder().url(url).get().build();
+            Response httpResponse = httpClient.newCall(httpRequest).execute();
+            FileOutputStream file = new FileOutputStream(BurpExtender.Yaml_Path);
+            file.write(httpResponse.body().bytes());
+            file.close();
+        } catch (IOException e) {
             return false;
         }
 
@@ -124,28 +109,3 @@ public class YamlUtil {
 }
 
 
-class Send_config extends Thread {
-    private BurpExtender burp;
-    private IHttpService httpService;
-    byte[] request;
-    public Send_config(BurpExtender burp,IHttpService httpService,byte[] request){
-        this.burp = burp;
-        this.httpService = httpService;
-        this.request = request;
-    }
-
-    public void run(){
-        try {
-            IHttpRequestResponse response = burp.call.makeHttpRequest(httpService, request);
-            String[] zifuchuan = burp.help.bytesToString(response.getResponse()).split("\r\n\r\n");
-            FileWriter file = null;
-            file = new FileWriter(BurpExtender.Yaml_Path);
-            file.write(zifuchuan[1]);
-            file.close();
-        } catch (IOException e) {
-            stop();
-        }
-
-    }
-
-}

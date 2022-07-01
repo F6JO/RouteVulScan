@@ -201,7 +201,7 @@ public class Config {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                if (YamlUtil.init_Yaml(burp)){
+                if (YamlUtil.init_Yaml()){
                     Bfunc.show_yaml(view_class, log, txtfield1.getText());
                     JOptionPane.showMessageDialog(one,"Update successful","Tips ",1);
                 }else {
