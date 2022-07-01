@@ -29,7 +29,7 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 
 * 装载插件：``` Extender - Extensions - Add - Select File - Next ```
 
-* 初次装载插件会在burpsuite当前目录下生成Config_yaml.yaml配置文件，内置11条初始规则，也可在config标签页自行加载其他yaml规则文件。
+* 初次装载插件会在burpsuite当前目录下生成Config_yaml.yaml配置文件，点击
 
 * 使用Burpsuite IScannerCheck接口，在流量初次流经burp时进行扫描，重复流量不会进行扫描。
 
