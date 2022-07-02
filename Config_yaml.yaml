@@ -36,3 +36,17 @@ Load_List:
 - {re: password, method: POST, name: Weblogic CVE-2019-2618, id: 16, state: '401',
   url: /bea_wls_deployment_internal/DeploymentService, info: Weblogic CVE-2019-2618
     Find!!!}
+- {re: .git, method: GET, name: .Git, id: 17, state: '200', url: /.git/HEAD, info: .git
+    Find!!!}
+- {re: Svn, method: GET, name: Svn, id: 18, state: '200', url: /.svn/, info: .svn
+    Find!!!}
+- {re: ds_store, method: GET, name: DS_Store, id: 19, state: '200', url: /.DS_Store/,
+  info: .DS_Store Find!!!}
+- {re: README.md, method: GET, name: README.md, id: 20, state: '206', url: /README.md,
+  info: README.md Find!!!}
+- {re: crossdomain.xml, method: GET, name: crossdomain, id: 21, state: '200', url: /crossdomain.xml,
+  info: crossdomain.xml Find!!!}
+- {re: .idea, method: GET, name: .idea, id: 22, state: '200', url: /.idea/modules.xml,
+  info: .idea Find!!!}
+- {re: readme.txt, method: GET, name: readme, id: 23, state: '206', url: /readme.txt,
+  info: readme.txt Find!!!}
