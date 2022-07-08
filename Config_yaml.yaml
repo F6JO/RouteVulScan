@@ -50,3 +50,5 @@ Load_List:
   info: .idea Find!!!}
 - {re: readme.txt, method: GET, name: readme, id: 23, state: '206', url: /readme.txt,
   info: readme.txt Find!!!}
+- {re: api-docs|openapi, method: GET, name: api-docs, id: 24, state: '200', url: /v3/api-docs,
+  info: api-docs Find !!!}
