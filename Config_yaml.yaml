@@ -38,7 +38,7 @@ Load_List:
     Find!!!}
 - {re: .git, method: GET, name: .Git, id: 17, state: '200', url: /.git/HEAD, info: .git
     Find!!!}
-- {re: Svn, method: GET, name: Svn, id: 18, state: '200', url: /.svn/entries/, info: .svn
+- {re: .*, method: GET, name: Svn, id: 18, state: '200', url: /.svn/entries/, info: .svn
     Find!!!}
 - {re: ds_store, method: GET, name: DS_Store, id: 19, state: '200', url: /.DS_Store,
   info: .DS_Store Find!!!}
