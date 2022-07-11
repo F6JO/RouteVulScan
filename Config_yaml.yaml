@@ -38,9 +38,9 @@ Load_List:
     Find!!!}
 - {re: .git, method: GET, name: .Git, id: 17, state: '200', url: /.git/HEAD, info: .git
     Find!!!}
-- {re: Svn, method: GET, name: Svn, id: 18, state: '200', url: /.svn/, info: .svn
+- {re: Svn, method: GET, name: Svn, id: 18, state: '200', url: /.svn/entries/, info: .svn
     Find!!!}
-- {re: ds_store, method: GET, name: DS_Store, id: 19, state: '200', url: /.DS_Store/,
+- {re: ds_store, method: GET, name: DS_Store, id: 19, state: '200', url: /.DS_Store,
   info: .DS_Store Find!!!}
 - {re: README.md, method: GET, name: README.md, id: 20, state: '206', url: /README.md,
   info: README.md Find!!!}
@@ -52,3 +52,5 @@ Load_List:
   info: readme.txt Find!!!}
 - {re: api-docs|openapi, method: GET, name: api-docs, id: 24, state: '200', url: /v3/api-docs,
   info: api-docs Find !!!}
+- {re: User-agent, method: GET, name: robots, id: 25, state: '200', url: /robots.txt,
+  info: robots.txt Find !!!}
