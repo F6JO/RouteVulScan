@@ -40,8 +40,8 @@ Load_List:
     Find!!!}
 - {re: .*, method: GET, name: Svn, id: 18, state: '200', url: /.svn/entries, info: .svn
     Find!!!}
-- {re: .*, method: GET, name: DS_Store, id: 19, state: '200', url: /.DS_Store, info: .DS_Store
-    Find!!!}
+- {re: ds_store, method: GET, name: DS_Store, id: 19, state: '200', url: /.DS_Store,
+  info: .DS_Store Find!!!}
 - {re: README.md, method: GET, name: README.md, id: 20, state: '206', url: /README.md,
   info: README.md Find!!!}
 - {re: crossdomain.xml, method: GET, name: crossdomain, id: 21, state: '200', url: /crossdomain.xml,
