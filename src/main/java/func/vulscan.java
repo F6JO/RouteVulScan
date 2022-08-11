@@ -21,7 +21,7 @@ public class vulscan {
     public IHttpService httpService;
 
 
-    public vulscan(BurpExtender burp,BurpAnalyzedRequest Root_Request) {
+    public vulscan(BurpExtender burp, BurpAnalyzedRequest Root_Request) {
         this.burp = burp;
         this.call = burp.call;
         this.help = burp.help;
@@ -34,8 +34,6 @@ public class vulscan {
         List<String> heads = analyze_Request.getHeaders();
 //        request = help.buildHttpMessage(heads,request);
 //        String zifuchuan = help.bytesToString(request);
-
-
 
 
         // 判断请求方法为POST
@@ -57,35 +55,33 @@ public class vulscan {
 
         Map<String, Object> Yaml_Map = YamlUtil.readYaml(burp.Config_l.yaml_path);
         List<Map<String, Object>> Listx = (List<Map<String, Object>>) Yaml_Map.get("Load_List");
-        if (paths.length == 0){
+        if (paths.length == 0) {
             paths = new String[]{""};
         }
         for (String path : paths) {
-            if (!path.contains(".")) {
-                if (!path.equals("")) {
-                    this.Path_record = this.Path_record + "/" + path;
-                }
-
-                for (Map<String, Object> zidian : Listx) {
-                    burp.ThreadPool.execute(new threads(zidian,this,newHttpRequestResponse,heads));
-                }
-
-                while (true){
-                    // 防止线程混乱，睡眠0.3秒
-                    try {
-                        Thread.sleep(300);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if (((ThreadPoolExecutor)burp.ThreadPool).getActiveCount() == 0){
-                        break;
-                    }
-                }
-
-
+            if (path.contains(".") && path.equals(paths[paths.length - 1])) {
+                    break;
             }
 
+            if (!path.equals("")) {
+                this.Path_record = this.Path_record + "/" + path;
+            }
 
+            for (Map<String, Object> zidian : Listx) {
+                burp.ThreadPool.execute(new threads(zidian, this, newHttpRequestResponse, heads));
+            }
+
+            while (true) {
+                // 防止线程混乱，睡眠0.3秒
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (((ThreadPoolExecutor) burp.ThreadPool).getActiveCount() == 0) {
+                    break;
+                }
+            }
 
 
         }
@@ -94,9 +90,9 @@ public class vulscan {
     }
 
 
-    public static void ir_add(Tags tag, String title, String method, String url, String StatusCode, String notes,String Size, IHttpRequestResponse newHttpRequestResponse) {
+    public static void ir_add(Tags tag, String title, String method, String url, String StatusCode, String notes, String Size, IHttpRequestResponse newHttpRequestResponse) {
         if (!tag.Get_URL_list().contains(url)) {
-            tag.add(title, method, url, StatusCode, notes,Size, newHttpRequestResponse);
+            tag.add(title, method, url, StatusCode, notes, Size, newHttpRequestResponse);
         }
     }
 
