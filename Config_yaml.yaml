@@ -54,3 +54,5 @@ Load_List:
   info: api-docs Find !!!}
 - {re: User-agent, method: GET, name: robots, id: 25, state: '200', url: /robots.txt,
   info: robots.txt Find !!!}
+- {re: href, method: GET, name: actuator, id: 26, state: '200', url: /actuator/, info: actuator
+    FInd !!!}
