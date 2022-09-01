@@ -35,7 +35,8 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     public Config Config_l;
     public ExecutorService ThreadPool;
     public boolean Carry_head = false;
-    public boolean on_off = true;
+    public boolean on_off = false;
+//    public boolean on_off = true;
     public JTextField Host_txtfield;
 
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {

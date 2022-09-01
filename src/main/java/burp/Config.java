@@ -102,10 +102,11 @@ public class Config {
         Expansion_switch.setBounds(5, -10, 100, 50);
 
         // 开启按钮
-        JButton on_off_button = new JButton("Stop");
+//        JButton on_off_button = new JButton("Stop");
+        JButton on_off_button = new JButton("Start");
         on_off_button.setBounds(110, 5, 70, 23);
         Color Primary = on_off_button.getBackground();
-        on_off_button.setBackground(Color.green);
+//        on_off_button.setBackground(Color.green);
         on_off_Button_action(on_off_button,Primary);
 
         // Switch 文本展示框
