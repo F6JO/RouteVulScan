@@ -35,7 +35,7 @@ public class threads implements Task {
 
     }
 
-    private static void go(Map<String, Object> zidian, vulscan vul, IHttpRequestResponse newHttpRequestResponse,List<String> heads) {
+    private static void go(Map<String, Object> zidian, vulscan vul, IHttpRequestResponse newHttpRequestResponse, List<String> heads) {
 
         String name = (String) zidian.get("name");
         String urll = (String) zidian.get("url");
@@ -81,7 +81,7 @@ public class threads implements Task {
                 Matcher pipe = re_rule.matcher(vul.burp.help.bytesToString(resp));
                 String lang = String.valueOf(vul.burp.help.bytesToString(resp).length());
                 if (pipe.find()) {
-                    vulscan.ir_add(vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(), String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ", info,lang, newHttpRequestResponse);
+                    vulscan.ir_add(vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(), String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ", info, lang, newHttpRequestResponse);
                 }
             }
         } else {
