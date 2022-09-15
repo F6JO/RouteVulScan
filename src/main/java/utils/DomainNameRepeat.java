@@ -12,7 +12,7 @@ public class DomainNameRepeat {
 
     public void add(String domainName) {
         if (domainName == null || domainName.length() <= 0)
-            throw new IllegalArgumentException("域名不能为空");
+            throw new IllegalArgumentException("Domain name cannot be empty");
         getDomainNameMap().put(domainName, Integer.valueOf(1));
     }
 

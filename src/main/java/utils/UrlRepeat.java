@@ -14,9 +14,9 @@ public class UrlRepeat {
 
     public void addMethodAndUrl(String Method, String url) {
         if (Method == null || Method.length() <= 0)
-            throw new IllegalArgumentException("请求方法不能为空");
+            throw new IllegalArgumentException("Request method cannot be empty");
         if (url == null || url.length() <= 0)
-            throw new IllegalArgumentException("url不能为空");
+            throw new IllegalArgumentException("Url cannot be empty");
         getRequestMethodAndUrlMap().put(String.valueOf(Method) + " " + url, Integer.valueOf(1));
     }
 
