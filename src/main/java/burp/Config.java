@@ -72,9 +72,12 @@ public class Config {
                 public void actionPerformed(ActionEvent e) {
                     String type = ruleTabbedPane.getTitleAt(ruleTabbedPane.getSelectedIndex());
                     View Remove_view = burp.views.get(type);
-                    for (View.LogEntry l:Remove_view.log){
-                        YamlUtil.removeYaml(l.id,BurpExtender.Yaml_Path);
+                    if (Remove_view != null) {
+                        for (View.LogEntry l : Remove_view.log) {
+                            YamlUtil.removeYaml(l.id, BurpExtender.Yaml_Path);
+                        }
                     }
+                    ruleTabbedPane.remove(ruleTabbedPane.getSelectedIndex());
                     frame.dispose();
 
                 }
@@ -96,7 +99,7 @@ public class Config {
             ((JDialog) frame).getContentPane().add(xin);
             frame.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);    // 设置模式类型。
             frame.setVisible(true);
-            ruleTabbedPane.remove(ruleTabbedPane.getSelectedIndex());
+
 
         }
     }
