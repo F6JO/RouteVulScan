@@ -30,8 +30,6 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     private UrlRepeat urlC;
     public Collection<String> history_url = new LinkedList<String>();
     public static String EXPAND_NAME = "Route Vulnerable Scanning";
-    public View view_class;
-    public List<View.LogEntry> log;
     public Config Config_l;
     public ExecutorService ThreadPool;
     public boolean Carry_head = false;
@@ -40,32 +38,34 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     public static String Download_Yaml_host = "raw.githubusercontent.com";
     public static int Download_Yaml_port = 443;
     public static String Download_Yaml_file = "/F6JO/RouteVulScan/main/Config_yaml.yaml";
-//    public boolean on_off = true;
+    public Map<String, View> views;
     public JTextField Host_txtfield;
 
+
+
+
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
+        if (!new File(Yaml_Path).exists()) {
+            Map<String, Object> x = new HashMap<String, Object>();
+            Collection<Object> list1 = new ArrayList<Object>();
+            x.put("Load_List", list1);
+            YamlUtil.writeYaml(x, Yaml_Path);
+        }
         this.call = callbacks;
         this.help = call.getHelpers();
-        this.view_class = new View();
         this.DomainName = new DomainNameRepeat();
         this.urlC = new UrlRepeat();
-        this.log = this.view_class.log;
-        this.Config_l = new Config(view_class, log,this);
+        this.Config_l = new Config(this);
         this.tags = new Tags(callbacks, Config_l);
-        if (!new File(Yaml_Path).exists()) {
-            Map<String,Object> x = new HashMap<String,Object>();
-            Collection<Object> list1 = new ArrayList<Object>();
-            x.put("Load_List",list1);
-            YamlUtil.writeYaml(x,Yaml_Path);
-        }
-        Bfunc.show_yaml(view_class, log, Yaml_Path);
+        this.views = Bfunc.Get_Views();
         call.printOutput("@Info: Loading RouteVulScan success");
-        call.printOutput("@Version: RouteVulScan 1.2");
+        call.printOutput("@Version: RouteVulScan 1.3");
         call.printOutput("@From: Code by F6JO");
         call.printOutput("@Github: https://github.com/F6JO/RouteVulScan");
         call.setExtensionName(EXPAND_NAME);
         call.registerScannerCheck(this);
         call.registerContextMenuFactory(this);
+
 
     }
 
@@ -98,12 +98,12 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
                 } catch (MalformedURLException e3) {
                     throw new RuntimeException(e3);
                 }
-            }else {
+            } else {
                 return IssueList;
             }
 
 
-        }else {
+        } else {
             return IssueList;
         }
     }
@@ -129,8 +129,6 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
 }
 
 
-
-
 class Right_click_monitor implements ActionListener {
     private IContextMenuInvocation invocation;
     private BurpExtender burp;
@@ -147,10 +145,10 @@ class Right_click_monitor implements ActionListener {
         for (IHttpRequestResponse i : RequestResponses) {
             try {
                 IHttpService Http_Service = i.getHttpService();
-                IRequestInfo RequestInfo = burp.help.analyzeRequest(Http_Service,i.getRequest());
+                IRequestInfo RequestInfo = burp.help.analyzeRequest(Http_Service, i.getRequest());
                 String host_url = RequestInfo.getUrl().getProtocol() + "://" + RequestInfo.getUrl().getHost();
                 IHttpRequestResponse[] aaaa = burp.call.getSiteMap(host_url);
-                for (IHttpRequestResponse xxx : aaaa){
+                for (IHttpRequestResponse xxx : aaaa) {
                     String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
                     URL url = new URL(Root_Url + burp.help.analyzeRequest(xxx).getUrl().getPath());
                     BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, xxx);
@@ -158,17 +156,11 @@ class Right_click_monitor implements ActionListener {
                     send.start();
                 }
 
-//                String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
-//                URL url = new URL(Root_Url + burp.help.analyzeRequest(i).getUrl().getPath());
-//                BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, i);
-//                start_send send = new start_send(burp, Root_Request);
-//                send.start();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
 
         }
-//        burp.call.printOutput(String.valueOf(RequestResponses[0]));
     }
 }
 

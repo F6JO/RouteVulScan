@@ -16,8 +16,8 @@ import java.util.*;
 
 public class YamlUtil {
 
-    public static void init_Yaml(BurpExtender burp, View view_class, List<View.LogEntry> log, JTextField txtfield1, JPanel one) {
-        new init_Yaml_thread(burp, view_class, log, txtfield1, one).start();
+    public static void init_Yaml(BurpExtender burp, JPanel one) {
+        new init_Yaml_thread(burp, one).start();
 
     }
 

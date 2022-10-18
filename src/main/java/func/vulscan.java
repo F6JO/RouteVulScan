@@ -7,6 +7,7 @@ import yaml.YamlUtil;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class vulscan {
@@ -32,8 +33,7 @@ public class vulscan {
         httpService = this.Root_Request.requestResponse().getHttpService();
         IRequestInfo analyze_Request = help.analyzeRequest(httpService, request);
         List<String> heads = analyze_Request.getHeaders();
-//        request = help.buildHttpMessage(heads,request);
-//        String zifuchuan = help.bytesToString(request);
+        burp.ThreadPool = Executors.newFixedThreadPool((Integer) burp.Config_l.spinner1.getValue());
 
 
         // 判断请求方法为POST

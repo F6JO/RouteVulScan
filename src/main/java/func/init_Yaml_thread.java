@@ -13,16 +13,10 @@ import java.util.List;
 
 public class init_Yaml_thread extends Thread {
     private BurpExtender burp;
-    private View view_class;
-    private List<View.LogEntry> log;
-    private JTextField txtfield1;
     private JPanel one;
 
-    public init_Yaml_thread(BurpExtender burp, View view_class, List<View.LogEntry> log, JTextField txtfield1, JPanel one) {
+    public init_Yaml_thread(BurpExtender burp, JPanel one) {
         this.burp = burp;
-        this.view_class = view_class;
-        this.log = log;
-        this.txtfield1 = txtfield1;
         this.one = one;
 
 
@@ -45,7 +39,7 @@ public class init_Yaml_thread extends Thread {
                 file.write(this.burp.help.stringToBytes(ResponseBody));
                 file.close();
 
-                Bfunc.show_yaml(this.view_class, this.log, this.txtfield1.getText());
+                Bfunc.show_yaml(burp);
                 JOptionPane.showMessageDialog(one, "Update successful", "Tips ", 1);
             } else {
                 JOptionPane.showMessageDialog(one, "Request failed, please try to use proxy", "Error ", 0);

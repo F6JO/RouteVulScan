@@ -1,10 +1,17 @@
 package burp;
 
+import yaml.YamlUtil;
+
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class View extends AbstractTableModel {
     private JSplitPane splitPane;
@@ -14,11 +21,15 @@ public class View extends AbstractTableModel {
 
     public LogEntry Choice;
 
+
+
     //
     // 实现IBurpExtender
     //
 
+
     public View() {
+
         // 创建最上面的一层
         top = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 //        // 创建容器，容器可以加入多个页面
@@ -29,15 +40,40 @@ public class View extends AbstractTableModel {
 
         // 日志条目表
         Table logTable = new Table(this);
+        logTable.addMouseListener(new MouseAdapter() {
+            //不要用click点击监听，如果速度过快就会识别为双击，有bug
+            @Override
+            public void mousePressed(MouseEvent e) {
+                // 点击复选框的操作
+                if (e.getClickCount() == 1) {
+                    int row = logTable.getSelectedRow();
+                    int column = logTable.getSelectedColumn();
+                    //复选框在哪列填多少，限制鼠标点击的位置
+                    if (column == 0) {
+                        LogEntry logEntry = log.get(row);
+                        Map<String, Object> add_map = new HashMap<String, Object>();
+                        add_map.put("id", Integer.parseInt(logEntry.id));
+                        add_map.put("type", logEntry.type);
+                        add_map.put("loaded", !logEntry.loaded);
+                        add_map.put("name", logEntry.name);
+                        add_map.put("method", logEntry.method);
+                        add_map.put("url", logEntry.url);
+                        add_map.put("re", logEntry.re);
+                        add_map.put("info", logEntry.info);
+                        add_map.put("state", logEntry.state);
+                        YamlUtil.updateYaml(add_map, BurpExtender.Yaml_Path);
+                        logEntry.loaded = !logEntry.loaded;
+
+
+                    }
+
+                }
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(logTable);
 
 
-        // 将日志条目表和展示窗添加到主拆分窗格
-//        splitPane.add(scrollPane, "top");
-//        tabs.add(scrollPane, "top");
-
-        // 将两个页面插入容器
-//        tabs.addTab("Show", splitPane);
 
         // 将容器置于顶层
         top.setTopComponent(scrollPane);
@@ -64,7 +100,7 @@ public class View extends AbstractTableModel {
     // 设置总共有几列
     @Override
     public int getColumnCount() {
-        return 6;
+        return 7;
     }
 
     // 设置每个列的名称
@@ -72,26 +108,39 @@ public class View extends AbstractTableModel {
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return "Name";
+                return "Loaded";
             case 1:
-                return "Method";
+                return "Name";
             case 2:
-                return "URL";
+                return "Method";
             case 3:
-                return "RE";
+                return "Url";
             case 4:
-                return "INFO";
+                return "Re";
             case 5:
-                return "STATE";
+                return "Info";
+            case 6:
+                return "State";
             default:
                 return "";
         }
     }
 
+
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return String.class;
+        if (columnIndex == 0) {
+            return Boolean.class;
+        } else {
+            return String.class;
+        }
     }
+
+    @Override
+    public boolean isCellEditable(int row, int column) {
+        return column == 0;
+    }
+
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -99,23 +148,24 @@ public class View extends AbstractTableModel {
         // 设置每个条目的每一列的值
         switch (columnIndex) {
             case 0:
-                return logEntry.name;
+                return logEntry.loaded;
             case 1:
-                return logEntry.method;
+                return logEntry.name;
             case 2:
-                return logEntry.url;
+                return logEntry.method;
             case 3:
-                return logEntry.re;
+                return logEntry.url;
             case 4:
-                return logEntry.info;
+                return logEntry.re;
             case 5:
+                return logEntry.info;
+            case 6:
                 return logEntry.state;
 
             default:
                 return "";
         }
     }
-
 
 
     //
@@ -144,6 +194,8 @@ public class View extends AbstractTableModel {
 
     public static class LogEntry {
         final String id;
+        String type;
+        Boolean loaded;
         final String method;
         final String name;
         final String url;
@@ -151,8 +203,10 @@ public class View extends AbstractTableModel {
         final String info;
         final String state;
 
-        LogEntry(String id, String name,String method ,String url, String re, String info, String state) {
+        LogEntry(String id, String type,Boolean loaded, String name, String method, String url, String re, String info, String state) {
             this.id = id;
+            this.type = type;
+            this.loaded = loaded;
             this.name = name;
             this.method = method;
             this.url = url;
