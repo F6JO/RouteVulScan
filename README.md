@@ -69,7 +69,7 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 * 2022-10-18 添加分类，提供可根据个人习惯对规则进行分类处理【✓】
 * 2022-10-18 添加选择，每个规则设置为可选的形式，可自由选择想要的规则【✓】
 
-## 作者的动力
+## 开心值
 
 [![Stargazers over time](https://starchart.cc/F6JO/RouteVulScan.svg)](https://starchart.cc/F6JO/RouteVulScan)
 
