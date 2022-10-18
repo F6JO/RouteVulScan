@@ -1,58 +1,59 @@
 Load_List:
-- {type: default, loaded: true, re: nacos, method: GET, name: Nacos, id: 1, state: '200', url: /nacos/index.html,
-  info: Nacos Find!!!}
-- {type: default, loaded: true, re: springframework|spring.cloud.bootstrap.location|Spring Actuator Env RCE, method: GET,
-  name: Spring Env RCE, id: 2, state: '200', url: /env, info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
+- {type: Unauthorized, loaded: true, re: nacos, method: GET, name: Nacos, id: 1, state: '200',
+  url: /nacos/index.html, info: Nacos Find!!!}
+- {type: Spring, loaded: true, re: springframework|spring.cloud.bootstrap.location|Spring
+    Actuator Env RCE, method: GET, name: Spring Env RCE, id: 2, state: '200', url: /env,
+  info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
     Find!!!'}
-- {type: default, loaded: true, re: springframework|spring.cloud.bootstrap.location|Spring Actuator Env RCE, method: GET,
-  name: Spring Env RCE, id: 3, state: '200', url: /actuator/env, info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
+- {type: Spring, loaded: true, re: springframework|spring.cloud.bootstrap.location|Spring
+    Actuator Env RCE, method: GET, name: Spring Env RCE, id: 3, state: '200', url: /actuator/env,
+  info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
     Find!!!'}
-- {type: default, loaded: true, re: druid, method: GET, name: Druid Monitor, id: 4, state: '200', url: /druid/index.html,
-  info: Druid Monitor Find!!!}
-- {type: default, loaded: true, re: api-docs, method: GET, name: api-docs, id: 5, state: '200', url: /v2/api-docs,
-  info: api-docs Find!!!}
-- {type: default, loaded: true, re: swagger, method: GET, name: Swagger-UI, id: 6, state: '200', url: /swagger-ui.html,
-  info: Swagger-UI Find!!!}
-- {type: default, loaded: true, re: springframework|reloadByURL|createJNDIRealm, method: GET, name: Spring Jolokia|Rce,
-  id: 7, state: '200', url: /jolokia/list, info: 'Spring Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm
-    Find!!!'}
-- {type: default, loaded: true, re: springframework|reloadByURL|createJNDIRealm, method: GET, name: Spring Jolokia|Rce,
-  id: 8, state: '200', url: /actuator/jolokia/list, info: 'Spring Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm
-    Find!!!'}
-- {type: default, loaded: true, re: api, method: GET, name: Doc File, id: 9, state: '200', url: /doc.html, info: Doc
-    File Find!!!}
-- {type: default, loaded: true, re: swagger, method: GET, name: swagger.json, id: 10, state: '200', url: /v1/swagger.json,
-  info: swagger.json Find!!!}
-- {type: default, loaded: true, re: swagger, method: GET, name: swagger.json, id: 11, state: '200', url: /v2/swagger.json,
-  info: swagger.json Find!!!}
-- {type: default, loaded: true, re: swagger, method: GET, name: Swagger-resources, id: 12, state: '200', url: /swagger-resources,
-  info: swagger-resources Find!!!}
-- {type: default, loaded: true, re: ASP.NET|tempuri.org, method: GET, name: Soap, id: 13, state: '200', url: /services,
-  info: Soap Find!!!}
-- {type: default, loaded: true, re: Web API, method: GET, name: Web API Help, id: 14, state: '200', url: /Help,
-  info: Web API Help Find!!!}
-- {type: default, loaded: true, re: Web API, method: GET, name: Web API Help, id: 15, state: '200', url: /help,
-  info: Web API Help Find!!!}
-- {type: default, loaded: true, re: password, method: POST, name: Weblogic CVE-2019-2618, id: 16, state: '401',
-  url: /bea_wls_deployment_internal/DeploymentService, info: Weblogic CVE-2019-2618
-    Find!!!}
-- {type: default, loaded: true, re: .git, method: GET, name: .Git, id: 17, state: '200', url: /.git/HEAD, info: .git
-    Find!!!}
-- {type: default, loaded: true, re: has-props|file|dir, method: GET, name: Svn, id: 18, state: '200', url: /.svn/entries,
-  info: .svn Find!!!}
-- {type: default, loaded: true, re: ds_store, method: GET, name: DS_Store, id: 19, state: '200', url: /.DS_Store,
-  info: .DS_Store Find!!!}
-- {type: default, loaded: true, re: README.md, method: GET, name: README.md, id: 20, state: '206', url: /README.md,
-  info: README.md Find!!!}
-- {type: default, loaded: true, re: crossdomain.xml, method: GET, name: crossdomain, id: 21, state: '200', url: /crossdomain.xml,
-  info: crossdomain.xml Find!!!}
-- {type: default, loaded: true, re: .idea, method: GET, name: .idea, id: 22, state: '200', url: /.idea/modules.xml,
-  info: .idea Find!!!}
-- {type: default, loaded: true, re: readme.txt, method: GET, name: readme, id: 23, state: '206', url: /readme.txt,
-  info: readme.txt Find!!!}
-- {type: default, loaded: true, re: api-docs|openapi, method: GET, name: api-docs, id: 24, state: '200', url: /v3/api-docs,
-  info: api-docs Find !!!}
-- {type: default, loaded: true, re: User-agent, method: GET, name: robots, id: 25, state: '200', url: /robots.txt,
-  info: robots.txt Find !!!}
-- {type: default, loaded: true, re: href, method: GET, name: actuator, id: 26, state: '200', url: /actuator/, info: actuator
-    FInd !!!}
+- {method: GET, state: '200', name: Druid Monitor, url: /druid/index.html, id: 4,
+  info: Druid Monitor Find!!!, loaded: true, type: Unauthorized, re: druid}
+- {type: ApiDoc, loaded: true, re: api-docs, method: GET, name: api-docs, id: 5, state: '200',
+  url: /v2/api-docs, info: api-docs Find!!!}
+- {type: ApiDoc, loaded: true, re: swagger, method: GET, name: Swagger-UI, id: 6,
+  state: '200', url: /swagger-ui.html, info: Swagger-UI Find!!!}
+- {type: Spring, loaded: true, re: springframework|reloadByURL|createJNDIRealm, method: GET,
+  name: Spring Jolokia|Rce, id: 7, state: '200', url: /jolokia/list, info: 'Spring
+    Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
+- {type: Spring, loaded: true, re: springframework|reloadByURL|createJNDIRealm, method: GET,
+  name: Spring Jolokia|Rce, id: 8, state: '200', url: /actuator/jolokia/list, info: 'Spring
+    Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
+- {type: ApiDoc, loaded: true, re: api, method: GET, name: Doc File, id: 9, state: '200',
+  url: /doc.html, info: Doc File Find!!!}
+- {type: Spring, loaded: true, re: swagger, method: GET, name: swagger.json, id: 10,
+  state: '200', url: /v1/swagger.json, info: swagger.json Find!!!}
+- {type: Spring, loaded: true, re: swagger, method: GET, name: swagger.json, id: 11,
+  state: '200', url: /v2/swagger.json, info: swagger.json Find!!!}
+- {type: Spring, loaded: true, re: swagger, method: GET, name: Swagger-resources,
+  id: 12, state: '200', url: /swagger-resources, info: swagger-resources Find!!!}
+- {type: ApiDoc, loaded: true, re: ASP.NET|tempuri.org, method: GET, name: Soap, id: 13,
+  state: '200', url: /services, info: Soap Find!!!}
+- {type: ApiDoc, loaded: true, re: Web API, method: GET, name: Web API Help, id: 14,
+  state: '200', url: /Help, info: Web API Help Find!!!}
+- {type: ApiDoc, loaded: true, re: Web API, method: GET, name: Web API Help, id: 15,
+  state: '200', url: /help, info: Web API Help Find!!!}
+- {method: POST, state: '401', name: Weblogic CVE-2019-2618, url: /bea_wls_deployment_internal/DeploymentService,
+  id: 16, info: Weblogic CVE-2019-2618 Find!!!, loaded: true, type: Weblogic, re: password}
+- {type: Information leakage, loaded: true, re: .git, method: GET, name: .Git, id: 17,
+  state: '200', url: /.git/HEAD, info: .git Find!!!}
+- {type: Information leakage, loaded: true, re: has-props|file|dir, method: GET, name: Svn,
+  id: 18, state: '200', url: /.svn/entries, info: .svn Find!!!}
+- {type: Information leakage, loaded: true, re: ds_store, method: GET, name: DS_Store,
+  id: 19, state: '200', url: /.DS_Store, info: .DS_Store Find!!!}
+- {type: Information leakage, loaded: true, re: README.md, method: GET, name: README.md,
+  id: 20, state: '206', url: /README.md, info: README.md Find!!!}
+- {type: Information leakage, loaded: true, re: crossdomain.xml, method: GET, name: crossdomain,
+  id: 21, state: '200', url: /crossdomain.xml, info: crossdomain.xml Find!!!}
+- {type: Information leakage, loaded: true, re: .idea, method: GET, name: .idea, id: 22,
+  state: '200', url: /.idea/modules.xml, info: .idea Find!!!}
+- {type: Information leakage, loaded: true, re: readme.txt, method: GET, name: readme,
+  id: 23, state: '206', url: /readme.txt, info: readme.txt Find!!!}
+- {type: ApiDoc, loaded: true, re: api-docs|openapi, method: GET, name: api-docs,
+  id: 24, state: '200', url: /v3/api-docs, info: api-docs Find !!!}
+- {type: Information leakage, loaded: true, re: User-agent, method: GET, name: robots,
+  id: 25, state: '200', url: /robots.txt, info: robots.txt Find !!!}
+- {type: Spring, loaded: true, re: href, method: GET, name: actuator, id: 26, state: '200',
+  url: /actuator/, info: actuator FInd !!!}
