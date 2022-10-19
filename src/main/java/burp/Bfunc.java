@@ -4,6 +4,7 @@ package burp;
 import yaml.YamlUtil;
 
 import javax.swing.*;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +18,22 @@ public class Bfunc {
         for (Map<String, Object> zidian : rule_list) {
             String type = (String) zidian.get("type");
             String id = String.valueOf(zidian.get("id"));
-            boolean loaded = Boolean.parseBoolean(String.valueOf(zidian.get("loaded")));
             String name = (String) zidian.get("name");
             String url = (String) zidian.get("url");
             String re = (String) zidian.get("re");
             String info = (String) zidian.get("info");
             String state = (String) zidian.get("state");
             String method = (String) zidian.get("method");
+            boolean loaded = Boolean.parseBoolean(String.valueOf(zidian.get("loaded")));
+
+            if (type == null && !loaded){
+                zidian.put("type","default");
+                zidian.put("loaded",true);
+                YamlUtil.updateYaml(zidian,BurpExtender.Yaml_Path);
+                type = "default";
+                loaded = true;
+            }
+
             if (views.containsKey(type)) {
                 View view_one = views.get(type);
                 view_one.log.add(new View.LogEntry(id, type, loaded, name, method, url, re, info, state));
