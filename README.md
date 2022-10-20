@@ -35,7 +35,7 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 * 被动扫描，使用Burpsuite IScannerCheck接口，在流量初次流经burp时进行扫描，重复流量不会进行扫描。
 
   * 对流经流量的每一层路径进行规则探测，并进行正则匹配，符合规则则展示在VulDisplay界面
-  * 如https://www.baidu.com/aaa/bbb，则会对https://www.baidu.com/、https://www.baidu.com/aaa/、https://www.baidu.com/bbb分别进行探测，如果存在点后缀，则会跳过。
+  * 如https://www.baidu.com/aaa/bbb，则会对/、/aaa/、/aaa/bbb/ 分别进行探测，如果存在点后缀，则会跳过。
 
 * 使用线程池增加扫描速度，默认线程10，可自行调节（线程个数最多与规则个数相等，多了也没用）
 
