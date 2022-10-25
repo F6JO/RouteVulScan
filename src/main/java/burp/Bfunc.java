@@ -74,7 +74,7 @@ public class Bfunc {
                     }
                 }
             }
-            burp.views = Get_Views();
+//            burp.views = Get_Views();
         }
     }
         public static void show_yaml (BurpExtender burp){

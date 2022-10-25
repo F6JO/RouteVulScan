@@ -64,7 +64,8 @@ class TabTitleEditListener extends MouseAdapter implements ChangeListener, Docum
                         up_map.put("state", logEntry.state);
                         YamlUtil.updateYaml(up_map,BurpExtender.Yaml_Path);
                     }
-                    burp.views = Bfunc.Get_Views();
+//                    burp.views = Bfunc.Get_Views();
+                    Bfunc.show_yaml(burp);
                 }
 
 

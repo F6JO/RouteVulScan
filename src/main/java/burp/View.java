@@ -184,6 +184,7 @@ public class View extends AbstractTableModel {
 
             LogEntry logEntry = log.get(row);
             Choice = logEntry;
+
             super.changeSelection(row, col, toggle, extend);
         }
     }

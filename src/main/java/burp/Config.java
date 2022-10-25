@@ -386,8 +386,9 @@ public class Config {
                         add_map.put("info", info);
                         add_map.put("state", state);
                         YamlUtil.updateYaml(add_map, yaml_path1);
-                        burp.views = Bfunc.Get_Views();
-                        Bfunc.show_yaml(burp);
+//                        burp.views = Bfunc.Get_Views();
+//                        Bfunc.show_yaml(burp);
+                        Bfunc.show_yaml_view(burp, view_class, type);
                         frame.dispose();
 
                     }
@@ -452,7 +453,7 @@ public class Config {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             YamlUtil.removeYaml(view_class.Choice.id, yaml_path1);
-                            burp.views = Bfunc.Get_Views();
+//                            burp.views = Bfunc.Get_Views();
                             Bfunc.show_yaml_view(burp, view_class, type);
                             frame.dispose();
 

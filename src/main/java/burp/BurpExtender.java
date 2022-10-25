@@ -57,7 +57,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
         this.urlC = new UrlRepeat();
         this.Config_l = new Config(this);
         this.tags = new Tags(callbacks, Config_l);
-        this.views = Bfunc.Get_Views();
+//        this.views = Bfunc.Get_Views();
         call.printOutput("@Info: Loading RouteVulScan success");
         call.printOutput("@Version: RouteVulScan 1.3");
         call.printOutput("@From: Code by F6JO");
