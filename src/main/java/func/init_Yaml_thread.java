@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 public class init_Yaml_thread extends Thread {
     private BurpExtender burp;
@@ -35,9 +36,12 @@ public class init_Yaml_thread extends Thread {
                 IResponseInfo AnalyzeYamlResponse = this.burp.help.analyzeResponse(YamlResponse);
                 String ResponseBody = this.burp.help.bytesToString(YamlResponse).substring(AnalyzeYamlResponse.getBodyOffset());
 
-                FileOutputStream file = new FileOutputStream(BurpExtender.Yaml_Path);
-                file.write(this.burp.help.stringToBytes(ResponseBody));
-                file.close();
+                Map<String, Object> NewYaml = YamlUtil.readStrYaml(ResponseBody);
+                YamlUtil.MergerUpdateYamlFunc(NewYaml);
+
+//                FileOutputStream file = new FileOutputStream(BurpExtender.Yaml_Path);
+//                file.write(this.burp.help.stringToBytes(ResponseBody));
+//                file.close();
 
                 Bfunc.show_yaml(burp);
                 JOptionPane.showMessageDialog(one, "Update successful", "Tips ", 1);
@@ -46,10 +50,11 @@ public class init_Yaml_thread extends Thread {
             }
         } catch (MalformedURLException e) {
             JOptionPane.showMessageDialog(one, "URL creation failed", "Error ", 0);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(one, "File write failed", "Error ", 0);
-
         }
+//        catch (IOException e) {
+//            JOptionPane.showMessageDialog(one, "File write failed", "Error ", 0);
+//
+//        }
 
 
     }

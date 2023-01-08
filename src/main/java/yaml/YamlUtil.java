@@ -1,12 +1,6 @@
 package yaml;
 
 import burp.BurpExtender;
-import burp.IHttpRequestResponse;
-import burp.IRequestInfo;
-import burp.View;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Request;
-import com.squareup.okhttp.Response;
 import func.init_Yaml_thread;
 import org.yaml.snakeyaml.Yaml;
 
@@ -92,6 +86,60 @@ public class YamlUtil {
         }
 
     }
+
+    public static Map<String, Object> readStrYaml(String str){
+        Map<String, Object> data = null;
+        Yaml yaml = new Yaml();
+        data = yaml.load(str);
+        return data;
+    }
+
+
+    public static void MergerUpdateYamlFunc(Map<String, Object> newYaml){
+        Map<String, Object> oldYaml = YamlUtil.readYaml(BurpExtender.Yaml_Path);
+        List<Map<String, Object>> oldYamlList = (List<Map<String, Object>>)oldYaml.get("Load_List");
+        List<Map<String, Object>> newYamlList = (List<Map<String, Object>>)newYaml.get("Load_List");
+        for (Map<String, Object> i : newYamlList){
+            if (!YamlUtil.inYamlList(oldYamlList,i)){
+                int id = 0;
+                for (Map<String, Object> zidian : (List<Map<String, Object>>)YamlUtil.readYaml(BurpExtender.Yaml_Path).get("Load_List")) {
+                    if ((int) zidian.get("id") > id) {
+                        id = (int) zidian.get("id");
+                    }
+                }
+                id += 1;
+                i.remove("id");
+                i.put("id",id);
+                YamlUtil.addYaml(i,BurpExtender.Yaml_Path);
+            }
+        }
+
+
+    }
+
+    public static boolean inYamlList(List<Map<String, Object>> mapList,Map<String, Object> oneMap){
+        for (Map<String, Object> i : mapList){
+            if (YamlUtil.ifmapEqual(i,oneMap)){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    public static boolean ifmapEqual(Map<String, Object> i, Map<String, Object> oneMap){
+        boolean mapEqual = true;
+        for (String key : i.keySet()){
+            if (!key.equals("loaded") && !key.equals("id") && !key.equals("type")){
+                if (!i.get(key).equals(oneMap.get(key))){
+                    mapEqual = false;
+                    break;
+                }
+            }
+        }
+        return mapEqual;
+    }
+
 
 
 }
