@@ -49,6 +49,7 @@ public class YamlUtil {
         }
         Map<String, Object> save = (Map<String, Object>) new HashMap<String, Object>();
         save.put("Load_List", List2);
+        save.put("Bypass_List", Yaml_Map.get("Bypass_List"));
         YamlUtil.writeYaml(save, filePath);
     }
 
@@ -65,6 +66,7 @@ public class YamlUtil {
         }
         Map<String, Object> save = (Map<String, Object>) new HashMap<String, Object>();
         save.put("Load_List", List2);
+        save.put("Bypass_List", Yaml_Map.get("Bypass_List"));
         YamlUtil.writeYaml(save, filePath);
 
     }
@@ -82,6 +84,7 @@ public class YamlUtil {
             Map<String, Object> save = (Map<String, Object>) new HashMap<String, Object>();
             List1.add(add);
             save.put("Load_List", List1);
+            save.put("Bypass_List", Yaml_Map.get("Bypass_List"));
             YamlUtil.writeYaml(save, filePath);
         }
 
@@ -113,6 +116,23 @@ public class YamlUtil {
                 YamlUtil.addYaml(i,BurpExtender.Yaml_Path);
             }
         }
+        List<String> oldBypassList = (List<String>)oldYaml.get("Bypass_List");
+        List<String> newBypassList = (List<String>)newYaml.get("Bypass_List");
+        if (oldBypassList == null){
+            oldBypassList = newBypassList;
+        }else {
+            for (String i : newBypassList){
+                if (!oldBypassList.contains(i)){
+                    oldBypassList.add(i);
+                }
+            }
+        }
+
+        Map<String, Object> save = (Map<String, Object>) new HashMap<String, Object>();
+        save.put("Load_List", (List<Map<String, Object>>) YamlUtil.readYaml(BurpExtender.Yaml_Path).get("Load_List"));
+        save.put("Bypass_List", oldBypassList);
+        YamlUtil.writeYaml(save,BurpExtender.Yaml_Path);
+
 
 
     }

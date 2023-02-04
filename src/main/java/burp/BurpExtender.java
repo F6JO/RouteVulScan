@@ -34,6 +34,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     public ExecutorService ThreadPool;
     public boolean Carry_head = false;
     public boolean on_off = false;
+    public boolean Bypass = false;
     public static String Download_Yaml_protocol = "https";
     public static String Download_Yaml_host = "raw.githubusercontent.com";
     public static int Download_Yaml_port = 443;

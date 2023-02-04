@@ -154,6 +154,8 @@ public class Config {
         this.spinner1.setBounds(1168, 34, 100, 23);
 
 
+
+
         // add按钮
         JButton add_button = new JButton("Add");
         add_button.setBounds(5, 75, 70, 23);
@@ -180,26 +182,31 @@ public class Config {
         ruleTabbedPane.addMouseListener(ruleSwitch);
 
 
-        // Switch 文本展示框
-        JLabel Expansion_switch = new JLabel("Extend Switch:");
-        Expansion_switch.setBounds(5, -10, 100, 50);
+//        // Switch 文本展示框
+//        JLabel Expansion_switch = new JLabel("Extend Switch:");
+//        Expansion_switch.setBounds(5, -10, 100, 50);
 
         // 开启按钮
 //        JButton on_off_button = new JButton("Stop");
         JButton on_off_button = new JButton("Start");
-        on_off_button.setBounds(110, 5, 70, 23);
+        on_off_button.setBounds(20, 5, 70, 23);
         Color Primary = on_off_button.getBackground();
 //        on_off_button.setBackground(Color.green);
         on_off_Button_action(on_off_button, Primary);
 
-        // Switch 文本展示框
-        JLabel Carry_head = new JLabel("Carry Head:");
-        Carry_head.setBounds(224, -10, 100, 50);
+//        // Switch 文本展示框
+//        JLabel Carry_head = new JLabel("Carry Head:");
+//        Carry_head.setBounds(224, -10, 100, 50);
 
         // 携带head按钮
         JButton carry_head_button = new JButton("Head_On");
-        carry_head_button.setBounds(329, 5, 90, 23);
+        carry_head_button.setBounds(150, 5, 90, 23);
         carry_head_Button_action(carry_head_button, Primary);
+
+        // bypass按钮
+        JButton bypass_button = new JButton("Bypass_On");
+        bypass_button.setBounds(300, 5, 90, 23);
+        bypass_Button_action(bypass_button, bypass_button.getBackground());
 
         // Filter_Host 文本展示框
         JLabel Filter_Host = new JLabel("Filter_Host:");
@@ -217,15 +224,16 @@ public class Config {
         one.add(txtfield1);
         one.add(Online_Update_button);
         one.add(load_button);
+        one.add(bypass_button);
         one.add(add_button);
         one.add(edit_button);
         one.add(remove_button);
         one.add(ruleTabbedPane);
         one.add(thread_num);
         one.add(spinner1);
-        one.add(Expansion_switch);
+//        one.add(Expansion_switch);
         one.add(on_off_button);
-        one.add(Carry_head);
+//        one.add(Carry_head);
         one.add(carry_head_button);
         one.add(Filter_Host);
         one.add(Host_txtfield);
@@ -265,6 +273,26 @@ public class Config {
                 } else {
                     burp.on_off = true;
                     Button_one.setText("Stop");
+                    Button_one.setBackground(Color.green);
+                }
+
+            }
+        });
+    }
+
+
+    private void bypass_Button_action(JButton Button_one, Color Primary) {
+
+        Button_one.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (burp.Bypass) {
+                    burp.Bypass = false;
+                    Button_one.setText("Bypass_On");
+                    Button_one.setBackground(Primary);
+                } else {
+                    burp.Bypass = true;
+                    Button_one.setText("Bypass_Off");
                     Button_one.setBackground(Color.green);
                 }
 

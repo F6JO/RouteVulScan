@@ -64,14 +64,15 @@ public class vulscan {
         if (paths.length == 0) {
             paths = new String[]{""};
         }
-        LaunchPath(true,domainNames,Listx,newHttpRequestResponse,heads);
-        LaunchPath(false,paths,Listx,newHttpRequestResponse,heads);
+        List<String> Bypass_List = (List<String>) Yaml_Map.get("Bypass_List");
+        LaunchPath(true,domainNames,Listx,newHttpRequestResponse,heads,Bypass_List);
+        LaunchPath(false,paths,Listx,newHttpRequestResponse,heads,Bypass_List);
 
 
 
     }
 
-    private void LaunchPath(Boolean ClearPath_record ,String[] paths,List<Map<String, Object>> Listx,IHttpRequestResponse newHttpRequestResponse,List<String> heads){
+    private void LaunchPath(Boolean ClearPath_record ,String[] paths,List<Map<String, Object>> Listx,IHttpRequestResponse newHttpRequestResponse,List<String> heads,List<String> Bypass_List){
         this.Path_record = "";
         for (String path : paths) {
             if (ClearPath_record){
@@ -86,7 +87,7 @@ public class vulscan {
             }
 
             for (Map<String, Object> zidian : Listx) {
-                this.burp.ThreadPool.execute(new threads(zidian, this, newHttpRequestResponse, heads));
+                this.burp.ThreadPool.execute(new threads(zidian, this, newHttpRequestResponse, heads,Bypass_List));
             }
 
             while (true) {
