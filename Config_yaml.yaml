@@ -1,4 +1,4 @@
-Bypass_List: [., '%2f', '%2e','xxx']
+Bypass_List: [., '%2f', '%2e']
 Load_List:
 - {type: Unauthorized, loaded: true, re: nacos, method: GET, name: Nacos, id: 1, state: '200',
   url: /nacos/index.html, info: Nacos Find!!!}
