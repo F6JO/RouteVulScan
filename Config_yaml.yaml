@@ -56,5 +56,37 @@ Load_List:
   id: 24, state: '200', url: /v3/api-docs, info: api-docs Find !!!}
 - {type: Information leakage, loaded: true, re: User-agent, method: GET, name: robots,
   id: 25, state: '200', url: /robots.txt, info: robots.txt Find !!!}
-- {type: Spring, loaded: true, re: href, method: GET, name: actuator, id: 26, state: '200',
-  url: /actuator/, info: actuator FInd !!!}
+- {type: Spring, loaded: true, re: href, method: GET, name: actuator, state: '200',
+  url: /actuator/, info: actuator FInd !!!, id: 28}
+- {loaded: true, re: swagger, method: GET, name: Swagger-UI, id: 29, state: '200',
+  type: ApiDoc, url: /api/swagger-ui.html, info: Swagger Find!!!}
+- {loaded: true, re: Platform|Components, method: GET, name: Docker Unauthorized,
+  id: 30, state: '200', type: Unauthorized, url: /version, info: Docker Unauthorized
+    Find!!!}
+- {loaded: true, re: repositories, method: GET, name: Docker Registry, id: 31, state: '200',
+  type: Unauthorized, url: /v2/_catalog, info: Docker Registry Find!!!}
+- {loaded: true, re: kibana, method: GET, name: kibana CVE-2019-7609, id: 32, state: '200',
+  type: Unauthorized, url: /app/kibana#/, info: kibana CVE-2019-7609 Find!!!}
+- {loaded: true, re: httpd_design_handlers, method: GET, name: CouchDB, id: 33, state: '200',
+  type: Unauthorized, url: /_config, info: CouchDB Find!!!}
+- {loaded: true, re: weblogic server, method: GET, name: Weblogic CVE-2020-14882,
+  id: 34, state: '200', type: Weblogic, url: /console/css/%252e%252e%252fconsole.portal,
+  info: Weblogic CVE-2020-14883 Find!!!}
+- {loaded: true, re: Applications, method: GET, name: HadoopYARN, id: 35, state: '200',
+  type: Unauthorized, url: /cluster, info: HadoopYARN Find!!!}
+- {loaded: true, re: jboss, method: GET, name: Jboss Unauthorized, id: 36, state: '200',
+  type: Unauthorized, url: /jmx-console/, info: Jboss Unauthorized Find!!!}
+- {loaded: true, re: jboss, method: GET, name: Jboss Unauthorized, id: 37, state: '200',
+  type: Unauthorized, url: /jbossws/, info: Jboss Unauthorized Find!!!}
+- {loaded: true, re: Jenkins, method: GET, name: Jenkins, id: 38, state: '200', type: Unauthorized,
+  url: /manage, info: Jenkins Find!!!}
+- {loaded: true, re: ActiveMQ, method: GET, name: ActiveMQ, id: 39, state: '200',
+  type: Unauthorized, url: /admin/, info: ActiveMQ Find!!!}
+- {loaded: true, re: /_cat/, method: GET, name: Elasticsearch, id: 40, state: '200',
+  type: Unauthorized, url: /_cat, info: Elasticsearch Find!!!}
+- {loaded: true, re: Zabbix, method: GET, name: Zabbix, id: 41, state: '200', type: Unauthorized,
+  url: '/zabbix.php?action=problem.view&ddreset=1', info: Zabbix Find!!!}
+- {loaded: true, re: Dashboard|solr|Request-Handler, method: GET, name: Solr, id: 42,
+  state: '200', type: Unauthorized, url: /solr/admin, info: Solr Find!!!}
+- {loaded: true, re: Weblogic, method: GET, name: Weblogic Console, id: 43, state: '200',
+  type: Weblogic, url: /console, info: Weblogic Console Find!!!}
