@@ -1,34 +1,36 @@
 Bypass_List: [., '%2f', '%2e']
 Load_List:
-- {type: Unauthorized, loaded: true, re: codemirror\.addone\.fullscreen\.js, method: GET, name: Nacos, id: 1, state: '200',
-  url: /nacos/index.html, info: Nacos Find!!!}
-- {type: Spring, loaded: true, re: (java\.runtime\.version)|(java\.class\.version)|(sping\.config\.location)|(spring\.application\.name)|(applicationConfig)|(activeProfiles)|(server\.port)|(local\.server\.port), method: GET, name: Spring Env RCE, id: 2, state: '200', url: /env,
-  info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
+- {type: Unauthorized, loaded: true, re: codemirror\.addone\.fullscreen\.js, method: GET,
+  name: Nacos, id: 1, state: '200', url: /nacos/index.html, info: Nacos Find!!!}
+- {type: Spring, loaded: true, re: (java\.runtime\.version)|(java\.class\.version)|(sping\.config\.location)|(spring\.application\.name)|(applicationConfig)|(activeProfiles)|(server\.port)|(local\.server\.port),
+  method: GET, name: Spring Env RCE, id: 2, state: '200', url: /env, info: 'Actuator
+    Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
     Find!!!'}
-- {type: Spring, loaded: true, re: (java\.runtime\.version)|(java\.class\.version)|(sping\.config\.location)|(spring\.application\.name)|(applicationConfig)|(activeProfiles)|(server\.port)|(local\.server\.port), method: GET, name: Spring Env RCE, id: 3, state: '200', url: /actuator/env,
-  info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
+- {type: Spring, loaded: true, re: (java\.runtime\.version)|(java\.class\.version)|(sping\.config\.location)|(spring\.application\.name)|(applicationConfig)|(activeProfiles)|(server\.port)|(local\.server\.port),
+  method: GET, name: Spring Env RCE, id: 3, state: '200', url: /actuator/env, info: 'Actuator
+    Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
     Find!!!'}
 - {method: GET, state: '200', name: Druid Monitor, url: /druid/index.html, id: 4,
   info: Druid Monitor Find!!!, loaded: true, type: Unauthorized, re: (src=\"\/druid\.js\")|(href\=\"\/druid\.css\")}
 - {type: ApiDoc, loaded: true, re: '(Swagger 2\.0)|(\"swagger\"\:)|(Swagger UI)|(\<title\>Swagger
-    UI)|(swaggerVersion)|(id\=\"swagger\-ui)', method: GET, name: api-docs, id: 5, state: '200',
-  url: /v2/api-docs, info: api-docs Find!!!}
+    UI)|(swaggerVersion)|(id\=\"swagger\-ui)', method: GET, name: api-docs, id: 5,
+  state: '200', url: /v2/api-docs, info: api-docs Find!!!}
 - {type: ApiDoc, loaded: true, re: '(Swagger 2\.0)|(\"swagger\"\:)|(Swagger UI)|(\<title\>Swagger
     UI)|(swaggerVersion)|(id\=\"swagger\-ui)', method: GET, name: Swagger-UI, id: 6,
   state: '200', url: /swagger-ui.html, info: Swagger-UI Find!!!}
-- {type: Spring, loaded: true, re: 'springframework|reloadByURL|createJNDIRealm|(\"type\"\:\"list\")', method: GET,
-  name: Spring Jolokia|Rce, id: 7, state: '200', url: /jolokia/list, info: 'Spring
-    Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
-- {type: Spring, loaded: true, re: 'springframework|reloadByURL|createJNDIRealm|(\"type\"\:\"list\")', method: GET,
-  name: Spring Jolokia|Rce, id: 8, state: '200', url: /actuator/jolokia/list, info: 'Spring
-    Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
+- {type: Spring, loaded: true, re: 'springframework|reloadByURL|createJNDIRealm|(\"type\"\:\"list\")',
+  method: GET, name: Spring Jolokia|Rce, id: 7, state: '200', url: /jolokia/list,
+  info: 'Spring Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
+- {type: Spring, loaded: true, re: 'springframework|reloadByURL|createJNDIRealm|(\"type\"\:\"list\")',
+  method: GET, name: Spring Jolokia|Rce, id: 8, state: '200', url: /actuator/jolokia/list,
+  info: 'Spring Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
 - {type: ApiDoc, loaded: true, re: api, method: GET, name: Doc File, id: 9, state: '200',
   url: /doc.html, info: Doc File Find!!!}
-- {type: Spring, loaded: true, re: swagger, method: GET, name: swagger.json, id: 10,
+- {type: ApiDoc, loaded: true, re: swagger, method: GET, name: swagger.json, id: 10,
   state: '200', url: /v1/swagger.json, info: swagger.json Find!!!}
-- {type: Spring, loaded: true, re: swagger, method: GET, name: swagger.json, id: 11,
+- {type: ApiDoc, loaded: true, re: swagger, method: GET, name: swagger.json, id: 11,
   state: '200', url: /v2/swagger.json, info: swagger.json Find!!!}
-- {type: Spring, loaded: true, re: swagger, method: GET, name: Swagger-resources,
+- {type: ApiDoc, loaded: true, re: swagger, method: GET, name: Swagger-resources,
   id: 12, state: '200', url: /swagger-resources, info: swagger-resources Find!!!}
 - {type: ApiDoc, loaded: true, re: ASP.NET|tempuri.org, method: GET, name: Soap, id: 13,
   state: '200', url: /services, info: Soap Find!!!}
@@ -56,8 +58,8 @@ Load_List:
   id: 24, state: '200', url: /v3/api-docs, info: api-docs Find !!!}
 - {type: Information leakage, loaded: true, re: User-agent, method: GET, name: robots,
   id: 25, state: '200', url: /robots.txt, info: robots.txt Find !!!}
-- {type: Spring, loaded: true, re: href, method: GET, name: actuator, state: '200',
-  url: /actuator/, info: actuator FInd !!!, id: 28}
+- {loaded: true, re: '\{\"\_links\"\:\{\"self\"\:\{', method: GET, name: actuator,
+  id: 28, state: '200', type: Spring, url: /actuator/, info: actuator FInd !!!}
 - {loaded: true, re: swagger, method: GET, name: Swagger-UI, id: 29, state: '200',
   type: ApiDoc, url: /api/swagger-ui.html, info: Swagger Find!!!}
 - {loaded: true, re: Platform|Components, method: GET, name: Docker Unauthorized,
@@ -88,5 +90,6 @@ Load_List:
   url: '/zabbix.php?action=problem.view&ddreset=1', info: Zabbix Find!!!}
 - {loaded: true, re: Dashboard|solr|Request-Handler, method: GET, name: Solr, id: 42,
   state: '200', type: Unauthorized, url: /solr/admin, info: Solr Find!!!}
-- {loaded: true, re: Weblogic, method: GET, name: Weblogic Console, id: 43, state: '200',
-  type: Weblogic, url: /console, info: Weblogic Console Find!!!}
+- {loaded: true, re: (Welcome to Weblogic Application Server)|(Oracle WebLogic Server)|(\/console\/framework\/skins\/wlsconsole\/images\/login_WebLogic_branding\.png),
+  method: GET, name: Weblogic Console, id: 43, state: '200', type: Weblogic, url: /console,
+  info: Weblogic Console Find!!!}
