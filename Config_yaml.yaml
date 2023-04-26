@@ -1,25 +1,25 @@
 Bypass_List: [., '%2f', '%2e']
 Load_List:
-- {type: Unauthorized, loaded: true, re: nacos, method: GET, name: Nacos, id: 1, state: '200',
+- {type: Unauthorized, loaded: true, re: codemirror\.addone\.fullscreen\.js, method: GET, name: Nacos, id: 1, state: '200',
   url: /nacos/index.html, info: Nacos Find!!!}
-- {type: Spring, loaded: true, re: springframework|spring.cloud.bootstrap.location|Spring
-    Actuator Env RCE, method: GET, name: Spring Env RCE, id: 2, state: '200', url: /env,
+- {type: Spring, loaded: true, re: (java\.runtime\.version)|(java\.class\.version)|(sping\.config\.location)|(spring\.application\.name)|(applicationConfig)|(activeProfiles)|(server\.port)|(local\.server\.port), method: GET, name: Spring Env RCE, id: 2, state: '200', url: /env,
   info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
     Find!!!'}
-- {type: Spring, loaded: true, re: springframework|spring.cloud.bootstrap.location|Spring
-    Actuator Env RCE, method: GET, name: Spring Env RCE, id: 3, state: '200', url: /actuator/env,
+- {type: Spring, loaded: true, re: (java\.runtime\.version)|(java\.class\.version)|(sping\.config\.location)|(spring\.application\.name)|(applicationConfig)|(activeProfiles)|(server\.port)|(local\.server\.port), method: GET, name: Spring Env RCE, id: 3, state: '200', url: /actuator/env,
   info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
     Find!!!'}
 - {method: GET, state: '200', name: Druid Monitor, url: /druid/index.html, id: 4,
-  info: Druid Monitor Find!!!, loaded: true, type: Unauthorized, re: druid}
-- {type: ApiDoc, loaded: true, re: api-docs, method: GET, name: api-docs, id: 5, state: '200',
+  info: Druid Monitor Find!!!, loaded: true, type: Unauthorized, re: (src=\"\/druid\.js\")|(href\=\"\/druid\.css\")}
+- {type: ApiDoc, loaded: true, re: '(Swagger 2\.0)|(\"swagger\"\:)|(Swagger UI)|(\<title\>Swagger
+    UI)|(swaggerVersion)|(id\=\"swagger\-ui)', method: GET, name: api-docs, id: 5, state: '200',
   url: /v2/api-docs, info: api-docs Find!!!}
-- {type: ApiDoc, loaded: true, re: swagger, method: GET, name: Swagger-UI, id: 6,
+- {type: ApiDoc, loaded: true, re: '(Swagger 2\.0)|(\"swagger\"\:)|(Swagger UI)|(\<title\>Swagger
+    UI)|(swaggerVersion)|(id\=\"swagger\-ui)', method: GET, name: Swagger-UI, id: 6,
   state: '200', url: /swagger-ui.html, info: Swagger-UI Find!!!}
-- {type: Spring, loaded: true, re: springframework|reloadByURL|createJNDIRealm, method: GET,
+- {type: Spring, loaded: true, re: 'springframework|reloadByURL|createJNDIRealm|(\"type\"\:\"list\")', method: GET,
   name: Spring Jolokia|Rce, id: 7, state: '200', url: /jolokia/list, info: 'Spring
     Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
-- {type: Spring, loaded: true, re: springframework|reloadByURL|createJNDIRealm, method: GET,
+- {type: Spring, loaded: true, re: 'springframework|reloadByURL|createJNDIRealm|(\"type\"\:\"list\")', method: GET,
   name: Spring Jolokia|Rce, id: 8, state: '200', url: /actuator/jolokia/list, info: 'Spring
     Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
 - {type: ApiDoc, loaded: true, re: api, method: GET, name: Doc File, id: 9, state: '200',
