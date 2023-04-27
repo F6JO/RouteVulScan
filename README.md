@@ -6,6 +6,7 @@ Burpsuite - Route Vulnerable scanning  递归式被动检测脆弱路径的burp�
 ## 贡献
 
 * 合作者 [@deep0](https://github.com/deep0)
+* 规则贡献 [@r0fus0d](https://github.com/No-Github)
 * 参考项目 [HAE](https://github.com/gh0stkey/HaE)
 
 ## 介绍
