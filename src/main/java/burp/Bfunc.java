@@ -4,10 +4,7 @@ package burp;
 import yaml.YamlUtil;
 
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Bfunc {
 
@@ -26,10 +23,10 @@ public class Bfunc {
             String method = (String) zidian.get("method");
             boolean loaded = Boolean.parseBoolean(String.valueOf(zidian.get("loaded")));
 
-            if (type == null && !loaded){
-                zidian.put("type","default");
-                zidian.put("loaded",true);
-                YamlUtil.updateYaml(zidian,BurpExtender.Yaml_Path);
+            if (type == null && !loaded) {
+                zidian.put("type", "default");
+                zidian.put("loaded", true);
+                YamlUtil.updateYaml(zidian, BurpExtender.Yaml_Path);
                 type = "default";
                 loaded = true;
             }
@@ -48,10 +45,10 @@ public class Bfunc {
 
     }
 
-    public static void show_yaml_view(BurpExtender burp, View view,String type) {
-        if (view == null){
+    public static void show_yaml_view(BurpExtender burp, View view, String type) {
+        if (view == null) {
             show_yaml(burp);
-        }else {
+        } else {
             List<View.LogEntry> log = view.log;
             synchronized (log) {
                 log.clear();
@@ -77,16 +74,51 @@ public class Bfunc {
 //            burp.views = Get_Views();
         }
     }
-        public static void show_yaml (BurpExtender burp){
-            burp.views = Get_Views();
-            burp.Config_l.ruleTabbedPane.removeAll();
-            for (String key : burp.views.keySet()) {
-                burp.Config_l.ruleTabbedPane.addTab(key, burp.views.get(key).Get_View());
-            }
-            burp.Config_l.ruleTabbedPane.addTab("...", new JLabel());
 
-
+    public static void show_yaml(BurpExtender burp) {
+        burp.views = Get_Views();
+        burp.Config_l.ruleTabbedPane.removeAll();
+        for (String key : burp.views.keySet()) {
+            burp.Config_l.ruleTabbedPane.addTab(key, burp.views.get(key).Get_View());
         }
+        burp.Config_l.ruleTabbedPane.addTab("...", new JLabel());
 
 
     }
+
+    public static Collection<Integer> StatusCodeProc(String state){
+        Collection<Integer> stateList = new ArrayList<Integer>();
+        if (state.length() != 3 && (state.contains(",") || state.contains("-"))){
+            if (state.contains(",")){
+                String[] states = state.split(",");
+                for (String OneState:states){
+                    if (OneState.contains("-")){
+                        String[] parts = OneState.split("-");
+                        int start = Integer.parseInt(parts[0]);
+                        int end = Integer.parseInt(parts[1]);
+                        for (int i = start; i <= end; i++) {
+                            stateList.add(i);
+                        }
+                    }else if (OneState.length() == 3){
+                        stateList.add(Integer.valueOf(OneState));
+                    }
+                }
+            }else if (state.contains("-")){
+                String[] parts = state.split("-");
+                int start = Integer.parseInt(parts[0]);
+                int end = Integer.parseInt(parts[1]);
+                for (int i = start; i <= end; i++) {
+                    stateList.add(i);
+                }
+            }
+        }else {
+            stateList.add(Integer.valueOf(state));
+        }
+        return stateList;
+
+    }
+
+
+
+
+}

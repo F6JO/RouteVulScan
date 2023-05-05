@@ -1,12 +1,15 @@
 package func;
 
 
+import burp.Bfunc;
 import burp.IExtensionHelpers;
 import burp.IHttpRequestResponse;
+import burp.IHttpService;
 import com.sun.jmx.snmp.tasks.Task;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -46,6 +49,7 @@ public class threads implements Task {
         String re = (String) zidian.get("re");
         String info = (String) zidian.get("info");
         String state = (String) zidian.get("state");
+        Collection<Integer> states = Bfunc.StatusCodeProc((String) zidian.get("state"));
 
         if (loaded) {
             URL url = null;
@@ -62,7 +66,6 @@ public class threads implements Task {
             if (is_InList) {
                 synchronized (vul.burp.history_url) {
                     vul.burp.history_url.add(url.toString());
-                    vul.burp.call.printOutput(url.toString());
                 }
                 byte[] request = vul.burp.help.buildHttpRequest(url);
                 // 添加head
@@ -80,9 +83,13 @@ public class threads implements Task {
 
                 newHttpRequestResponse = vul.burp.call.makeHttpRequest(vul.httpService, request);
 
+
+
                 // 是否匹配成功
                 boolean IFconform = true;
-                if (vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode() == Integer.parseInt(state)) {
+//                if (vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode() == Integer.parseInt(state)) {
+
+                if (states.contains(new Integer(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()))) {
                     byte[] resp = newHttpRequestResponse.getResponse();
                     Pattern re_rule = Pattern.compile(re, Pattern.CASE_INSENSITIVE);
                     Matcher pipe = re_rule.matcher(vul.burp.help.bytesToString(resp));
@@ -97,7 +104,8 @@ public class threads implements Task {
                         for (String i : Bypass_List){
                             byte[] newRequest = threads.edit_Bypass_request(vul.burp.help, request, i);
                             newHttpRequestResponse = vul.burp.call.makeHttpRequest(vul.httpService, newRequest);
-                            if (vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode() == Integer.parseInt(state)) {
+//                            if (vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode() == Integer.parseInt(state)) {
+                            if (states.contains(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode())) {
                                 byte[] resp = newHttpRequestResponse.getResponse();
                                 Pattern re_rule = Pattern.compile(re, Pattern.CASE_INSENSITIVE);
                                 Matcher pipe = re_rule.matcher(vul.burp.help.bytesToString(resp));
@@ -112,6 +120,11 @@ public class threads implements Task {
 
                     }
                 }
+
+                synchronized (vul.burp.call) {
+                    vul.burp.call.printOutput(url.toString());
+                }
+
 
 
             } else {
