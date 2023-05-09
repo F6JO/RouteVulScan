@@ -38,11 +38,11 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
   * 对流经流量的每一层路径进行规则探测，并进行正则匹配，符合规则则展示在VulDisplay界面
   * 如https://www.baidu.com/aaa/bbb，则会对/、/aaa/、/aaa/bbb/ 分别进行探测，如果存在点后缀，则会跳过。
 
-* 添加默认扫描项，如果host为域名，则将子域和主域当作第一层路径进行扫描。
-
 * 使用线程池增加扫描速度，默认线程10，可自行调节（线程个数最多与规则个数相等，多了也没用）
 
 * Start按钮，插件主开关，默认关闭
+
+* DomainScan按钮，开启后如果host为域名，则将子域和主域当作第一层路径进行扫描。
 
 * Head按钮，携带原始的请求头，默认关闭
 
@@ -58,7 +58,25 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 
   <img src="./img/Active_scan.jpg">
 
-  
+* 可使用特殊标记获取原始请求或响应中的信息，用作请求的路径或响应。
+
+  ```
+  请求相关：
+    {{request.head.*}}							-- 获取请求中head的各项，如获取cookie，{{request.head.cookie}}
+    	{{request.head.host.main}}		-- 获取host的根域名，如www.baidu.com:443，则获取baidu.com
+    	{{request.head.host.name}}		-- 获取域名，如www.baidu.com:443，则获取baidu
+    {{request.method}}							-- 获取请求的方法，如GET/POST
+    {{request.path}}								-- 获取请求的路径，如/aaa/bbb，则获取aaa/bbb
+    {{request.url}}									-- 获取完整请求url
+    {{request.protocol}}						-- 获取请求的协议，如http/https
+    {{request.port}}								-- 获取请求的端口号
+  响应相关：
+    {{response.head.*}}							-- 获取响应中head的各项，如获取server，{{response.head.server}}
+    {{response.status}}							-- 获取响应的状态码
+  ```
+
+* 状态码一栏可指定范围，如 200-299,500-599,302 可使用逗号来指定多个范围或多个状态码。
+
 
 
 ## 更新计划
@@ -74,8 +92,8 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 * 2022-10-18 添加分类，提供可根据个人习惯对规则进行分类处理【✓】
 * 2022-10-18 添加选择，每个规则设置为可选的形式，可自由选择想要的规则【✓】
 * 2023-02-04 添加bypass规则，在正常请求不符合预期时，尝试在路径中插入bypass字符尝试绕过【✓】
-* 添加黑白名单面板，添加自定义递归层数设置
-* 添加类似模板语言的标记，可在Config中配置标记获取当前请求的各类信息并当作路径或正则
+* 2023-05-09 将匹配的state状态码改为可以设置范围【✓】
+* 2023-05-09 添加类似模板语言的标记，可在Config中配置标记获取当前请求的各类信息并当作路径或正则【✓】
 
 ## 开心值
 
