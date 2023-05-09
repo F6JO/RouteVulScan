@@ -95,10 +95,14 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
                 Tags.this.Rtable = new JTabbedPane();
                 Tags.this.HRequestTextEditor = Tags.this.callbacks.createMessageEditor(Tags.this, false);
                 Tags.this.HResponseTextEditor = Tags.this.callbacks.createMessageEditor(Tags.this, false);
+
+
                 Tags.this.Ltable.addTab("Request", Tags.this.HRequestTextEditor.getComponent());
                 Tags.this.Rtable.addTab("Response", Tags.this.HResponseTextEditor.getComponent());
 
                 // 将子选项卡添加进主选项卡
+                Tags.this.HjSplitPane.setResizeWeight(0.5D);
+                Tags.this.HjSplitPane.setDividerSize(3);
                 Tags.this.HjSplitPane.add(Tags.this.Ltable, "left");
                 Tags.this.HjSplitPane.add(Tags.this.Rtable, "right");
 
@@ -108,7 +112,9 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
                 // 将两个页面插入容器
                 tabs.addTab("VulDisplay", Tags.this.splitPane);
-                tabs.addTab("Config", Config_l.$$$getRootComponent$$$());
+//                JTabbedPane ConfigView = new JTabbedPane();
+//                ConfigView.addTab("Rules",);
+                tabs.addTab("Config",Config_l.$$$getRootComponent$$$());
 
                 // 将容器置于顶层
                 top.setTopComponent(tabs);

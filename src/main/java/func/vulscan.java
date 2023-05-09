@@ -65,7 +65,9 @@ public class vulscan {
             paths = new String[]{""};
         }
         List<String> Bypass_List = (List<String>) Yaml_Map.get("Bypass_List");
-        LaunchPath(true,domainNames,Listx,newHttpRequestResponse,heads,Bypass_List);
+        if (burp.DomainScan) {
+            LaunchPath(true, domainNames, Listx, newHttpRequestResponse, heads, Bypass_List);
+        }
         LaunchPath(false,paths,Listx,newHttpRequestResponse,heads,Bypass_List);
 
 

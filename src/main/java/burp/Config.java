@@ -203,19 +203,29 @@ public class Config {
         carry_head_button.setBounds(150, 5, 90, 23);
         carry_head_Button_action(carry_head_button, Primary);
 
+
+        // DomainScan按钮
+        JButton DomainScan_button = new JButton("DomainScan_On");
+        DomainScan_button.setBounds(300, 5, 90, 23);
+        DomainScan_Button_action(DomainScan_button, DomainScan_button.getBackground());
+
+
+
         // bypass按钮
         JButton bypass_button = new JButton("Bypass_On");
-        bypass_button.setBounds(300, 5, 90, 23);
+        bypass_button.setBounds(450, 5, 90, 23);
         bypass_Button_action(bypass_button, bypass_button.getBackground());
+
+
 
         // Filter_Host 文本展示框
         JLabel Filter_Host = new JLabel("Filter_Host:");
-        Filter_Host.setBounds(473, -10, 100, 50);
+        Filter_Host.setBounds(623, -10, 100, 50);
 
         // Host 输入框
         JTextField Host_txtfield = new JTextField();   //创建文本框
         Host_txtfield.setText("*");    //设置文本框的内容
-        Host_txtfield.setBounds(548, 5, 572, 20);
+        Host_txtfield.setBounds(698, 5, 572, 20);
         burp.Host_txtfield = Host_txtfield;
 
 
@@ -224,6 +234,7 @@ public class Config {
         one.add(txtfield1);
         one.add(Online_Update_button);
         one.add(load_button);
+        one.add(DomainScan_button);
         one.add(bypass_button);
         one.add(add_button);
         one.add(edit_button);
@@ -293,6 +304,26 @@ public class Config {
                 } else {
                     burp.Bypass = true;
                     Button_one.setText("Bypass_Off");
+                    Button_one.setBackground(Color.green);
+                }
+
+            }
+        });
+    }
+
+
+    private void DomainScan_Button_action(JButton Button_one, Color Primary) {
+
+        Button_one.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (burp.DomainScan) {
+                    burp.DomainScan = false;
+                    Button_one.setText("DomainScan_On");
+                    Button_one.setBackground(Primary);
+                } else {
+                    burp.DomainScan = true;
+                    Button_one.setText("DomainScan_Off");
                     Button_one.setBackground(Color.green);
                 }
 

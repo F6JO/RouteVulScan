@@ -4,7 +4,6 @@ package func;
 import burp.Bfunc;
 import burp.IExtensionHelpers;
 import burp.IHttpRequestResponse;
-import burp.IHttpService;
 import com.sun.jmx.snmp.tasks.Task;
 
 import java.net.MalformedURLException;
@@ -45,17 +44,16 @@ public class threads implements Task {
 
         String name = (String) zidian.get("name");
         boolean loaded = (boolean) zidian.get("loaded");
-        String urll = (String) zidian.get("url");
-        String re = (String) zidian.get("re");
+        String urll = Bfunc.ProcTemplateLanguag((String) zidian.get("url"),newHttpRequestResponse,vul,false);
+        String re = Bfunc.ProcTemplateLanguag((String) zidian.get("re"),newHttpRequestResponse,vul,true);
         String info = (String) zidian.get("info");
-        String state = (String) zidian.get("state");
+//        String state = (String) zidian.get("state");
         Collection<Integer> states = Bfunc.StatusCodeProc((String) zidian.get("state"));
 
         if (loaded) {
             URL url = null;
             try {
                 url = new URL(vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().getProtocol(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().getHost(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().getPort(), String.valueOf(vul.Path_record) + urll);
-
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             }

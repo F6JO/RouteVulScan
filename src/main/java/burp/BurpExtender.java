@@ -35,6 +35,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     public boolean Carry_head = false;
     public boolean on_off = false;
     public boolean Bypass = false;
+    public boolean DomainScan = false;
     public static String Download_Yaml_protocol = "https";
     public static String Download_Yaml_host = "raw.githubusercontent.com";
     public static int Download_Yaml_port = 443;
@@ -60,9 +61,10 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
         this.tags = new Tags(callbacks, Config_l);
 //        this.views = Bfunc.Get_Views();
         call.printOutput("@Info: Loading RouteVulScan success");
-        call.printOutput("@Version: RouteVulScan 1.4");
+        call.printOutput("@Version: RouteVulScan 1.5");
         call.printOutput("@From: Code by F6JO");
         call.printOutput("@Github: https://github.com/F6JO/RouteVulScan");
+        call.printOutput("");
         call.setExtensionName(EXPAND_NAME);
         call.registerScannerCheck(this);
         call.registerContextMenuFactory(this);
