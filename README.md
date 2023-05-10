@@ -62,17 +62,17 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 
   ```
   请求相关：
-    {{request.head.*}}							-- 获取请求中head的各项，如获取cookie，{{request.head.cookie}}
-    	{{request.head.host.main}}		-- 获取host的根域名，如www.baidu.com:443，则获取baidu.com
-    	{{request.head.host.name}}		-- 获取域名，如www.baidu.com:443，则获取baidu
-    {{request.method}}							-- 获取请求的方法，如GET/POST
-    {{request.path}}								-- 获取请求的路径，如/aaa/bbb，则获取aaa/bbb
-    {{request.url}}									-- 获取完整请求url
-    {{request.protocol}}						-- 获取请求的协议，如http/https
-    {{request.port}}								-- 获取请求的端口号
+    {{request.head.*}}	-- 获取请求中head的各项，如获取cookie，{{request.head.cookie}}
+    	{{request.head.host.main}}	-- 获取host的根域名，如www.baidu.com:443，则获取baidu.com
+    	{{request.head.host.name}}	-- 获取域名，如www.baidu.com:443，则获取baidu
+    {{request.method}}	-- 获取请求的方法，如GET/POST
+    {{request.path}}	-- 获取请求的路径，如/aaa/bbb，则获取aaa/bbb
+    {{request.url}}	-- 获取完整请求url
+    {{request.protocol}}	-- 获取请求的协议，如http/https
+    {{request.port}}	-- 获取请求的端口号
   响应相关：
-    {{response.head.*}}							-- 获取响应中head的各项，如获取server，{{response.head.server}}
-    {{response.status}}							-- 获取响应的状态码
+    {{response.head.*}}	-- 获取响应中head的各项，如获取server，{{response.head.server}}
+    {{response.status}}	-- 获取响应的状态码
   ```
 
 * 状态码一栏可指定范围，如 200-299,500-599,302 可使用逗号来指定多个范围或多个状态码。
