@@ -42,7 +42,7 @@ RouteVulScan是使用java语言基于burpsuite api开发的可以递归检测脆
 
 * Start按钮，插件主开关，默认关闭
 
-* DomainScan按钮，开启后如果host为域名，则将子域和主域当作第一层路径进行扫描。
+* DomainScan按钮，开启后如果host为域名，则将子域和主域当作第一层路径进行扫描，默认关闭。
 
 * Head按钮，携带原始的请求头，默认关闭
 
