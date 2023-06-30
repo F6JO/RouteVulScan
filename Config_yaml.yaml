@@ -128,27 +128,3 @@ Load_List:
 - {loaded: false, re: (Welcome to Weblogic Application Server)|(Oracle WebLogic Server)|(\/console\/framework\/skins\/wlsconsole\/images\/login_WebLogic_branding\.png),
   method: GET, name: Weblogic Console, id: 57, state: '200', type: Weblogic, url: /console,
   info: Weblogic Console Find!!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 58, state: '200', type: Backup,
-  url: /root.rar, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 59, state: '200', type: Backup,
-  url: /root.zip, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 60, state: '200', type: Backup,
-  url: /root.tar, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 61, state: '200', type: Backup,
-  url: /root.bak, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 62, state: '200', type: Backup,
-  url: /admin.rar, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 63, state: '200', type: Backup,
-  url: /admin.tar, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 64, state: '200', type: Backup,
-  url: /admin.zip, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 65, state: '200', type: Backup,
-  url: /admin.bak, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 66, state: '200', type: Backup,
-  url: /web.rar, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 67, state: '200', type: Backup,
-  url: /web.tar, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 68, state: '200', type: Backup,
-  url: /web.zip, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 69, state: '200', type: Backup,
-  url: /web.bak, info: Backup File Find !!!}
