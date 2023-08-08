@@ -43,14 +43,12 @@ Load_List:
   type: Information leakage, url: /crossdomain.xml, info: crossdomain.xml Find!!!}
 - {loaded: true, re: .idea, method: GET, name: .idea, id: 22, state: '200', type: Information
     leakage, url: /.idea/modules.xml, info: .idea Find!!!}
-- {loaded: true, re: readme.txt, method: GET, name: readme, id: 23, state: '206',
+- {loaded: true, re: readme.txt, method: GET, name: readme, id: 23, state: '200',
   type: Information leakage, url: /readme.txt, info: readme.txt Find!!!}
 - {loaded: true, re: api-docs|openapi|apiVersion, method: GET, name: api-docs, id: 24,
   state: '200', type: ApiDoc, url: /v3/api-docs, info: api-docs Find !!!}
 - {loaded: true, re: User-agent, method: GET, name: robots, id: 25, state: '200',
   type: Information leakage, url: /robots.txt, info: robots.txt Find !!!}
-- {loaded: true, re: href, method: GET, name: actuator, id: 28, state: '200', type: Spring,
-  url: /actuator/, info: actuator FInd !!!}
 - {loaded: true, re: swagger, method: GET, name: Swagger-UI, id: 29, state: '200',
   type: ApiDoc, url: /api/swagger-ui.html, info: Swagger Find!!!}
 - {loaded: false, re: Platform|Components, method: GET, name: Docker Unauthorized,
@@ -97,7 +95,7 @@ Load_List:
   method: GET, name: Spring Env RCE, id: 48, state: '200', type: Spring, url: /actuator/env,
   info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
     Find!!!'}
-- {loaded: true, re: (src=\"\/druid\.js\")|(href\=\"\/druid\.css\"), method: GET,
+- {loaded: true, re: (src=\"\/druid\.js\")|(href\=\"\/druid\.css\")|druid, method: GET,
   name: Druid Monitor, id: 49, state: '200', type: Unauthorized, url: /druid/index.html,
   info: Druid Monitor Find!!!}
 - {loaded: true, re: '(Swagger 2\.0)|(\"swagger\"\:)|(Swagger UI)|(\<title\>Swagger
@@ -133,7 +131,7 @@ Load_List:
   url: /admin.zip, info: Backup File Find !!!}
 - {loaded: false, re: ., method: GET, name: Backup file, id: 65, state: '200', type: Backup,
   url: /admin.bak, info: Backup File Find !!!}
-- {loaded: false, re: ., method: GET, name: Backup file, id: 66, state: '200', type: Backup,
+- {loaded: true, re: ., method: GET, name: Backup file, id: 66, state: '200', type: Backup,
   url: /web.rar, info: Backup File Find !!!}
 - {loaded: false, re: ., method: GET, name: Backup file, id: 67, state: '200', type: Backup,
   url: /web.tar, info: Backup File Find !!!}
@@ -153,3 +151,5 @@ Load_List:
   url: /ueditor/asp/controller.asp, info: asp ueditor Find!!!}
 - {loaded: true, re: ., method: GET, name: ckfinder, id: 76, state: '200', type: Editor,
   url: /ckfinder/ckfinder.html, info: ckfinder Find!!!}
+- {loaded: true, re: ., method: GET, name: ueditor, id: 77, state: '200', type: Editor,
+  url: '/UEditor/Process?action=catchimage', info: ueditor Find!!!}
