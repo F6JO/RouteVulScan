@@ -1,18 +1,5 @@
 Bypass_List: [., '%2f', '%2e']
 Load_List:
-- {loaded: true, re: springframework|spring.cloud.bootstrap.location|Spring Actuator
-    Env RCE, method: GET, name: Spring Env RCE, id: 2, state: '200', type: Spring,
-  url: /env, info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
-    Find!!!'}
-- {loaded: true, re: springframework|spring.cloud.bootstrap.location|Spring Actuator
-    Env RCE, method: GET, name: Spring Env RCE, id: 3, state: '200', type: Spring,
-  url: /actuator/env, info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
-    Find!!!'}
-- {loaded: true, re: api-docs|openapi|apiVersion, method: GET, name: api-docs, id: 5,
-  state: '200', type: ApiDoc, url: /v2/api-docs, info: api-docs Find!!!}
-- {loaded: true, re: springframework|reloadByURL|createJNDIRealm, method: GET, name: Spring
-    Jolokia|Rce, id: 7, state: '200', type: Spring, url: /jolokia/list, info: 'Spring
-    Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
 - {loaded: true, re: springframework|reloadByURL|createJNDIRealm, method: GET, name: Spring
     Jolokia|Rce, id: 8, state: '200', type: Spring, url: /actuator/jolokia/list, info: 'Spring
     Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
@@ -22,8 +9,9 @@ Load_List:
   type: Spring, url: /v1/swagger.json, info: swagger.json Find!!!}
 - {loaded: true, re: swagger, method: GET, name: swagger.json, id: 11, state: '200',
   type: Spring, url: /v2/swagger.json, info: swagger.json Find!!!}
-- {loaded: true, re: swagger, method: GET, name: Swagger-resources, id: 12, state: '200',
-  type: Spring, url: /swagger-resources, info: swagger-resources Find!!!}
+- {loaded: true, re: swaggerVersion|location, method: GET, name: Swagger-resources,
+  id: 12, state: '200', type: Spring, url: /swagger-resources, info: swagger-resources
+    Find!!!}
 - {loaded: true, re: SOAP|WSDL|ASP.NET|tempuri.org, method: GET, name: Soap, id: 13,
   state: '200', type: ApiDoc, url: /services, info: Soap Find!!!}
 - {loaded: true, re: Web API|api, method: GET, name: Web API Help, id: 14, state: '200',
@@ -45,12 +33,16 @@ Load_List:
     leakage, url: /.idea/modules.xml, info: .idea Find!!!}
 - {loaded: true, re: readme.txt, method: GET, name: readme, id: 23, state: '200',
   type: Information leakage, url: /readme.txt, info: readme.txt Find!!!}
-- {loaded: true, re: api-docs|openapi|apiVersion, method: GET, name: api-docs, id: 24,
-  state: '200', type: ApiDoc, url: /v3/api-docs, info: api-docs Find !!!}
+- {loaded: true, re: '(Swagger 2\.0)|(\"swagger\"\:)|(Swagger UI)|(\<title\>Swagger
+    UI)|(swaggerVersion)|(id\=\"swagger\-ui)|swagger|api-docs|openapi|apiVersion',
+  method: GET, name: api-docs, id: 24, state: '200', type: ApiDoc, url: /v3/api-docs,
+  info: api-docs Find !!!}
 - {loaded: true, re: User-agent, method: GET, name: robots, id: 25, state: '200',
   type: Information leakage, url: /robots.txt, info: robots.txt Find !!!}
-- {loaded: true, re: swagger, method: GET, name: Swagger-UI, id: 29, state: '200',
-  type: ApiDoc, url: /api/swagger-ui.html, info: Swagger Find!!!}
+- {loaded: true, re: '(Swagger 2\.0)|(\"swagger\"\:)|(Swagger UI)|(\<title\>Swagger
+    UI)|(swaggerVersion)|(id\=\"swagger\-ui)|swagger|api-docs|openapi|apiVersion',
+  method: GET, name: Swagger-UI, id: 29, state: '200', type: ApiDoc, url: /api/swagger-ui.html,
+  info: Swagger Find!!!}
 - {loaded: false, re: Platform|Components, method: GET, name: Docker Unauthorized,
   id: 30, state: '200', type: Unauthorized, url: /version, info: Docker Unauthorized
     Find!!!}
@@ -79,31 +71,33 @@ Load_List:
   url: '/zabbix.php?action=problem.view&ddreset=1', info: Zabbix Find!!!}
 - {loaded: false, re: Dashboard|solr|Request-Handler, method: GET, name: Solr, id: 42,
   state: '200', type: Unauthorized, url: /solr/admin, info: Solr Find!!!}
-- {loaded: false, re: Weblogic, method: GET, name: Weblogic Console, id: 43, state: '200',
-  type: Weblogic, url: /console, info: Weblogic Console Find!!!}
 - {loaded: true, re: SOAP|WSDL|ASP.NET|tempuri.org, method: GET, name: Soap, id: 44,
   state: '200', type: ApiDoc, url: /webservice, info: Soap Find!!!}
-- {loaded: true, re: api-docs|openapi|apiVersion, method: GET, name: api-docs, id: 45,
-  state: '200', type: ApiDoc, url: /api-docs, info: api-docs Find!!!}
+- {loaded: true, re: '(Swagger 2\.0)|(\"swagger\"\:)|(Swagger UI)|(\<title\>Swagger
+    UI)|(swaggerVersion)|(id\=\"swagger\-ui)|swagger|api-docs|openapi|apiVersion',
+  method: GET, name: api-docs, id: 45, state: '200', type: ApiDoc, url: /api-docs,
+  info: api-docs Find!!!}
 - {loaded: true, re: codemirror\.addone\.fullscreen\.js, method: GET, name: Nacos,
   id: 46, state: '200', type: Unauthorized, url: /nacos/index.html, info: Nacos Find!!!}
 - {loaded: true, re: (java\.runtime\.version)|(java\.class\.version)|(sping\.config\.location)|(spring\.application\.name)|(applicationConfig)|(activeProfiles)|(server\.port)|(local\.server\.port),
   method: GET, name: Spring Env RCE, id: 47, state: '200', type: Spring, url: /env,
   info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
     Find!!!'}
-- {loaded: true, re: (java\.runtime\.version)|(java\.class\.version)|(sping\.config\.location)|(spring\.application\.name)|(applicationConfig)|(activeProfiles)|(server\.port)|(local\.server\.port),
-  method: GET, name: Spring Env RCE, id: 48, state: '200', type: Spring, url: /actuator/env,
-  info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
+- {loaded: true, re: (java\.runtime\.version)|(java\.class\.version)|(sping\.config\.location)|(spring\.application\.name)|(applicationConfig)|(activeProfiles)|(server\.port)|(local\.server\.port)|springframework|spring.cloud.bootstrap.location|Spring
+    Actuator Env RCE, method: GET, name: Spring Env RCE, id: 48, state: '200', type: Spring,
+  url: /actuator/env, info: 'Actuator Env|RCE:spring.cloud.bootstrap.location|XStreamRCE:eureka.client.serviceUrl.defaultZone
     Find!!!'}
 - {loaded: true, re: (src=\"\/druid\.js\")|(href\=\"\/druid\.css\")|druid, method: GET,
   name: Druid Monitor, id: 49, state: '200', type: Unauthorized, url: /druid/index.html,
   info: Druid Monitor Find!!!}
 - {loaded: true, re: '(Swagger 2\.0)|(\"swagger\"\:)|(Swagger UI)|(\<title\>Swagger
-    UI)|(swaggerVersion)|(id\=\"swagger\-ui)', method: GET, name: api-docs, id: 50,
-  state: '200', type: ApiDoc, url: /v2/api-docs, info: api-docs Find!!!}
+    UI)|(swaggerVersion)|(id\=\"swagger\-ui)|swagger|api-docs|openapi|apiVersion',
+  method: GET, name: api-docs, id: 50, state: '200', type: ApiDoc, url: /v2/api-docs,
+  info: api-docs Find!!!}
 - {loaded: true, re: '(Swagger 2\.0)|(\"swagger\"\:)|(Swagger UI)|(\<title\>Swagger
-    UI)|(swaggerVersion)|(id\=\"swagger\-ui)', method: GET, name: Swagger-UI, id: 51,
-  state: '200', type: ApiDoc, url: /swagger-ui.html, info: Swagger-UI Find!!!}
+    UI)|(swaggerVersion)|(id\=\"swagger\-ui)|swagger|api-docs|openapi|apiVersion',
+  method: GET, name: Swagger-UI, id: 51, state: '200', type: ApiDoc, url: /swagger-ui.html,
+  info: Swagger-UI Find!!!}
 - {loaded: true, re: 'springframework|reloadByURL|createJNDIRealm|(\"type\"\:\"list\")',
   method: GET, name: Spring Jolokia|Rce, id: 52, state: '200', type: Spring, url: /jolokia/list,
   info: 'Spring Jolokia|XXE/RCE:reloadByURL|RCE:createJNDIRealm Find!!!'}
@@ -153,3 +147,6 @@ Load_List:
   url: /ckfinder/ckfinder.html, info: ckfinder Find!!!}
 - {loaded: true, re: ., method: GET, name: ueditor, id: 77, state: '200', type: Editor,
   url: '/UEditor/Process?action=catchimage', info: ueditor Find!!!}
+- {loaded: true, re: swaggerVersion|location, method: GET, name: Swagger-resources,
+  id: 78, state: '200', type: Spring, url: /api/swagger-resources, info: Swagger-resources
+    Find!!!}

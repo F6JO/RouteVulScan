@@ -5,6 +5,7 @@ import burp.*;
 import utils.BurpAnalyzedRequest;
 import yaml.YamlUtil;
 
+import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -83,25 +84,41 @@ public class vulscan {
             if (path.contains(".") && path.equals(paths[paths.length - 1])) {
                 break;
             }
+//            this.burp.call.printOutput(this.Path_record);
 
             if (!path.equals("")) {
                 this.Path_record = this.Path_record + "/" + path;
             }
 
-            for (Map<String, Object> zidian : Listx) {
-                this.burp.ThreadPool.execute(new threads(zidian, this, newHttpRequestResponse, heads,Bypass_List));
+            String url = this.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().getProtocol() + "://" + this.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().getHost() + ":" + this.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().getPort() + String.valueOf(this.Path_record);
+
+            boolean is_InList;
+            synchronized (this.burp.history_url) {
+                is_InList = !this.burp.history_url.contains(url);
             }
 
-            while (true) {
-                // 防止线程混乱，睡眠0.3秒
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+
+            if (is_InList) {
+                synchronized (this.burp.history_url) {
+                    this.burp.history_url.add(url);
                 }
-                if (((ThreadPoolExecutor) this.burp.ThreadPool).getActiveCount() == 0) {
-                    break;
+                for (Map<String, Object> zidian : Listx) {
+                    this.burp.ThreadPool.execute(new threads(zidian, this, newHttpRequestResponse, heads, Bypass_List));
                 }
+
+                while (true) {
+                    // 防止线程混乱，睡眠0.3秒
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    if (((ThreadPoolExecutor) this.burp.ThreadPool).getActiveCount() == 0) {
+                        break;
+                    }
+                }
+            }else {
+                this.burp.call.printError("Skip: " + url + "/*");
             }
 
 
