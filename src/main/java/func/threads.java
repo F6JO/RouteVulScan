@@ -86,7 +86,12 @@ public class threads implements Task {
             boolean IFconform = true;
 //                if (vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode() == Integer.parseInt(state)) {
 
-            if (states.contains(new Integer(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()))) {
+            Integer stat = 0;
+            try {
+                stat = new Integer(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode());
+            } catch (Exception e) {}
+
+            if (states.contains(stat)) {
                 byte[] resp = newHttpRequestResponse.getResponse();
                 Pattern re_rule = Pattern.compile(re, Pattern.CASE_INSENSITIVE);
                 Matcher pipe = re_rule.matcher(vul.burp.help.bytesToString(resp));
