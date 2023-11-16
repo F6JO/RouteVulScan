@@ -125,7 +125,7 @@ Load_List:
   url: /admin.zip, info: Backup File Find !!!}
 - {loaded: false, re: ., method: GET, name: Backup file, id: 65, state: '200', type: Backup,
   url: /admin.bak, info: Backup File Find !!!}
-- {loaded: true, re: ., method: GET, name: Backup file, id: 66, state: '200', type: Backup,
+- {loaded: false, re: ., method: GET, name: Backup file, id: 66, state: '200', type: Backup,
   url: /web.rar, info: Backup File Find !!!}
 - {loaded: false, re: ., method: GET, name: Backup file, id: 67, state: '200', type: Backup,
   url: /web.tar, info: Backup File Find !!!}
@@ -150,3 +150,10 @@ Load_List:
 - {loaded: true, re: swaggerVersion|location, method: GET, name: Swagger-resources,
   id: 78, state: '200', type: Spring, url: /api/swagger-resources, info: Swagger-resources
     Find!!!}
+- {loaded: false, re: ., method: GET, name: Backup file, id: 79, state: '200', type: Backup,
+  url: /WEB-INF.zip, info: Backup File Find !!!}
+- {loaded: true, re: xxl-job-admin, method: GET, name: XXLJOB, id: 80, state: '200',
+  type: Unauthorized, url: /xxl-job-admin/toLogin, info: XXLJOB Find !!!}
+- {loaded: true, re: (src=\"\/druid\.js\")|(href\=\"\/druid\.css\")|druid, method: GET,
+  name: Druid Monitor Login, id: 81, state: '200', type: Unauthorized, url: /druid/login.html,
+  info: Druid Login Find!!!}
