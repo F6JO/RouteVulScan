@@ -29,7 +29,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     public Tags tags;
     private UrlRepeat urlC;
     public Collection<String> history_url = new LinkedList<String>();
-    public static String EXPAND_NAME = "Route Vulnerable Scanning";
+    public static String EXPAND_NAME = "Route Vulnerable Scan";
     public Config Config_l;
     public ExecutorService ThreadPool;
     public boolean Carry_head = false;
@@ -61,7 +61,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
         this.tags = new Tags(callbacks, Config_l);
 //        this.views = Bfunc.Get_Views();
         call.printOutput("@Info: Loading RouteVulScan success");
-        call.printOutput("@Version: RouteVulScan 1.5");
+        call.printOutput("@Version: RouteVulScan 1.5.1");
         call.printOutput("@From: Code by F6JO");
         call.printOutput("@Github: https://github.com/F6JO/RouteVulScan");
         call.printOutput("");

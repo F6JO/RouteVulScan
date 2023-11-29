@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,17 +107,30 @@ public class vulscan {
                     this.burp.ThreadPool.execute(new threads(zidian, this, newHttpRequestResponse, heads, Bypass_List));
                 }
 
+
+                int whileSiz = 0;
                 while (true) {
-                    // 防止线程混乱，睡眠0.3秒
+//                    this.burp.call.printError(String.valueOf(whileSiz));
+                    if (whileSiz >= 10){
+                        this.burp.ThreadPool.shutdownNow();
+                        this.burp.ThreadPool = Executors.newFixedThreadPool((Integer) this.burp.Config_l.spinner1.getValue());
+                        this.burp.call.printError("Timeout: " + url + "/*");
+                        break;
+                    }
+                    // 防止线程混乱，睡眠3.1秒
                     try {
-                        Thread.sleep(300);
+                        Thread.sleep(3100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     if (((ThreadPoolExecutor) this.burp.ThreadPool).getActiveCount() == 0) {
                         break;
                     }
+                    whileSiz += 1;
+
                 }
+
+
             }else {
                 this.burp.call.printError("Skip: " + url + "/*");
             }
