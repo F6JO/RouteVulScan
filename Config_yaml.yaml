@@ -161,7 +161,5 @@ Load_List:
   type: Unauthorized, url: /pic/, info: Bucket Find !!!}
 - {loaded: true, re: jobGroup, method: GET, name: XXLJOB, id: 83, state: '200', type: Unauthorized,
   url: /xxl-job-admin/jobinfo, info: XXLJOB Find!!!}
-- {loaded: true, re: ., method: GET, name: day1, id: 84, state: '200', type: Unauthorized,
-  url: /;/plugins/uploadify/uploadFile.jsp, info: da1 Find}
 - {loaded: true, re: openapi|version, method: GET, name: api-docs, id: 85, state: '200',
   type: ApiDoc, url: /openapi.json, info: api-docs Find!!!}
