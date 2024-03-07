@@ -3,11 +3,12 @@ package UI;
 import burp.*;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -81,6 +82,8 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
                         jTable1MouseClicked(evt);
                     }
                 });
+
+
 
                 Tags.this.Utable = URLTab;
                 Tags.this.UscrollPane = new JScrollPane(Tags.this.Utable);
@@ -211,6 +214,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
     public int add(String VulName, String Method, String url, String status, String Info, String Size, IHttpRequestResponse requestResponse) {
         synchronized (this.Udatas) {
+//            this.callbacks.printOutput(url + "    " + Info);
             Date d = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String startTime = sdf.format(d);
@@ -234,9 +238,60 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
 
     public class URLTable extends JTable {
+        private TableRowSorter<TableModel> sorter;
+
         public URLTable(TableModel tableModel) {
             super(tableModel);
+            sorter = new TableRowSorter<>(tableModel) {
+                @Override
+                public Comparator<?> getComparator(int column) {
+                    TableColumnModel columnModel = getColumnModel();
+                    int numberColumnIndex = -1;
+                    for (int i = 0; i < columnModel.getColumnCount(); i++) {
+                        if (columnModel.getColumn(i).getHeaderValue().toString().equals("#")) {
+                            numberColumnIndex = i;
+                            break;
+                        }
+                    }
+
+                    if (column == numberColumnIndex) {
+                        return Comparator.comparingInt((Object o) -> {
+                            int modelRow = ((TableRowSorter<TableModel>) this).convertRowIndexToModel(((Integer) o).intValue());
+                            return (Integer) getModel().getValueAt(convertRowIndexToView(modelRow), column);
+                        });
+                    }
+                    return super.getComparator(column);
+                }
+            };
+            setRowSorter(sorter);
+
+            // 添加鼠标监听器
+            getTableHeader().addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    if (e.getClickCount() == 2) {
+                        int columnIndex = getColumnModel().getColumnIndexAtX(e.getX());
+                        toggleSortOrder(columnIndex);
+                    }
+                }
+            });
         }
+//        public URLTable(TableModel tableModel) {
+//            super(tableModel);
+//            sorter = new TableRowSorter<>(tableModel);
+//            setRowSorter(sorter);
+//
+//            // 添加鼠标监听器
+//            getTableHeader().addMouseListener(new MouseAdapter() {
+//                @Override
+//                public void mouseClicked(MouseEvent e) {
+//                    if (e.getClickCount() == 2) {
+//                        int columnIndex = getColumnModel().getColumnIndexAtX(e.getX());
+//                        toggleSortOrder(columnIndex);
+//                    }
+//                }
+//            });
+//        }
 
         public void changeSelection(int row, int col, boolean toggle, boolean extend) {
             TablesData dataEntry = Tags.this.Udatas.get(convertRowIndexToModel(row));
@@ -244,6 +299,79 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
             Tags.this.HResponseTextEditor.setMessage(dataEntry.requestResponse.getResponse(), false);
             Tags.this.currentlyDisplayedItem = dataEntry.requestResponse;
             super.changeSelection(row, col, toggle, extend);
+        }
+
+        public void sortColumn(int columnIndex, SortOrder sortOrder) {
+            List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+            sortKeys.add(new RowSorter.SortKey(columnIndex, sortOrder));
+            try {
+                sorter.setSortKeys(sortKeys);
+            }catch (Exception a){
+                String x = a.toString();
+                System.out.println(x);
+            }
+
+        }
+
+        public void toggleSortOrder(int columnIndex) {
+            List<? extends RowSorter.SortKey> sortKeys = sorter.getSortKeys();
+            if (sortKeys.isEmpty()) {
+                sortColumn(columnIndex, SortOrder.ASCENDING);
+            } else {
+                RowSorter.SortKey sortKey = sortKeys.get(0);
+                if (sortKey.getColumn() == columnIndex) {
+                    sortColumn(columnIndex, sortKey.getSortOrder() == SortOrder.ASCENDING ? SortOrder.DESCENDING : SortOrder.ASCENDING);
+                } else {
+                    sortColumn(columnIndex, SortOrder.ASCENDING);
+                }
+            }
+
+            // 根据列名设置比较器
+            String columnName = getColumnModel().getColumn(columnIndex).getHeaderValue().toString();
+            if (columnName.equals("Size") || columnName.equals("Status") ){
+                sorter.setComparator(columnIndex, new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        return Integer.compare(Integer.parseInt(o1), Integer.parseInt(o2));
+                    }
+                });
+            } else if (columnName.equals("#")) {
+                TableColumnModel columnModel = getColumnModel();
+                int numberColumnIndex = -1;
+                for (int i = 0; i < columnModel.getColumnCount(); i++) {
+                    if (columnModel.getColumn(i).getHeaderValue().toString().equals("#")) {
+                        numberColumnIndex = i;
+                        break;
+                    }
+                }
+                final int retNumber = numberColumnIndex;
+                sorter.setComparator(numberColumnIndex, Comparator.comparingInt((Object o) -> {
+                    int modelRow = ((TableRowSorter<TableModel>) sorter).convertRowIndexToModel(((Integer) o).intValue());
+                    return (Integer) getModel().getValueAt(convertRowIndexToView(modelRow), retNumber);
+                }));
+            }else if (columnName.equals("startTime")) {
+                sorter.setComparator(columnIndex, new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        try {
+                            Date date1 = format.parse(o1);
+                            Date date2 = format.parse(o2);
+                            return date1.compareTo(date2);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return 0;
+                    }
+                });
+            } else {
+                sorter.setComparator(columnIndex, new Comparator<String>() {
+                    @Override
+                    public int compare(String o1, String o2) {
+                        return o1.compareTo(o2);
+                    }
+                });
+            }
         }
     }
 
@@ -285,7 +413,6 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {
-
         mouseRightButtonClick(evt);
     }
 
@@ -319,10 +446,15 @@ class Remove_All implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        tag.Udatas.clear();
+//        tag.Udatas.clear();
+        while (tag.Udatas.size() != 0){
+            tag.Udatas.remove(0);
+            tag.fireTableRowsDeleted(0, 0);
+        }
         tag.HRequestTextEditor.setMessage(new byte[]{},true);
         tag.HResponseTextEditor.setMessage(new byte[]{},false);
     }
+
 }
 
 

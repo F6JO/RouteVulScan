@@ -4,6 +4,7 @@ package func;
 import burp.Bfunc;
 import burp.IExtensionHelpers;
 import burp.IHttpRequestResponse;
+
 import com.sun.jmx.snmp.tasks.Task;
 
 import java.net.MalformedURLException;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 
 public class threads implements Task {
     private Map<String, Object> zidian;
@@ -97,14 +99,19 @@ public class threads implements Task {
                 Matcher pipe = re_rule.matcher(vul.burp.help.bytesToString(resp));
                 String lang = String.valueOf(vul.burp.help.bytesToString(resp).length());
                 if (pipe.find()) {
-                    vulscan.ir_add(vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(), String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ", info, lang, newHttpRequestResponse);
-                    IFconform = false;
+                    synchronized(vul){
+                        vulscan.ir_add(vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(), String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ", info, lang, newHttpRequestResponse);
+                        IFconform = false;
+                    }
+
+
                 }
             }
+//           匹配不成功则匹配bypass
             if (IFconform) {
                 if (vul.burp.Bypass) {
                     for (String i : Bypass_List) {
-                        byte[] newRequest = threads.edit_Bypass_request(vul.burp.help, request, i);
+                        byte[] newRequest = threads.edit_Bypass_request(vul.burp.help, request, i,urll);
                         newHttpRequestResponse = vul.burp.call.makeHttpRequest(vul.httpService, newRequest);
 //                            if (vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode() == Integer.parseInt(state)) {
                         if (states.contains(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode())) {
@@ -113,8 +120,10 @@ public class threads implements Task {
                             Matcher pipe = re_rule.matcher(vul.burp.help.bytesToString(resp));
                             String lang = String.valueOf(vul.burp.help.bytesToString(resp).length());
                             if (pipe.find()) {
-                                vulscan.ir_add(vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(), String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ", info, lang, newHttpRequestResponse);
-                                break;
+                                synchronized(vul) {
+                                    vulscan.ir_add(vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(), String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ", info, lang, newHttpRequestResponse);
+                                    break;
+                                }
                             }
                         }
 
@@ -136,7 +145,7 @@ public class threads implements Task {
 
     }
 
-    private static byte[] edit_Bypass_request(IExtensionHelpers help, byte[] request, String str) {
+    private static byte[] edit_Bypass_request(IExtensionHelpers help, byte[] request, String str, String payPath) {
 
         String requests = help.bytesToString(request);
         String[] rows = requests.split("\r\n");
@@ -150,9 +159,12 @@ public class threads implements Task {
             path = path.replace("http://", "");
             prefix = "https://";
         }
-        String newpath = path.replace("/", "/" + str + "/");
+
+        String newpath = path.replace(payPath,"") + payPath.replace("/", "/" + str + "/");
+//        String newpath = path.replace("/", "/" + str + "/");
         if (path.endsWith("/")) {
-            newpath = newpath.substring(0, newpath.lastIndexOf("/" + str + "/"));
+            newpath = newpath.substring(0, newpath.lastIndexOf(str + "/"));
+//            newpath = newpath.substring(0, newpath.lastIndexOf("/" + str + "/"));
         }
         newpath = prefix + newpath;
         String row1 = rows[0].split(" ")[0] + " " + newpath + " " + rows[0].split(" ")[2];

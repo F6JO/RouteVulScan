@@ -141,9 +141,9 @@ public class vulscan {
 
 
     public static void ir_add(Tags tag, String title, String method, String url, String StatusCode, String notes, String Size, IHttpRequestResponse newHttpRequestResponse) {
-        if (!tag.Get_URL_list().contains(url)) {
-            tag.add(title, method, url, StatusCode, notes, Size, newHttpRequestResponse);
-        }
+//        if (!tag.Get_URL_list().contains(url)) {
+        tag.add(title, method, url, StatusCode, notes, Size, newHttpRequestResponse);
+//        }
     }
 
     public static HashMap<String, String> AnalysisHeaders(List<String> headers){
