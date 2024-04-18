@@ -144,7 +144,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
     }
 
     public int getColumnCount() {
-        return 9;
+        return 10;
     }
 
     public String getColumnName(int columnIndex) {
@@ -164,8 +164,10 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
             case 6:
                 return "Size";
             case 7:
-                return "startTime";
+                return "contentType";
             case 8:
+                return "startTime";
+            case 9:
                 return "endTime";
         }
         return null;
@@ -193,8 +195,10 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
             case 6:
                 return datas.Size;
             case 7:
-                return datas.startTime;
+                return datas.ContentType;
             case 8:
+                return datas.startTime;
+            case 9:
                 return datas.endTime;
         }
         return null;
@@ -212,7 +216,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
         return this.currentlyDisplayedItem.getHttpService();
     }
 
-    public int add(String VulName, String Method, String url, String status, String Info, String Size, IHttpRequestResponse requestResponse) {
+    public int add(String VulName, String Method, String url, String status, String Info, String Size, String ContentType, IHttpRequestResponse requestResponse) {
         synchronized (this.Udatas) {
 //            this.callbacks.printOutput(url + "    " + Info);
             Date d = new Date();
@@ -230,7 +234,8 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
                             Size,
                             requestResponse,
                             startTime,
-                            ""));
+                            "",
+                            ContentType ));
             fireTableRowsInserted(id, id);
             return id;
         }
@@ -239,6 +244,8 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
     public class URLTable extends JTable {
         private TableRowSorter<TableModel> sorter;
+
+        int[] columnWidths = {30, 100, 30, 300, 30, 150, 40, 60, 70, 70};
 
         public URLTable(TableModel tableModel) {
             super(tableModel);
@@ -264,6 +271,13 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
                 }
             };
             setRowSorter(sorter);
+
+            if (columnWidths != null) {
+                for (int i = 0; i < columnWidths.length && i < getColumnModel().getColumnCount(); i++) {
+                    getColumnModel().getColumn(i).setPreferredWidth(columnWidths[i]);
+                }
+            }
+
 
             // 添加鼠标监听器
             getTableHeader().addMouseListener(new MouseAdapter() {
@@ -397,7 +411,9 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
         final String endTime;
 
-        public TablesData(int id, String VulName, String Method, String url, String status, String Info, String Size, IHttpRequestResponse requestResponse, String startTime, String endTime) {
+        final String ContentType;
+
+        public TablesData(int id, String VulName, String Method, String url, String status, String Info, String Size, IHttpRequestResponse requestResponse, String startTime, String endTime, String contentType) {
             this.id = id;
             this.VulName = VulName;
             this.Method = Method;
@@ -408,6 +424,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
             this.requestResponse = requestResponse;
             this.startTime = startTime;
             this.endTime = endTime;
+            this.ContentType = contentType;
         }
     }
 

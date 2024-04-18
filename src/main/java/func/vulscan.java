@@ -140,9 +140,9 @@ public class vulscan {
     }
 
 
-    public static void ir_add(Tags tag, String title, String method, String url, String StatusCode, String notes, String Size, IHttpRequestResponse newHttpRequestResponse) {
+    public static void ir_add(Tags tag, String title, String method, String url, String StatusCode, String notes, String Size, String ContentType, IHttpRequestResponse newHttpRequestResponse) {
 //        if (!tag.Get_URL_list().contains(url)) {
-        tag.add(title, method, url, StatusCode, notes, Size, newHttpRequestResponse);
+        tag.add(title, method, url, StatusCode, notes, Size,ContentType, newHttpRequestResponse);
 //        }
     }
 
