@@ -12,8 +12,10 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 public class threads implements Task {
@@ -93,17 +95,36 @@ public class threads implements Task {
                 return;
             }
 
+            String contentType = vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse())
+                    .getHeaders()
+                    .stream()
+                    .filter(header -> header.toLowerCase().startsWith("content-type"))
+                    .map(header -> header.split(":")[1].trim())
+                    .findFirst()
+                    .orElseThrow(() -> new IllegalStateException("null"));
             if (states.contains(new Integer(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()))) {
                 byte[] resp = newHttpRequestResponse.getResponse();
                 Pattern re_rule = Pattern.compile(re, Pattern.CASE_INSENSITIVE);
                 Matcher pipe = re_rule.matcher(vul.burp.help.bytesToString(resp));
                 String lang = String.valueOf(vul.burp.help.bytesToString(resp).length());
+
+
+
+
+
                 if (pipe.find()) {
                     synchronized(vul){
-                        vulscan.ir_add(vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(), String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ", info, lang, newHttpRequestResponse);
+                        vulscan.ir_add(
+                                vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(),
+                                vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(),
+                                String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ",
+                                info,
+                                lang,
+                                contentType,
+                                newHttpRequestResponse
+                        );
                         IFconform = false;
                     }
-
 
                 }
             }
@@ -121,7 +142,16 @@ public class threads implements Task {
                             String lang = String.valueOf(vul.burp.help.bytesToString(resp).length());
                             if (pipe.find()) {
                                 synchronized(vul) {
-                                    vulscan.ir_add(vul.burp.tags, name, vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(), vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(), String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ", info, lang, newHttpRequestResponse);
+                                    vulscan.ir_add(
+                                            vul.burp.tags,
+                                            name,
+                                            vul.burp.help.analyzeRequest(newHttpRequestResponse).getMethod(),
+                                            vul.burp.help.analyzeRequest(newHttpRequestResponse).getUrl().toString(),
+                                            String.valueOf(vul.burp.help.analyzeResponse(newHttpRequestResponse.getResponse()).getStatusCode()) + " ",
+                                            info,
+                                            lang,
+                                            contentType,
+                                            newHttpRequestResponse);
                                     break;
                                 }
                             }
@@ -133,7 +163,7 @@ public class threads implements Task {
             }
 
             synchronized (vul.burp.call) {
-                    vul.burp.call.printOutput(url.toString());
+                vul.burp.call.printOutput(url.toString());
             }
 
 
