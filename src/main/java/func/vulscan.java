@@ -25,13 +25,17 @@ public class vulscan {
     public IHttpService httpService;
 
 
-    public vulscan(BurpExtender burp, BurpAnalyzedRequest Root_Request) {
+    public vulscan(BurpExtender burp, BurpAnalyzedRequest Root_Request,byte[] request) {
         this.burp = burp;
         this.call = burp.call;
         this.help = burp.help;
         this.Root_Request = Root_Request;
         // 获取httpService对象
-        byte[] request = this.Root_Request.requestResponse().getRequest();
+        if (request == null){
+            request = this.Root_Request.requestResponse().getRequest();
+        }
+//        IRequestInfo iRequestInfo = help.analyzeRequest(request);
+//        httpService = help.buildHttpService(iRequestInfo.getUrl().getHost(), iRequestInfo.getUrl().getPort(), iRequestInfo.getUrl().getProtocol());
         httpService = this.Root_Request.requestResponse().getHttpService();
         IRequestInfo analyze_Request = help.analyzeRequest(httpService, request);
         List<String> heads = analyze_Request.getHeaders();

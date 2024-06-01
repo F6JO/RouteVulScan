@@ -8,12 +8,14 @@ import utils.UrlRepeat;
 import yaml.YamlUtil;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
@@ -37,6 +39,8 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     public boolean Bypass = false;
     public boolean DomainScan = false;
     public static String Download_Yaml_protocol = "https";
+
+    public static String VERSION = "1.5.3";
     public static String Download_Yaml_host = "raw.githubusercontent.com";
     public static int Download_Yaml_port = 443;
     public static String Download_Yaml_file = "/F6JO/RouteVulScan/main/Config_yaml.yaml";
@@ -61,11 +65,11 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
         this.tags = new Tags(callbacks, Config_l);
 //        this.views = Bfunc.Get_Views();
         call.printOutput("@Info: Loading RouteVulScan success");
-        call.printOutput("@Version: RouteVulScan 1.5.2");
+        call.printOutput("@Version: RouteVulScan " + VERSION);
         call.printOutput("@From: Code by F6JO");
         call.printOutput("@Github: https://github.com/F6JO/RouteVulScan");
         call.printOutput("");
-        call.setExtensionName(EXPAND_NAME);
+        call.setExtensionName(EXPAND_NAME + " " + VERSION);
         call.registerScannerCheck(this);
         call.registerContextMenuFactory(this);
 
@@ -90,7 +94,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
                     if (this.urlC.check(Root_Method, New_Url)) {
                         return null;
                     }
-                    new vulscan(this, Root_Request);
+                    new vulscan(this, Root_Request,null);
                     this.urlC.addMethodAndUrl(Root_Method, New_Url);
                     try {
                         this.DomainName.add(Root_Url);
@@ -123,11 +127,21 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     public List<JMenuItem> createMenuItems(IContextMenuInvocation invocation) {
         List<JMenuItem> menu = new ArrayList<JMenuItem>();
         JMenuItem one_menu = new JMenuItem("Send To RouteVulScan");
+        JMenuItem two_menu = new JMenuItem("Send To RouteVulScan and Head");
         one_menu.addActionListener(new Right_click_monitor(invocation, this));
+        two_menu.addActionListener(new Right_click_monitor(invocation, this,true));
         menu.add(one_menu);
+        menu.add(two_menu);
 
 
         return menu;
+    }
+
+    public void prompt(Component component,String message){
+        if (component == null){
+            component = this.tags.getUiComponent();
+        }
+        JOptionPane.showMessageDialog(component, message);
     }
 }
 
@@ -136,48 +150,152 @@ class Right_click_monitor implements ActionListener {
     private IContextMenuInvocation invocation;
     private BurpExtender burp;
 
+    private Boolean head;
+
     public Right_click_monitor(IContextMenuInvocation invocation, BurpExtender burp) {
         this.invocation = invocation;
         this.burp = burp;
+        this.head = false;
+    }
+
+    public Right_click_monitor(IContextMenuInvocation invocation, BurpExtender burp, Boolean head) {
+        this.invocation = invocation;
+        this.burp = burp;
+        this.head = head;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         burp.ThreadPool = Executors.newFixedThreadPool((Integer) burp.Config_l.spinner1.getValue());
         IHttpRequestResponse[] RequestResponses = invocation.getSelectedMessages();
-        for (IHttpRequestResponse i : RequestResponses) {
-            try {
-                IHttpService Http_Service = i.getHttpService();
-                IRequestInfo RequestInfo = burp.help.analyzeRequest(Http_Service, i.getRequest());
-                String host_url = RequestInfo.getUrl().getProtocol() + "://" + RequestInfo.getUrl().getHost();
-                IHttpRequestResponse[] aaaa = burp.call.getSiteMap(host_url);
-                for (IHttpRequestResponse xxx : aaaa) {
-                    String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
-                    URL url = new URL(Root_Url + burp.help.analyzeRequest(xxx).getUrl().getPath());
-                    BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, xxx);
-                    start_send send = new start_send(burp, Root_Request);
-                    send.start();
-                }
-
-            } catch (Exception exception) {
-                exception.printStackTrace();
+        if (head) {
+            JTextArea jTextArea = new JTextArea(1, 1);
+            jTextArea.setLineWrap(false);
+            List<String> headers = this.getHeaders(RequestResponses[0]);
+            headers.remove(0);
+            String headerText = "";
+            for (String head : headers){
+                headerText += head + "\n";
             }
+            jTextArea.setText(headerText);
+
+            JSplitPane jSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+            jSplitPane.setResizeWeight(0.95);
+            jSplitPane.add(new JScrollPane(jTextArea));
+
+
+            JSplitPane jSplitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+            jSplitPane2.setResizeWeight(0.5);
+            JButton ok = new JButton("OK");
+            JButton cancel = new JButton("Cancel");
+
+            jSplitPane2.add(ok);
+            jSplitPane2.add(cancel);
+
+            jSplitPane.add(jSplitPane2);
+
+//            SwingUtilities.invokeLater(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                }
+//            });
+            JFrame frame = new JFrame("Custom Request Header");
+            frame.add(jSplitPane);
+            frame.setSize(600, 400);
+            frame.setLocationRelativeTo(null); // 让窗口在屏幕中央显示
+            frame.setVisible(true);
+
+            cancel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    frame.dispose();
+                }
+            });
+            ok.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    List<String> headersText = parseHead(jTextArea.getText());
+                    if (headersText == null){
+                        burp.prompt(frame,"Wrong header!");
+                        return;
+                    }
+                    frame.dispose();
+                    for (IHttpRequestResponse i : RequestResponses) {
+                        try {
+                            IHttpService Http_Service = i.getHttpService();
+                            IRequestInfo RequestInfo = burp.help.analyzeRequest(Http_Service, i.getRequest());
+                            String host_url = RequestInfo.getUrl().getProtocol() + "://" + RequestInfo.getUrl().getHost();
+                            IHttpRequestResponse[] aaaa = burp.call.getSiteMap(host_url);
+                            for (IHttpRequestResponse oo : aaaa) {
+//                                String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
+//                                URL url = new URL(Root_Url + burp.help.analyzeRequest(xxx).getUrl().getPath());
+                                byte[] xxx = replaceHeader(oo, headersText);
+                                BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, oo);
+                                start_send send = new start_send(burp, Root_Request,xxx);
+                                send.start();
+                            }
+
+                        } catch (Exception exception) {
+                            exception.printStackTrace();
+                        }
+
+                    }
+                }
+            });
 
         }
+
+
     }
+
+    public byte[] replaceHeader(IHttpRequestResponse i, List<String> header) {
+        List<String> headers = new ArrayList<>(header);
+
+        IRequestInfo iRequestInfo = burp.help.analyzeRequest(i);
+        iRequestInfo.getHeaders();
+        headers.add(0, burp.help.analyzeRequest(i).getHeaders().get(0));
+
+        return burp.help.buildHttpMessage(headers, new byte[]{});
+    }
+
+    public List<String> getHeaders(IHttpRequestResponse iHttpRequestResponse) {
+        return this.burp.help.analyzeRequest(iHttpRequestResponse).getHeaders();
+    }
+
+    public static List<String> parseHead(String headerText) {
+        if (headerText.equals("")) {
+            return null;
+        }
+        List<String> rows = new ArrayList<>();
+        for (String row : headerText.split("\n")) {
+            if (!row.equals("")) {
+                rows.add(row);
+            }
+        }
+        if (rows.size() == 0) {
+            return null;
+        }
+        return rows;
+    }
+
 }
+
+
 
 class start_send extends Thread {
     private BurpExtender burp;
     private BurpAnalyzedRequest Root_Request;
+    private byte[] request;
 
-    public start_send(BurpExtender burp, BurpAnalyzedRequest Root_Request) {
+    public start_send(BurpExtender burp, BurpAnalyzedRequest Root_Request,byte[] request) {
         this.burp = burp;
         this.Root_Request = Root_Request;
+        this.request = request;
     }
 
     public void run() {
-        new vulscan(this.burp, this.Root_Request);
+        new vulscan(this.burp, this.Root_Request,this.request);
     }
 
 }

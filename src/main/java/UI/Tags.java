@@ -65,6 +65,9 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
                 // 日志条目表
                 URLTable URLTab = new URLTable(Tags.this);
+//                URLTable URLTab = new URLTable();
+//                JXTable URLTab = new JXTable();
+                URLTab.setModel(Tags.this);
 //                URLTab.addMouseListener(new Right_click_menu(Tags.this));
 
                 m_popupMenu = new JPopupMenu();
@@ -242,7 +245,7 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
 
         public URLTable(TableModel tableModel) {
             super(tableModel);
-            sorter = new TableRowSorter<>(tableModel) {
+            sorter = new TableRowSorter<TableModel>(tableModel) {
                 @Override
                 public Comparator<?> getComparator(int column) {
                     TableColumnModel columnModel = getColumnModel();
@@ -276,23 +279,6 @@ public class Tags extends AbstractTableModel implements ITab, IMessageEditorCont
                 }
             });
         }
-//        public URLTable(TableModel tableModel) {
-//            super(tableModel);
-//            sorter = new TableRowSorter<>(tableModel);
-//            setRowSorter(sorter);
-//
-//            // 添加鼠标监听器
-//            getTableHeader().addMouseListener(new MouseAdapter() {
-//                @Override
-//                public void mouseClicked(MouseEvent e) {
-//                    if (e.getClickCount() == 2) {
-//                        int columnIndex = getColumnModel().getColumnIndexAtX(e.getX());
-//                        toggleSortOrder(columnIndex);
-//                    }
-//                }
-//            });
-//        }
-
         public void changeSelection(int row, int col, boolean toggle, boolean extend) {
             TablesData dataEntry = Tags.this.Udatas.get(convertRowIndexToModel(row));
             Tags.this.HRequestTextEditor.setMessage(dataEntry.requestResponse.getRequest(), true);
