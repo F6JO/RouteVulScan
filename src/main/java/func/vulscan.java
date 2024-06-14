@@ -47,12 +47,14 @@ public class vulscan {
             //将POST切换为GET请求
             request = this.help.toggleRequestMethod(request);
         // 获取所有参数
-        List<IParameter> Parameters = this.help.analyzeRequest(request).getParameters();
+        IRequestInfo iRequestInfo = this.help.analyzeRequest(request);
+        List<IParameter> Parameters = iRequestInfo.getParameters();
         // 判断参数列表不为空
         if (!Parameters.isEmpty())
             for (IParameter parameter : Parameters)
                 // 删除所有参数
                 request = this.help.removeParameter(request, parameter);
+
         // 创建新的请求类
 //        IHttpRequestResponse newHttpRequestResponse = this.call.makeHttpRequest(httpService, request);
         IHttpRequestResponse newHttpRequestResponse = Root_Request.requestResponse();
@@ -63,7 +65,7 @@ public class vulscan {
         String[] domainNames = vulscan.AnalysisHost(headMap.get("Host"));
 
 
-        String[] paths = analyzeRequest.getUrl().getPath().split("/");
+        String[] paths = analyzeRequest.getUrl().getPath().split("\\?",2)[0].split("/");
 
         Map<String, Object> Yaml_Map = YamlUtil.readYaml(burp.Config_l.yaml_path);
         List<Map<String, Object>> Listx = (List<Map<String, Object>>) Yaml_Map.get("Load_List");

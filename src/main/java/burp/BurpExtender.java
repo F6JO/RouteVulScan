@@ -40,7 +40,7 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     public boolean DomainScan = false;
     public static String Download_Yaml_protocol = "https";
 
-    public static String VERSION = "1.5.3";
+    public static String VERSION = "1.5.4";
     public static String Download_Yaml_host = "raw.githubusercontent.com";
     public static int Download_Yaml_port = 443;
     public static String Download_Yaml_file = "/F6JO/RouteVulScan/main/Config_yaml.yaml";
@@ -244,6 +244,26 @@ class Right_click_monitor implements ActionListener {
                 }
             });
 
+        }else {
+            for (IHttpRequestResponse i : RequestResponses) {
+                try {
+                    IHttpService Http_Service = i.getHttpService();
+                    IRequestInfo RequestInfo = burp.help.analyzeRequest(Http_Service, i.getRequest());
+                    String host_url = RequestInfo.getUrl().getProtocol() + "://" + RequestInfo.getUrl().getHost();
+                    IHttpRequestResponse[] aaaa = burp.call.getSiteMap(host_url);
+                    for (IHttpRequestResponse xxx : aaaa) {
+//                        String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
+//                        URL url = new URL(Root_Url + burp.help.analyzeRequest(xxx).getUrl().getPath());
+                        BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, xxx);
+                        start_send send = new start_send(burp, Root_Request,null);
+                        send.start();
+                    }
+
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+
+            }
         }
 
 
