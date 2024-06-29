@@ -126,13 +126,20 @@ public class BurpExtender implements IBurpExtender, IScannerCheck, IContextMenuF
     @Override
     public List<JMenuItem> createMenuItems(IContextMenuInvocation invocation) {
         List<JMenuItem> menu = new ArrayList<JMenuItem>();
-        JMenuItem one_menu = new JMenuItem("Send To RouteVulScan");
-        JMenuItem two_menu = new JMenuItem("Send To RouteVulScan and Head");
-        one_menu.addActionListener(new Right_click_monitor(invocation, this));
-        two_menu.addActionListener(new Right_click_monitor(invocation, this,true));
+        JMenuItem one_menu = new JMenuItem("Send To RouteVulScan On Map");
+        JMenuItem two_menu = new JMenuItem("Send To RouteVulScan and Head On Map");
+        JMenuItem three_menu = new JMenuItem("Send To RouteVulScan On Url");
+        JMenuItem four_menu = new JMenuItem("Send To RouteVulScan and Head On Url");
+
+        one_menu.addActionListener(new Right_click_monitor(invocation, this, false, true));
+        two_menu.addActionListener(new Right_click_monitor(invocation, this,true, true));
+        three_menu.addActionListener(new Right_click_monitor(invocation, this,false,false));
+        four_menu.addActionListener(new Right_click_monitor(invocation, this,true,false));
+
         menu.add(one_menu);
         menu.add(two_menu);
-
+        menu.add(three_menu);
+        menu.add(four_menu);
 
         return menu;
     }
@@ -150,25 +157,21 @@ class Right_click_monitor implements ActionListener {
     private IContextMenuInvocation invocation;
     private BurpExtender burp;
 
-    private Boolean head;
+    private Boolean withHead;
+    private Boolean withSiteMap;
 
-    public Right_click_monitor(IContextMenuInvocation invocation, BurpExtender burp) {
+    public Right_click_monitor(IContextMenuInvocation invocation, BurpExtender burp, Boolean withHead, Boolean withSiteMap) {
         this.invocation = invocation;
         this.burp = burp;
-        this.head = false;
-    }
-
-    public Right_click_monitor(IContextMenuInvocation invocation, BurpExtender burp, Boolean head) {
-        this.invocation = invocation;
-        this.burp = burp;
-        this.head = head;
+        this.withHead = withHead;
+        this.withSiteMap = withSiteMap;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         burp.ThreadPool = Executors.newFixedThreadPool((Integer) burp.Config_l.spinner1.getValue());
         IHttpRequestResponse[] RequestResponses = invocation.getSelectedMessages();
-        if (head) {
+        if (withHead) {
             JTextArea jTextArea = new JTextArea(1, 1);
             jTextArea.setLineWrap(false);
             List<String> headers = this.getHeaders(RequestResponses[0]);
@@ -186,33 +189,27 @@ class Right_click_monitor implements ActionListener {
 
             JSplitPane jSplitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
             jSplitPane2.setResizeWeight(0.5);
-            JButton ok = new JButton("OK");
-            JButton cancel = new JButton("Cancel");
+            JButton okButton = new JButton("OK");
+            JButton cancelButton = new JButton("Cancel");
 
-            jSplitPane2.add(ok);
-            jSplitPane2.add(cancel);
+            jSplitPane2.add(okButton);
+            jSplitPane2.add(cancelButton);
 
             jSplitPane.add(jSplitPane2);
 
-//            SwingUtilities.invokeLater(new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                }
-//            });
             JFrame frame = new JFrame("Custom Request Header");
             frame.add(jSplitPane);
             frame.setSize(600, 400);
             frame.setLocationRelativeTo(null); // 让窗口在屏幕中央显示
             frame.setVisible(true);
 
-            cancel.addActionListener(new ActionListener() {
+            cancelButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     frame.dispose();
                 }
             });
-            ok.addActionListener(new ActionListener() {
+            okButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     List<String> headersText = parseHead(jTextArea.getText());
@@ -221,52 +218,63 @@ class Right_click_monitor implements ActionListener {
                         return;
                     }
                     frame.dispose();
-                    for (IHttpRequestResponse i : RequestResponses) {
-                        try {
-                            IHttpService Http_Service = i.getHttpService();
-                            IRequestInfo RequestInfo = burp.help.analyzeRequest(Http_Service, i.getRequest());
-                            String host_url = RequestInfo.getUrl().getProtocol() + "://" + RequestInfo.getUrl().getHost();
-                            IHttpRequestResponse[] aaaa = burp.call.getSiteMap(host_url);
-                            for (IHttpRequestResponse oo : aaaa) {
-//                                String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
-//                                URL url = new URL(Root_Url + burp.help.analyzeRequest(xxx).getUrl().getPath());
-                                byte[] xxx = replaceHeader(oo, headersText);
-                                BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, oo);
-                                start_send send = new start_send(burp, Root_Request,xxx);
-                                send.start();
+                    for (IHttpRequestResponse baseRequestResponse : RequestResponses) {
+                        if (withSiteMap){
+                            try {
+                                IHttpService Http_Service = baseRequestResponse.getHttpService();
+                                IRequestInfo RequestInfo = burp.help.analyzeRequest(Http_Service, baseRequestResponse.getRequest());
+                                String host_url = RequestInfo.getUrl().getProtocol() + "://" + RequestInfo.getUrl().getHost();
+                                IHttpRequestResponse[] httpRequestResponses = burp.call.getSiteMap(host_url);
+                                for (IHttpRequestResponse requestResponse : httpRequestResponses) {
+                                    byte[] requestBytes = replaceHeader(requestResponse, headersText);
+                                    BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, requestResponse);
+                                    start_send send = new start_send(burp, Root_Request,requestBytes);
+                                    send.start();
+                                }
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
                             }
-
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
+                        } else{
+                            try {
+                                byte[] requestBytes = replaceHeader(baseRequestResponse, headersText);
+                                BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, baseRequestResponse);
+                                start_send send = new start_send(burp, Root_Request,requestBytes);
+                                send.start();
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                            }
                         }
-
                     }
                 }
             });
 
-        }else {
-            for (IHttpRequestResponse i : RequestResponses) {
-                try {
-                    IHttpService Http_Service = i.getHttpService();
-                    IRequestInfo RequestInfo = burp.help.analyzeRequest(Http_Service, i.getRequest());
-                    String host_url = RequestInfo.getUrl().getProtocol() + "://" + RequestInfo.getUrl().getHost();
-                    IHttpRequestResponse[] aaaa = burp.call.getSiteMap(host_url);
-                    for (IHttpRequestResponse xxx : aaaa) {
-//                        String Root_Url = Http_Service.getProtocol() + "://" + Http_Service.getHost() + ":" + String.valueOf(Http_Service.getPort());
-//                        URL url = new URL(Root_Url + burp.help.analyzeRequest(xxx).getUrl().getPath());
-                        BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, xxx);
+        } else {
+            for (IHttpRequestResponse baseRequestResponse : RequestResponses) {
+                if (withSiteMap){
+                    try {
+                        IHttpService Http_Service = baseRequestResponse.getHttpService();
+                        IRequestInfo RequestInfo = burp.help.analyzeRequest(Http_Service, baseRequestResponse.getRequest());
+                        String host_url = RequestInfo.getUrl().getProtocol() + "://" + RequestInfo.getUrl().getHost();
+                        IHttpRequestResponse[] requestResponses = burp.call.getSiteMap(host_url);
+                        for (IHttpRequestResponse requestResponse : requestResponses) {
+                            BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, requestResponse);
+                            start_send send = new start_send(burp, Root_Request,null);
+                            send.start();
+                        }
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                }else{
+                    try {
+                        BurpAnalyzedRequest Root_Request = new BurpAnalyzedRequest(burp.call, baseRequestResponse);
                         start_send send = new start_send(burp, Root_Request,null);
                         send.start();
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
                     }
-
-                } catch (Exception exception) {
-                    exception.printStackTrace();
                 }
-
             }
         }
-
-
     }
 
     public byte[] replaceHeader(IHttpRequestResponse i, List<String> header) {
