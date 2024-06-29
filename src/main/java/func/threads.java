@@ -1,12 +1,8 @@
 package func;
 
-
 import burp.Bfunc;
 import burp.IExtensionHelpers;
 import burp.IHttpRequestResponse;
-
-
-import com.sun.jmx.snmp.tasks.Task;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -16,8 +12,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-public class threads implements Task {
+public class threads implements Runnable  {
     private Map<String, Object> zidian;
     private vulscan vul;
     private IHttpRequestResponse newHttpRequestResponse;
@@ -30,11 +25,6 @@ public class threads implements Task {
         this.newHttpRequestResponse = newHttpRequestResponse;
         this.heads = heads;
         this.Bypass_List = Bypass_List;
-    }
-
-    @Override
-    public void cancel() {
-
     }
 
     @Override

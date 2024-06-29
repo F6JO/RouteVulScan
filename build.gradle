@@ -18,10 +18,10 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-    compile('net.portswigger.burp.extender:burp-extender-api:1.7.13')
-    compile('com.intellij:forms_rt:7.0.3')
-    compile group: 'org.yaml', name: 'snakeyaml', version: '1.28'
-    compile fileTree(dir: 'lib', includes: ['*jar'])
+    implementation 'net.portswigger.burp.extender:burp-extender-api:1.7.13'
+    implementation 'com.intellij:forms_rt:7.0.3'
+    implementation 'org.yaml:snakeyaml:1.28'
+//    implementation fileTree(dir: 'lib', include: ['*.jar'])
 }
 
 test {
